@@ -1,149 +1,491 @@
 import React from 'react';
-import { getEligiblePrograms, incomeTotal, formatMoney, FILING_STATUS_OPTIONS } from '@/lib/pas1Data';
+import { incomeTotal, formatMoney, FILING_STATUS_OPTIONS } from '@/lib/pas1Data';
 
-function Section({ title }) {
-  return (
-    <div style={{ background: '#e8eef5', padding: '6px 14px', borderLeft: '4px solid #1a3a6b', fontSize: '10px', fontWeight: 700, color: '#1a3a6b', letterSpacing: '.04em', marginTop: '6px' }}>
-      {title}
+/* ─── helpers ─── */
+const yn = (v) => v ? 'X' : '';
+const money = (v) => {
+  const n = parseFloat(String(v || 0).replace(/,/g, ''));
+  if (!n || isNaN(n)) return '';
+  return n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+};
+
+const s = {
+  page: { fontFamily: 'Arial, Helvetica, sans-serif', fontSize: '10px', color: '#000', background: '#fff', maxWidth: '720px', margin: '0 auto', padding: '24px 32px', lineHeight: 1.3 },
+  h1: { fontSize: '22px', fontWeight: '700', margin: 0, lineHeight: 1 },
+  h2: { fontSize: '16px', fontWeight: '700', borderBottom: '2px solid #000', paddingBottom: '2px', marginTop: '14px', marginBottom: '6px' },
+  h3: { fontSize: '13px', fontWeight: '700', marginTop: '10px', marginBottom: '4px' },
+  box: { border: '1px solid #b00', background: '#fff', display: 'inline-block', minWidth: '70px', height: '17px', verticalAlign: 'bottom', padding: '0 3px', fontSize: '11px', lineHeight: '17px' },
+  boxSm: { border: '1px solid #b00', background: '#fff', display: 'inline-block', minWidth: '30px', height: '17px', verticalAlign: 'bottom', padding: '0 3px', fontSize: '11px', lineHeight: '17px' },
+  boxMd: { border: '1px solid #b00', background: '#fff', display: 'inline-block', minWidth: '50px', height: '17px', verticalAlign: 'bottom', padding: '0 3px', fontSize: '11px', lineHeight: '17px' },
+  moneyBox: { border: '1px solid #b00', background: '#fff', display: 'inline-block', minWidth: '130px', height: '17px', verticalAlign: 'bottom', padding: '0 4px', fontSize: '11px', lineHeight: '17px', textAlign: 'right', fontFamily: 'monospace' },
+  checkBox: { border: '1px solid #b00', background: '#fff', display: 'inline-block', width: '14px', height: '14px', verticalAlign: 'middle', textAlign: 'center', lineHeight: '14px', fontSize: '10px', fontWeight: 'bold' },
+  row: { display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', padding: '4px 0', borderBottom: '1px dotted #ccc' },
+  label: { flex: 1, paddingRight: '8px' },
+  lineNum: { fontWeight: '700', minWidth: '24px', display: 'inline-block' },
+  pageHeader: { display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #000', paddingBottom: '4px', marginBottom: '8px', fontSize: '9px', color: '#333' },
+  dividerLine: { borderTop: '1px solid #000', margin: '10px 0' },
+  ssnBox: { display: 'inline-flex', gap: '2px', alignItems: 'center' },
+};
+
+const CheckBox = ({ checked }) => (
+  <span style={s.checkBox}>{checked ? 'X' : ''}</span>
+);
+
+const MoneyField = ({ value }) => (
+  <span style={s.moneyBox}>{money(value)}</span>
+);
+
+const TextField = ({ value, width }) => (
+  <span style={{ ...s.box, minWidth: width || '120px' }}>{value || ''}</span>
+);
+
+const SmallBox = ({ value, width }) => (
+  <span style={{ ...s.boxSm, minWidth: width || '30px' }}>{value || ''}</span>
+);
+
+/* ─── SSN display: shows only last 4 ─── */
+const SSNBox = ({ last4 }) => (
+  <span style={{ display: 'inline-flex', alignItems: 'center', gap: '1px', fontSize: '11px' }}>
+    <span style={s.boxSm}>X</span><span style={s.boxSm}>X</span><span style={s.boxSm}>X</span>
+    <span style={{ padding: '0 2px' }}>-</span>
+    <span style={s.boxSm}>X</span><span style={s.boxSm}>X</span>
+    <span style={{ padding: '0 2px' }}>-</span>
+    <span style={s.boxSm}>{last4?.[0] || ''}</span>
+    <span style={s.boxSm}>{last4?.[1] || ''}</span>
+    <span style={s.boxSm}>{last4?.[2] || ''}</span>
+    <span style={s.boxSm}>{last4?.[3] || ''}</span>
+  </span>
+);
+
+/* ─── Page break ─── */
+const PageBreak = () => (
+  <div style={{ pageBreakAfter: 'always', borderTop: '1px dashed #999', marginTop: '24px', paddingTop: '0' }} />
+);
+
+/* ─── Repeating page header (pg 2-4) ─── */
+const PageHeader = ({ page, name, ssn }) => (
+  <div style={s.pageHeader}>
+    <div>
+      <span style={{ marginRight: '40px' }}>Name(s) as shown on Property Tax Relief Application: <strong>{name}</strong></span>
     </div>
-  );
-}
+    <div>Your Social Security Number: <strong>XXX-XX-{ssn}</strong></div>
+    <div style={{ marginLeft: '20px', fontWeight: '700' }}>PAS-1 (2025) Page {page}</div>
+  </div>
+);
 
-function Row({ label, value }) {
-  return (
-    <div style={{ display: 'flex', justifyContent: 'space-between', padding: '6px 14px', borderBottom: '1px solid #f0f3f8', fontSize: '12px' }}>
-      <span style={{ color: '#666', flex: 1 }}>{label}</span>
-      <span style={{ fontWeight: 500, color: '#222' }}>{value || '—'}</span>
-    </div>
-  );
-}
-
-function MoneyRow({ ln, desc, val }) {
-  return (
-    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '6px 14px', borderBottom: '1px solid #f0f3f8', fontSize: '12px' }}>
-      <div>
-        <span style={{ fontWeight: 700, color: '#1a3a6b', marginRight: '8px' }}>{ln}</span>
-        <span style={{ color: '#555' }}>{desc}</span>
-      </div>
-      <span style={{ fontFamily: 'monospace', fontWeight: 500, color: val === '—' ? '#bbb' : '#222' }}>{val}</span>
-    </div>
-  );
-}
-
+/* ════════════════════════════════════════════
+   MAIN COMPONENT
+════════════════════════════════════════════ */
 export default function PrintForm({ data }) {
-  const progs = getEligiblePrograms(data);
   const t24 = parseFloat(data.tax2024) || 0;
   const t25 = parseFloat(data.tax2025) || 0;
-  const diff = t25 - t24;
-  const inc24 = incomeTotal(data.inc?.[2024]);
-  const inc25 = incomeTotal(data.inc?.[2025]);
-  const age = data.birthYear ? 2025 - parseInt(data.birthYear) : null;
-  const homeTypeMap = { own: 'Homeowner (주택 소유자)', mobile: 'Mobile Home Owner', rent: 'Renter (임차인)' };
-  const fsLabel = FILING_STATUS_OPTIONS.find(o => o.value === data.filingStatus)?.label || data.filingStatus;
-
-  const sigDateFormatted = data.sigDate 
-    ? new Date(data.sigDate + 'T00:00:00').toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) 
+  const inc24 = data.inc?.[2024] || {};
+  const inc25 = data.inc?.[2025] || {};
+  const fullName = data.lname && data.fname ? `${data.lname}, ${data.fname}` : '';
+  const sigDateFormatted = data.sigDate
+    ? new Date(data.sigDate + 'T00:00:00').toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' })
     : '';
 
+  const fsMap = { A: 'A', B: 'B', C: 'C', D: 'D', E: 'E', F: 'F' };
+  const fs = data.filingStatus;
+
   return (
-    <div className="print-only" style={{ fontFamily: "'Noto Sans KR', Helvetica Neue, Arial, sans-serif", maxWidth: '720px', margin: '0 auto' }}>
+    <div className="print-only" style={s.page}>
+
+      {/* ══════════════════════════════════════
+          PAGE 1
+      ══════════════════════════════════════ */}
       {/* Header */}
-      <div style={{ background: '#1a3a6b', padding: '13px 18px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '8px' }}>
         <div>
-          <div style={{ color: '#fff', fontSize: '15px', fontWeight: 700 }}>State of New Jersey — 2025 Form PAS-1</div>
-          <div style={{ color: '#a8c0e0', fontSize: '11px', marginTop: '2px' }}>Application for Property Tax Relief | Division of Taxation</div>
+          <div style={s.h1}>2025</div>
+          <div style={{ fontSize: '14px', fontWeight: '700', marginTop: '2px' }}>PAS-1</div>
         </div>
-        <div style={{ color: '#a8c0e0', fontSize: '10px', textAlign: 'right', lineHeight: 1.6 }}>
-          APPLICANT COPY<br />참고용 본<br />Deadline: Nov 2, 2026
+        <div style={{ textAlign: 'center', flex: 1, marginLeft: '20px' }}>
+          <div style={{ fontSize: '14px', fontWeight: '700' }}>State of New Jersey</div>
+          <div style={{ fontSize: '18px', fontWeight: '900' }}>Application for Property Tax Relief</div>
+          <div style={{ fontSize: '11px' }}>For Seniors and Certain Disability Recipients</div>
         </div>
       </div>
 
-      {/* Programs */}
-      <div style={{ background: '#e8eef5', padding: '8px 18px', borderLeft: '4px solid #1a3a6b', display: 'flex', alignItems: 'center', gap: '8px' }}>
-        <span style={{ fontSize: '11px', color: '#555', fontWeight: 500 }}>신청 가능 프로그램:</span>
-        {progs.map(p => (
-          <span key={p} style={{ display: 'inline-block', background: '#EAF3DE', color: '#27500A', border: '1px solid #3B6D11', fontSize: '11px', padding: '2px 8px', borderRadius: '12px', fontWeight: 600 }}>
-            {p}
+      <div style={{ fontSize: '9px', marginBottom: '8px', lineHeight: 1.5 }}>
+        <strong>Complete this application ONLY if</strong><br />
+        • You or your spouse/CU partner were born in 1960 or before, <strong>OR</strong><br />
+        • You or your spouse/CU partner were receiving Social Security Disability benefits during 2025, <strong>OR</strong><br />
+        • You or your spouse/CU partner were receiving Railroad Retirement Disability during 2025.
+      </div>
+
+      {/* Top grid: SSN + Name/Address */}
+      <table style={{ width: '100%', borderCollapse: 'collapse', border: '1px solid #b00', marginBottom: '8px' }}>
+        <tbody>
+          <tr>
+            <td style={{ width: '35%', padding: '4px 6px', border: '1px solid #b00', verticalAlign: 'top' }}>
+              <div style={{ fontSize: '9px', color: '#555', marginBottom: '2px' }}>Your Social Security Number</div>
+              <SSNBox last4={data.ssnLast4} />
+              <div style={{ fontSize: '9px', color: '#555', margin: '6px 0 2px' }}>Spouse's/CU Partner's Social Security Number</div>
+              <SSNBox last4={''} />
+              <div style={{ fontSize: '9px', color: '#555', margin: '6px 0 2px' }}>County/Municipality Code (See Table page 15)</div>
+              <span style={s.box}>{data.muniCode}</span>
+            </td>
+            <td style={{ padding: '4px 6px', border: '1px solid #b00', verticalAlign: 'top' }}>
+              <div style={{ fontSize: '9px', color: '#555', marginBottom: '2px' }}>Last Name, First Name and Initial</div>
+              <div style={{ fontSize: '12px', fontWeight: '600', minHeight: '18px', borderBottom: '1px solid #ddd', paddingBottom: '2px' }}>{fullName}</div>
+              <div style={{ fontSize: '9px', color: '#555', margin: '4px 0 2px' }}>Home Address (Number and Street, including apartment number)</div>
+              <div style={{ fontSize: '11px', minHeight: '16px', borderBottom: '1px solid #ddd', paddingBottom: '2px' }}>{data.address}</div>
+              <div style={{ display: 'flex', gap: '10px', marginTop: '4px', fontSize: '9px', color: '#555' }}>
+                <span>City, Town, Post Office</span>
+                <span>State: NJ</span>
+                <span>ZIP Code</span>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div style={{ marginBottom: '8px', fontSize: '10px' }}>
+        Enter the address of your main home on October 1, 2025, <strong>if different from the address above.</strong><br />
+        <span>Street Address: </span>
+        <span style={{ ...s.box, minWidth: '300px' }}></span>
+        &nbsp;&nbsp;County/Municipality Code: <span style={s.box}></span>
+      </div>
+
+      <div style={{ fontSize: '9px', marginBottom: '10px', lineHeight: 1.5, borderTop: '1px solid #000', paddingTop: '4px' }}>
+        <strong>This is a combined application for the Property Tax Reimbursement (Senior Freeze), ANCHOR Benefit, and Stay NJ programs.</strong> The application collects information that the Division of Taxation needs to assess your eligibility for these property tax relief programs.
+      </div>
+
+      {/* Filing Status */}
+      <div style={s.h2}>Filing Status</div>
+      <div style={{ marginBottom: '6px', fontSize: '10px' }}>
+        <div><span style={s.lineNum}>1.</span> Your Filing Status from your 2025 NJ-1040:</div>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4px', marginTop: '4px', paddingLeft: '16px' }}>
+          <div><CheckBox checked={fs === 'A'} /> A.&nbsp;&nbsp;Single</div>
+          <div><CheckBox checked={fs === 'E'} /> E.&nbsp;&nbsp;Married/CU Partner, filing separately: each maintains <strong>separate</strong> residence</div>
+          <div><CheckBox checked={fs === 'B'} /> B.&nbsp;&nbsp;Head of Household</div>
+          <div><CheckBox checked={fs === 'F'} /> F.&nbsp;&nbsp;Both maintain <strong>same</strong> residence</div>
+          <div><CheckBox checked={fs === 'C'} /> C.&nbsp;&nbsp;Qualifying Widow(er)/Surviving CU Partner</div>
+          <div></div>
+          <div><CheckBox checked={fs === 'D'} /> D.&nbsp;&nbsp;Married/CU Couple, filing joint return</div>
+        </div>
+      </div>
+
+      {/* Age & Disability */}
+      <div style={s.h2}>Age and Disability Status (Fill in all ovals that apply)</div>
+      <div style={{ fontSize: '10px', marginBottom: '6px' }}>
+        <div style={{ display: 'flex', gap: '40px', marginBottom: '4px' }}>
+          <div><span style={s.lineNum}>2.</span> Your Birth Year: <span style={s.box}>{data.birthYear}</span></div>
+          <div>Your Spouse's/CU Partner's Birth Year: <span style={s.box}>{data.spBirthYear}</span></div>
+        </div>
+        <div style={s.row}>
+          <span style={s.label}><span style={s.lineNum}>3a.</span> During 2025, were you <strong>receiving</strong> federal Social Security Disability benefit payments?</span>
+          <span>Yourself &nbsp;<CheckBox checked={data.ssdi} /> Yes &nbsp;<CheckBox checked={!data.ssdi} /> No &nbsp;&nbsp;&nbsp; Spouse/CU Partner &nbsp;<CheckBox checked={false} /> Yes &nbsp;<CheckBox checked={true} /> No</span>
+        </div>
+        <div style={s.row}>
+          <span style={s.label}><span style={s.lineNum}>3b.</span> During 2025, were you <strong>receiving</strong> Railroad Retirement Disability benefit payments?</span>
+          <span>Yourself &nbsp;<CheckBox checked={data.rrd} /> Yes &nbsp;<CheckBox checked={!data.rrd} /> No &nbsp;&nbsp;&nbsp; Spouse/CU Partner &nbsp;<CheckBox checked={false} /> Yes &nbsp;<CheckBox checked={true} /> No</span>
+        </div>
+      </div>
+
+      {/* Residency Information */}
+      <div style={s.h2}>Residency Information</div>
+      <div style={{ fontSize: '10px' }}>
+        <div style={s.row}>
+          <span style={s.label}><span style={s.lineNum}>4.</span> Did you own/rent your principal residence (main home) in New Jersey on <strong>October 1, 2025</strong>?</span>
+          <span><CheckBox checked={data.oct1Nj} /> Yes &nbsp;<CheckBox checked={!data.oct1Nj} /> No</span>
+        </div>
+        <div style={{ padding: '4px 0', borderBottom: '1px dotted #ccc' }}>
+          <span style={s.lineNum}>5.</span> Indicate your residency status on <strong>October 1, 2025.</strong>
+          &nbsp;&nbsp;
+          <CheckBox checked={data.homeType === 'own'} /> Homeowner &nbsp;&nbsp;
+          <CheckBox checked={data.homeType === 'mobile'} /> Mobile home owner &nbsp;&nbsp;
+          <CheckBox checked={data.homeType === 'rent'} /> Renter – SKIP TO Signature section
+        </div>
+        <div style={s.row}>
+          <span style={s.label}><span style={s.lineNum}>6a.</span> Did you own and live in the same main home in New Jersey from <strong>January 1, 2025, through December 31, 2025</strong>?</span>
+          <span><CheckBox checked={data.same2025} /> Yes &nbsp;<CheckBox checked={!data.same2025} /> No</span>
+        </div>
+        <div style={s.row}>
+          <span style={s.label}><span style={s.lineNum}>6b.</span> Were you (or your spouse) born in 1960 or earlier?</span>
+          <span><CheckBox checked={parseInt(data.birthYear) <= 1960} /> Yes &nbsp;<CheckBox checked={parseInt(data.birthYear) > 1960} /> No</span>
+        </div>
+        <div style={s.row}>
+          <span style={s.label}><span style={s.lineNum}>6c.</span> Did you move from one main home you <strong>owned</strong> in New Jersey to another main home you <strong>owned</strong> in New Jersey in 2025?</span>
+          <span><CheckBox checked={false} /> Yes &nbsp;<CheckBox checked={true} /> No</span>
+        </div>
+        <div style={s.row}>
+          <span style={s.label}><span style={s.lineNum}>7.</span> Are you filing this application for the same home as last year's property tax relief benefits?</span>
+          <span><CheckBox checked={data.sameAsLast} /> Yes &nbsp;<CheckBox checked={!data.sameAsLast} /> No</span>
+        </div>
+        <div style={s.row}>
+          <span style={s.label}><span style={s.lineNum}>8.</span> On December 31, 2025, did you own and live in the same New Jersey home that you owned and occupied on <strong>December 31, 2022</strong>, or earlier?</span>
+          <span><CheckBox checked={data.since2022} /> Yes &nbsp;<CheckBox checked={!data.since2022} /> No</span>
+        </div>
+        <div style={s.row}>
+          <span style={s.label}><span style={s.lineNum}>9.</span> Did you move to your current home between <strong>January 1, 2023, and December 31, 2023</strong>?</span>
+          <span><CheckBox checked={data.moved2023} /> Yes &nbsp;<CheckBox checked={!data.moved2023} /> No</span>
+        </div>
+      </div>
+
+      <PageBreak />
+
+      {/* ══════════════════════════════════════
+          PAGE 2
+      ══════════════════════════════════════ */}
+      <PageHeader page={2} name={fullName} ssn={data.ssnLast4} />
+
+      <div style={s.h2}>Principal Residence (Main Home)</div>
+      <div style={{ fontSize: '10px' }}>
+        <div style={{ padding: '4px 0', borderBottom: '1px dotted #ccc' }}>
+          <span style={s.lineNum}>10.</span> If your home on October 1, 2025, was a unit in a Co-op or a Continuing Care Retirement Facility, indicate the type:
+          &nbsp;<CheckBox checked={false} /> Co-op &nbsp; or &nbsp;<CheckBox checked={false} /> Continuing Care Retirement Facility
+        </div>
+
+        {/* Lines 11-12: table with 2024/2025 columns */}
+        <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: '6px', fontSize: '10px' }}>
+          <thead>
+            <tr>
+              <th style={{ textAlign: 'left', fontWeight: 'normal', paddingRight: '8px' }}></th>
+              <th style={{ width: '100px', textAlign: 'center', fontWeight: '700', borderBottom: '1px solid #000' }}>2024</th>
+              <th style={{ width: '100px', textAlign: 'center', fontWeight: '700', borderBottom: '1px solid #000' }}>2025</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style={{ borderBottom: '1px dotted #ccc' }}>
+              <td style={{ padding: '4px 0' }}><span style={s.lineNum}>11a.</span> Did you share ownership of the property that was your main home on October 1, 2025, with anyone other than your spouse/CU partner?</td>
+              <td style={{ textAlign: 'center', padding: '4px' }}><CheckBox checked={data.coOwn} /> Yes &nbsp;<CheckBox checked={!data.coOwn} /> No</td>
+              <td style={{ textAlign: 'center', padding: '4px' }}><CheckBox checked={data.coOwn} /> Yes &nbsp;<CheckBox checked={!data.coOwn} /> No</td>
+            </tr>
+            <tr style={{ borderBottom: '1px dotted #ccc' }}>
+              <td style={{ padding: '4px 0' }}><span style={s.lineNum}>11b.</span> If you answered "Yes," indicate the share (percentage) of the property you (and your spouse/CU partner) owned.</td>
+              <td style={{ textAlign: 'center', padding: '4px' }}><span style={s.boxSm}>{data.coOwn ? data.coPct : ''}</span> %</td>
+              <td style={{ textAlign: 'center', padding: '4px' }}><span style={s.boxSm}>{data.coOwn ? data.coPct : ''}</span> %</td>
+            </tr>
+            <tr style={{ borderBottom: '1px dotted #ccc' }}>
+              <td style={{ padding: '4px 0' }}><span style={s.lineNum}>12a.</span> Did the property that was your main home on October 1, 2025, consist of multiple units?</td>
+              <td style={{ textAlign: 'center', padding: '4px' }}><CheckBox checked={data.multiUnit} /> Yes &nbsp;<CheckBox checked={!data.multiUnit} /> No</td>
+              <td style={{ textAlign: 'center', padding: '4px' }}><CheckBox checked={data.multiUnit} /> Yes &nbsp;<CheckBox checked={!data.multiUnit} /> No</td>
+            </tr>
+            <tr>
+              <td style={{ padding: '4px 0' }}><span style={s.lineNum}>12b.</span> If you answered "Yes," indicate the share (percentage) of the property that you used as your main home.</td>
+              <td style={{ textAlign: 'center', padding: '4px' }}><span style={s.boxSm}>{data.multiUnit ? data.multiUnitPct : ''}</span> %</td>
+              <td style={{ textAlign: 'center', padding: '4px' }}><span style={s.boxSm}>{data.multiUnit ? data.multiUnitPct : ''}</span> %</td>
+            </tr>
+          </tbody>
+        </table>
+        {data.coOwn || data.multiUnit ? (
+          <div style={{ fontSize: '9px', fontWeight: '700', margin: '4px 0' }}>If you answered "Yes" at line 11a or 12a, see instructions before completing lines 14 through 16b.</div>
+        ) : null}
+      </div>
+
+      <div style={s.h2}>Property Taxes</div>
+      <div style={{ fontSize: '10px' }}>
+        <div style={{ padding: '4px 0', borderBottom: '1px dotted #ccc' }}>
+          <div style={{ marginBottom: '4px' }}><span style={s.lineNum}>13a.</span> Enter the block and lot numbers of the address that was your main home on October 1, 2025.</div>
+          <div style={{ display: 'flex', gap: '16px', paddingLeft: '16px', flexWrap: 'wrap' }}>
+            <span>Block: <TextField value={data.block} width="60px" /></span>
+            <span>Block Suffix: <TextField value="" width="50px" /></span>
+            <span>Lot: <TextField value={data.lot} width="60px" /></span>
+            <span>Lot Suffix: <TextField value="" width="50px" /></span>
+            <span>Qualifier: <TextField value={data.qualifier} width="60px" /></span>
+          </div>
+        </div>
+        <div style={s.row}>
+          <span style={s.label}><span style={s.lineNum}>13b.</span> Are you claiming property taxes for additional lots?</span>
+          <span><CheckBox checked={data.additionalLots} /> Yes &nbsp;<CheckBox checked={!data.additionalLots} /> No</span>
+        </div>
+        <div style={s.row}>
+          <span style={s.label}><span style={s.lineNum}>14.</span> Enter your <strong>2024</strong> property taxes billed for the home that was your main home on October 1, 2024.<br />
+            <span style={{ fontSize: '9px' }}>(Mobile home owners enter 18% of total site fees) — <strong>Prior Senior Freeze recipients: Do not change.</strong></span>
           </span>
+          <MoneyField value={t24} />
+        </div>
+        <div style={s.row}>
+          <span style={s.label}><span style={s.lineNum}>15.</span> Enter your <strong>2025</strong> property taxes billed for the home that was your main home on October 1, 2025.<br />
+            <span style={{ fontSize: '9px' }}>(Mobile home owners enter 18% of total site fees)</span>
+          </span>
+          <MoneyField value={t25} />
+        </div>
+      </div>
+
+      <div style={s.h2}>Payment-in-Lieu-of-Taxes (P.I.L.O.T.)</div>
+      <div style={{ fontSize: '10px' }}>
+        <div style={s.row}>
+          <span style={s.label}><span style={s.lineNum}>16a.</span> Is there a Payment-in-Lieu-of-Taxes (P.I.L.O.T.) agreement for the home that was your main home in 2025?</span>
+          <span><CheckBox checked={data.pilot} /> Yes &nbsp;<CheckBox checked={!data.pilot} /> No</span>
+        </div>
+        <div style={s.row}>
+          <span style={s.label}><span style={s.lineNum}>16b.</span> If you answered "Yes," enter your Payment-in-Lieu-of-Taxes (P.I.L.O.T.) due for the home that was your main home in 2025.</span>
+          <MoneyField value={data.pilot ? data.pilotAmount : ''} />
+        </div>
+      </div>
+
+      <PageBreak />
+
+      {/* ══════════════════════════════════════
+          PAGE 3
+      ══════════════════════════════════════ */}
+      <PageHeader page={3} name={fullName} ssn={data.ssnLast4} />
+
+      {/* 2024 Income */}
+      <div style={s.h2}>2024 Income</div>
+      <div style={{ fontSize: '9px', marginBottom: '6px', lineHeight: 1.4 }}>
+        Enter your annual income for 2024. See the instructions for information on sources of income and how to determine the amount to report. If you do not have any income to report, you must enter "0.00" on line 17f. Losses in one category of income cannot be used to reduce total income. If you have a net loss in any income category, leave that line blank. If you were married or in a civil union on December 31, 2024, and living in the same home, combine your incomes for that year.
+      </div>
+      <div style={{ fontSize: '10px' }}>
+        {[
+          { ln: '17a.', label: 'New Jersey Total Income (see instructions)', key: 'a' },
+          { ln: '17b.', label: 'Tax-exempt interest income', key: 'b' },
+          { ln: '17c.', label: 'Roth IRA rollovers (see instructions)', key: 'c' },
+          { ln: '17d.', label: 'Disability pension received (see instructions)', key: 'd' },
+          { ln: '17e.', label: 'Social Security Benefits (including Medicare Part B premiums) received.\nEnter total amount from Box 5 of Form SSA-1099', key: 'e' },
+        ].map(({ ln, label, key }) => (
+          <div key={ln} style={s.row}>
+            <span style={s.label}><span style={s.lineNum}>{ln}</span> {label}</span>
+            <MoneyField value={inc24[key]} />
+          </div>
         ))}
-      </div>
-
-      <Section title="SECTION 1 — Applicant Information (신청인 기본 정보)" />
-      <Row label="성명 (Name)" value={data.lname && data.fname ? `${data.lname}, ${data.fname}` : ''} />
-      <Row label="SSN" value={data.ssnLast4 ? `XXX-XX-${data.ssnLast4}` : ''} />
-      <Row label="생년도 / 나이" value={data.birthYear ? `${data.birthYear} (만 ${age}세)` : ''} />
-      <Row label="주소 (Address)" value={data.address} />
-      <Row label="Municipality Code" value={data.muniCode} />
-      <Row label="전화번호" value={data.phone} />
-      {data.hasSpouse && <Row label="배우자" value={`${data.spName} (${data.spBirthYear})`} />}
-
-      <Section title="SECTION 2 — Filing Status" />
-      <Row label="Line 1 — Filing Status" value={fsLabel} />
-      <Row label="Line 3a — SSDI" value={data.ssdi ? 'Yes' : 'No'} />
-      <Row label="Line 3b — Railroad Retirement Disability" value={data.rrd ? 'Yes' : 'No'} />
-
-      <Section title="SECTION 3 — Residency (거주 정보)" />
-      <Row label="Line 5 — Residency Type" value={homeTypeMap[data.homeType]} />
-      <Row label="Line 6a — Same home entire 2025" value={data.same2025 ? 'Yes' : 'No'} />
-      <Row label="Line 8 — Since Dec 31, 2022" value={data.since2022 ? 'Yes — Senior Freeze 거주 조건 충족' : 'No'} />
-      {data.coOwn && data.coPct && <Row label="Line 11b — Co-ownership share" value={`${data.coPct}%`} />}
-
-      <Section title="SECTION 4 — Property Tax (재산세)" />
-      <Row label="Block / Lot" value={`Block ${data.block || '—'} / Lot ${data.lot || '—'}${data.qualifier ? ` / ${data.qualifier}` : ''}`} />
-      <MoneyRow ln="Line 14" desc="2024 Property Tax billed" val={formatMoney(t24)} />
-      <MoneyRow ln="Line 15" desc="2025 Property Tax billed" val={formatMoney(t25)} />
-      {diff > 0 && (
-        <div style={{ background: '#EAF3DE', padding: '7px 14px', display: 'flex', justifyContent: 'space-between', fontSize: '12px', fontWeight: 600, color: '#27500A' }}>
-          <span>Senior Freeze 환급 예상액 (재산세 증가분)</span>
-          <span>{formatMoney(diff)}</span>
+        <div style={{ display: 'flex', justifyContent: 'space-between', padding: '6px 0', borderTop: '2px solid #000', marginTop: '6px' }}>
+          <strong><span style={s.lineNum}>17f.</span> Total 2024 income (Add lines 17a–17e)</strong>
+          <MoneyField value={incomeTotal(inc24)} />
         </div>
-      )}
-
-      <Section title="SECTION 5 — Income Worksheet (소득 정보)" />
-      <div style={{ padding: '4px 14px', background: '#f8faff', fontSize: '11px', color: '#1a3a6b', fontWeight: 500 }}>Tax Year 2024</div>
-      <MoneyRow ln="17a" desc="NJ Total Income" val={formatMoney(data.inc?.[2024]?.a)} />
-      <MoneyRow ln="17e" desc="Social Security benefits" val={formatMoney(data.inc?.[2024]?.e)} />
-      <div style={{ background: '#e8eef5', padding: '6px 14px', display: 'flex', justifyContent: 'space-between', borderTop: '2px solid #1a3a6b' }}>
-        <span style={{ fontSize: '12px', fontWeight: 700, color: '#1a3a6b' }}>17f — Total 2024</span>
-        <span style={{ fontSize: '14px', fontWeight: 700, fontFamily: 'monospace', color: '#1a3a6b' }}>{formatMoney(inc24)}</span>
       </div>
 
-      <div style={{ padding: '4px 14px', background: '#f8faff', fontSize: '11px', color: '#1a3a6b', fontWeight: 500, marginTop: '4px' }}>Tax Year 2025</div>
-      <MoneyRow ln="18a" desc="NJ Total Income" val={formatMoney(data.inc?.[2025]?.a)} />
-      <MoneyRow ln="18b" desc="Tax-exempt interest" val={formatMoney(data.inc?.[2025]?.b)} />
-      <MoneyRow ln="18c" desc="Roth IRA rollovers" val={formatMoney(data.inc?.[2025]?.c)} />
-      <MoneyRow ln="18d" desc="Disability pension" val={formatMoney(data.inc?.[2025]?.d)} />
-      <MoneyRow ln="18e" desc="Social Security benefits" val={formatMoney(data.inc?.[2025]?.e)} />
-      <div style={{ background: '#e8eef5', padding: '9px 14px', display: 'flex', justifyContent: 'space-between', borderTop: '2px solid #1a3a6b' }}>
-        <span style={{ fontSize: '13px', fontWeight: 700, color: '#1a3a6b' }}>18f — Total 2025</span>
-        <span style={{ fontSize: '15px', fontWeight: 700, fontFamily: 'monospace', color: '#1a3a6b' }}>{formatMoney(inc25)}</span>
-      </div>
+      <div style={s.dividerLine} />
 
-      <Section title="SECTION 6 — Signature (서명)" />
-      <div style={{ padding: '8px 14px', fontSize: '11px', color: '#6b4400', background: '#fff8e6', borderLeft: '3px solid #e0a800' }}>
-        ⚠ 이 문서는 참고용입니다. 실제 서명은 공식 PAS-1 양식에 파란색/검정색 볼펜으로 직접 하세요.
+      {/* 2025 Income */}
+      <div style={s.h2}>2025 Income</div>
+      <div style={{ fontSize: '9px', marginBottom: '6px', lineHeight: 1.4 }}>
+        Enter your annual income for 2025. See the instructions for information on sources of income and how to determine the amount to report. If you do not have any income to report, you must enter "0.00" on line 18f. Losses in one category of income cannot be used to reduce total income. If you have a net loss in any income category, leave that line blank. If you were married or in a civil union on December 31, 2025, and living in the same home, combine your incomes for that year.
       </div>
-      <div style={{ padding: '18px 14px', display: 'grid', gridTemplateColumns: '3fr 1fr', gap: '24px', alignItems: 'end' }}>
-        <div>
-          <div style={{ fontFamily: 'Georgia, serif', fontStyle: 'italic', fontSize: '18px', paddingBottom: '4px', borderBottom: '1.5px solid #333', minHeight: '30px' }}>
-            {data.sigName}
+      <div style={{ fontSize: '10px' }}>
+        {[
+          { ln: '18a.', label: 'New Jersey Total Income (see instructions)', key: 'a' },
+          { ln: '18b.', label: 'Tax-exempt interest income', key: 'b' },
+          { ln: '18c.', label: 'Roth IRA rollovers (see instructions)', key: 'c' },
+          { ln: '18d.', label: 'Disability pension received (see instructions)', key: 'd' },
+          { ln: '18e.', label: 'Social Security Benefits (including Medicare Part B premiums) received.\nEnter total amount from Box 5 of Form SSA-1099', key: 'e' },
+        ].map(({ ln, label, key }) => (
+          <div key={ln} style={s.row}>
+            <span style={s.label}><span style={s.lineNum}>{ln}</span> {label}</span>
+            <MoneyField value={inc25[key]} />
           </div>
-          <div style={{ fontSize: '10px', color: '#888', marginTop: '4px' }}>Signature of Applicant (신청인 서명)</div>
-        </div>
-        <div>
-          <div style={{ fontSize: '13px', fontWeight: 600, paddingBottom: '4px', borderBottom: '1.5px solid #333', minHeight: '30px' }}>
-            {sigDateFormatted}
-          </div>
-          <div style={{ fontSize: '10px', color: '#888', marginTop: '4px' }}>Date (날짜)</div>
+        ))}
+        <div style={{ display: 'flex', justifyContent: 'space-between', padding: '6px 0', borderTop: '2px solid #000', marginTop: '6px' }}>
+          <strong><span style={s.lineNum}>18f.</span> Total 2025 income (Add lines 18a–18e)</strong>
+          <MoneyField value={incomeTotal(inc25)} />
         </div>
       </div>
 
-      {/* Footer */}
-      <div style={{ borderTop: '2px solid #1a3a6b', padding: '9px 14px', background: '#e8eef5', fontSize: '10px', color: '#1a3a6b', lineHeight: 1.8 }}>
-        <strong>Mail:</strong> NJ Division of Taxation, PO Box 635, Trenton, NJ 08646-0635 &nbsp;
-        <strong>Online:</strong> propertytaxrelief.nj.gov &nbsp;
-        <strong>Tel:</strong> 1-800-323-4400 &nbsp;
-        <strong>Deadline:</strong> November 2, 2026
+      <div style={{ textAlign: 'center', fontWeight: '700', fontSize: '13px', marginTop: '20px' }}>Complete Signature section.</div>
+
+      <PageBreak />
+
+      {/* ══════════════════════════════════════
+          PAGE 4 — Signature
+      ══════════════════════════════════════ */}
+      <PageHeader page={4} name={fullName} ssn={data.ssnLast4} />
+
+      {/* Schedule 1 (blank — not applicable for most) */}
+      <div style={s.h2}>Schedule 1</div>
+      <div style={{ fontSize: '9px', marginBottom: '8px' }}>
+        <strong>ONLY</strong> complete this schedule if you moved from one main home you <strong>owned</strong> to another main home you <strong>owned</strong> during 2025. Otherwise, leave this schedule blank.
+      </div>
+      <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '10px', marginBottom: '10px' }}>
+        <thead>
+          <tr>
+            <th style={{ width: '40%' }}></th>
+            <th style={{ textAlign: 'center', padding: '3px', border: '1px solid #000', fontWeight: '700' }}>Main Home 1</th>
+            <th style={{ textAlign: 'center', padding: '3px', border: '1px solid #000', fontWeight: '700' }}>Main Home 2</th>
+          </tr>
+        </thead>
+        <tbody>
+          {[
+            '1. Address',
+            '2. Block/lot/qualifier number',
+            '3. Dates you lived in the property in 2025',
+            '4. Did you share ownership?',
+            '5. Share percentage owned',
+            '6. Did the property consist of multiple units?',
+            '7. Share percentage used as main home',
+            '8. Total property taxes billed',
+            '9. P.I.L.O.T. due',
+          ].map((label, i) => (
+            <tr key={i}>
+              <td style={{ padding: '4px', border: '1px solid #ccc', fontSize: '9px' }}>{label}</td>
+              <td style={{ padding: '4px', border: '1px solid #ccc', minHeight: '20px', height: '22px' }}></td>
+              <td style={{ padding: '4px', border: '1px solid #ccc', minHeight: '20px', height: '22px' }}></td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      <div style={{ fontWeight: '700', fontSize: '11px', marginBottom: '12px' }}>Continue to PAS-1, line 10 on page 2.</div>
+
+      {/* Signature Section */}
+      <div style={{ border: '1px solid #000', padding: '10px', marginTop: '8px' }}>
+        <div style={{ fontWeight: '700', fontSize: '11px', textAlign: 'center', borderBottom: '1px solid #000', paddingBottom: '6px', marginBottom: '8px' }}>
+          Signature — All of the programs included in this Property Tax Relief application are subject to appropriation in the State budget.
+        </div>
+
+        <div style={{ fontSize: '9px', marginBottom: '8px' }}>
+          <CheckBox checked={false} /> If enclosing a copy of a death certificate for a deceased applicant, check the box. (See instructions)
+        </div>
+
+        <div style={{ fontSize: '9px', marginBottom: '10px', lineHeight: 1.5, maxWidth: '70%' }}>
+          Under penalties of perjury, I declare that I have examined this Property Tax Relief application, including accompanying schedules and statements, and to the best of my knowledge and belief, it is true, correct, and complete. If prepared by a person other than the applicant, this declaration is based on all information of which the preparer has any knowledge.
+        </div>
+
+        <div style={{ display: 'flex', gap: '16px', alignItems: 'flex-end', flexWrap: 'wrap' }}>
+          <div style={{ flex: '2', minWidth: '200px' }}>
+            <div style={{ fontFamily: 'Georgia, serif', fontStyle: 'italic', fontSize: '16px', borderBottom: '1.5px solid #000', paddingBottom: '2px', minHeight: '28px', color: '#00008b' }}>
+              {data.sigName}
+            </div>
+            <div style={{ fontSize: '9px', color: '#555', marginTop: '2px' }}>Your Signature</div>
+          </div>
+          <div style={{ flex: '1', minWidth: '100px' }}>
+            <div style={{ borderBottom: '1.5px solid #000', paddingBottom: '2px', minHeight: '28px', fontSize: '11px' }}>{sigDateFormatted}</div>
+            <div style={{ fontSize: '9px', color: '#555', marginTop: '2px' }}>Date</div>
+          </div>
+          <div style={{ flex: '2', minWidth: '200px' }}>
+            <div style={{ borderBottom: '1.5px solid #000', paddingBottom: '2px', minHeight: '28px' }}></div>
+            <div style={{ fontSize: '9px', color: '#555', marginTop: '2px' }}>Spouse's/CU Partner's Signature (if filing jointly, BOTH must sign)</div>
+          </div>
+        </div>
+
+        <div style={{ marginTop: '8px' }}>
+          <div style={{ fontSize: '9px', color: '#555' }}>Your daytime phone number and/or email address (optional)</div>
+          <div style={{ borderBottom: '1px solid #000', minHeight: '18px', fontSize: '11px', paddingBottom: '2px' }}>{data.phone}</div>
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', marginTop: '8px' }}>
+          <div>
+            <div style={{ borderBottom: '1px solid #000', minHeight: '18px' }}></div>
+            <div style={{ fontSize: '9px', color: '#555' }}>Paid Preparer's Signature</div>
+          </div>
+          <div>
+            <div style={{ borderBottom: '1px solid #000', minHeight: '18px' }}></div>
+            <div style={{ fontSize: '9px', color: '#555' }}>Federal Identification Number</div>
+          </div>
+          <div>
+            <div style={{ borderBottom: '1px solid #000', minHeight: '18px' }}></div>
+            <div style={{ fontSize: '9px', color: '#555' }}>Firm's name</div>
+          </div>
+          <div>
+            <div style={{ borderBottom: '1px solid #000', minHeight: '18px' }}></div>
+            <div style={{ fontSize: '9px', color: '#555' }}>Firm's Federal Employer Identification Number</div>
+          </div>
+        </div>
+
+        <div style={{ marginTop: '10px', padding: '6px', background: '#f5f5f5', border: '1px solid #ccc', fontSize: '9px', lineHeight: 1.6 }}>
+          <strong>Due Date: November 2, 2026</strong><br />
+          Mail your completed application to:<br />
+          NJ Division of Taxation / Revenue Processing Center<br />
+          Property Tax Relief Application / PO Box 635 / Trenton, NJ 08646-0635
+        </div>
+      </div>
+
+      {/* Disclaimer note */}
+      <div style={{ marginTop: '10px', fontSize: '8px', color: '#666', textAlign: 'center', borderTop: '1px solid #ccc', paddingTop: '6px' }}>
+        ※ 이 문서는 입력하신 내용을 PAS-1 양식 형식으로 정리한 참고용입니다. 실제 제출 전에 공식 PAS-1 양식에 직접 옮겨 적거나, propertytaxrelief.nj.gov 에서 온라인으로 제출하세요.
       </div>
     </div>
   );
