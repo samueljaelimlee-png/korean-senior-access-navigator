@@ -43,12 +43,10 @@ const AuthenticatedApp = () => {
       <Route path="/register" element={<Register />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="/reset-password" element={<ResetPassword />} />
-      <Route element={<ProtectedRoute unauthenticatedElement={<Navigate to="/login" replace />} />}>
-        <Route path="/" element={<AppShell><Landing /></AppShell>} />
-        <Route path="/pas1" element={<AppShell><PAS1Page /></AppShell>} />
-        <Route path="/benefits" element={<AppShell><BenefitsPage /></AppShell>} />
-        <Route path="/will-guide" element={<AppShell><WillGuidePage /></AppShell>} />
-      </Route>
+      <Route path="/" element={<AppShell><Landing /></AppShell>} />
+      <Route path="/pas1" element={<AppShell><PAS1Page /></AppShell>} />
+      <Route path="/benefits" element={<AppShell><BenefitsPage /></AppShell>} />
+      <Route path="/will-guide" element={<AppShell><WillGuidePage /></AppShell>} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   );
