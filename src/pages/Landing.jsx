@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { FileText, Gift, ScrollText, ArrowRight, Calendar, Phone } from 'lucide-react';
+import { FileText, Gift, ScrollText, ArrowRight, Calendar, Phone, BookOpen } from 'lucide-react';
+import PAS1KoreanPreview from '@/components/PAS1KoreanPreview';
 
 const SECTIONS = [
   {
@@ -45,8 +46,10 @@ const SECTIONS = [
 ];
 
 export default function Landing() {
+  const [showPAS1Preview, setShowPAS1Preview] = useState(false);
   return (
     <div className="min-h-screen bg-background pb-20">
+      {showPAS1Preview && <PAS1KoreanPreview onClose={() => setShowPAS1Preview(false)} />}
       {/* Hero */}
       <div className="bg-gradient-to-br from-primary to-primary/80 text-primary-foreground px-4 py-10 text-center">
         <div className="max-w-2xl mx-auto">
@@ -98,12 +101,22 @@ export default function Landing() {
                 ))}
               </div>
 
-              <Link
-                to={sec.path}
-                className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold text-white transition-all ${sec.btnColor}`}
-              >
-                바로 가기 <ArrowRight className="w-4 h-4" />
-              </Link>
+              <div className="flex flex-wrap items-center gap-3">
+                <Link
+                  to={sec.path}
+                  className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold text-white transition-all ${sec.btnColor}`}
+                >
+                  바로 가기 <ArrowRight className="w-4 h-4" />
+                </Link>
+                {sec.path === '/pas1' && (
+                  <button
+                    onClick={() => setShowPAS1Preview(true)}
+                    className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold border border-blue-300 text-blue-700 bg-blue-50 hover:bg-blue-100 transition-all"
+                  >
+                    <BookOpen className="w-4 h-4" /> 한글 번역 보기
+                  </button>
+                )}
+              </div>
             </div>
           </div>
         ))}
