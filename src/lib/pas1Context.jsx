@@ -10,9 +10,14 @@ const defaultState = {
   // Step 2 - Filing
   filingStatus: 'D', ssdi: false, rrd: false,
   // Step 3 - Residency
-  homeType: 'own', oct1Nj: true, same2025: true, since2022: true, 
-  sameAsLast: true, moved2023: false, coOwn: false, coPct: '',
+  homeType: 'own', oct1Nj: true, same2025: true, born1960: false, movedWithin2025: false,
+  since2022: true, sameAsLast: true, moved2023: false, coOwn: false, coPct: '',
   multiUnit: false, multiUnitPct: '',
+  // Schedule 1 (only when 6a=No, 6b=Yes, 6c=Yes)
+  sched1: {
+    home1: { address: '', blockLot: '', dates: '', shared: false, sharePct: '', multiUnit: false, multiUnitPct: '', taxes: '', pilot: '' },
+    home2: { address: '', blockLot: '', dates: '', shared: false, sharePct: '', multiUnit: false, multiUnitPct: '', taxes: '', pilot: '' },
+  },
   // Step 4 - Property Tax
   block: '', lot: '', qualifier: '', tax2024: '', tax2025: '',
   additionalLots: false, pilot: false, pilotAmount: '',
@@ -47,13 +52,44 @@ export function PAS1Provider({ children }) {
     setFormData(prev => ({ ...prev, step }));
   };
 
+  // Determine if user should skip Steps 4+5 (property tax & income) and go straight to signature
+  // "Skip to Signature section" applies when:
+  //   - homeType is 'rent' (renters skip everything after Step 3)
+  //   - homeType is 'mobile' AND 6a=No
+  //   - homeType is 'own' AND 6a=No AND 6b=No (not born 1960 or earlier)
+  //   - homeType is 'own' AND 6a=No AND 6b=Yes AND 6c=No (didn't move within NJ)
+  const shouldSkipToSignature = (data) => {
+    if (data.homeType === 'rent') return true;
+    if (data.same2025) return false; // 6a=Yes → normal flow
+    if (data.homeType === 'mobile') return true; // 6a=No, mobile → skip
+    if (data.homeType === 'own') {
+      if (!data.born1960) return true; // 6b=No → skip
+      if (!data.movedWithin2025) return true; // 6b=Yes, 6c=No → skip
+    }
+    return false;
+  };
+
   const nextStep = () => {
-    setFormData(prev => ({ ...prev, step: Math.min(prev.step + 1, 7) }));
+    setFormData(prev => {
+      let nextStepNum = prev.step + 1;
+      // After Step 3 (residency), check if we should skip to Step 6 (signature)
+      if (prev.step === 3 && shouldSkipToSignature(prev)) {
+        nextStepNum = 6;
+      }
+      return { ...prev, step: Math.min(nextStepNum, 7) };
+    });
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const prevStep = () => {
-    setFormData(prev => ({ ...prev, step: Math.max(prev.step - 1, 0) }));
+    setFormData(prev => {
+      let prevStepNum = prev.step - 1;
+      // When going back from Step 6, check if we skipped 4+5
+      if (prev.step === 6 && shouldSkipToSignature(prev)) {
+        prevStepNum = 3;
+      }
+      return { ...prev, step: Math.max(prevStepNum, 0) };
+    });
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 

@@ -402,39 +402,46 @@ export default function PrintForm({ data }) {
       ══════════════════════════════════════ */}
       <PageHeader page={4} name={fullName} ssn={data.ssnLast4} />
 
-      {/* Schedule 1 (blank — not applicable for most) */}
+      {/* Schedule 1 */}
       <div style={s.h2}>Schedule 1</div>
       <div style={{ fontSize: '9px', marginBottom: '8px' }}>
         <strong>ONLY</strong> complete this schedule if you moved from one main home you <strong>owned</strong> to another main home you <strong>owned</strong> during 2025. Otherwise, leave this schedule blank.
       </div>
-      <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '10px', marginBottom: '10px' }}>
-        <thead>
-          <tr>
-            <th style={{ width: '40%' }}></th>
-            <th style={{ textAlign: 'center', padding: '3px', border: '1px solid #000', fontWeight: '700' }}>Main Home 1</th>
-            <th style={{ textAlign: 'center', padding: '3px', border: '1px solid #000', fontWeight: '700' }}>Main Home 2</th>
-          </tr>
-        </thead>
-        <tbody>
-          {[
-            '1. Address',
-            '2. Block/lot/qualifier number',
-            '3. Dates you lived in the property in 2025',
-            '4. Did you share ownership?',
-            '5. Share percentage owned',
-            '6. Did the property consist of multiple units?',
-            '7. Share percentage used as main home',
-            '8. Total property taxes billed',
-            '9. P.I.L.O.T. due',
-          ].map((label, i) => (
-            <tr key={i}>
-              <td style={{ padding: '4px', border: '1px solid #ccc', fontSize: '9px' }}>{label}</td>
-              <td style={{ padding: '4px', border: '1px solid #ccc', minHeight: '20px', height: '22px' }}></td>
-              <td style={{ padding: '4px', border: '1px solid #ccc', minHeight: '20px', height: '22px' }}></td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      {(() => {
+        const h1 = data.sched1?.home1 || {};
+        const h2 = data.sched1?.home2 || {};
+        const rows = [
+          { label: '1. Address', v1: h1.address, v2: h2.address },
+          { label: '2. Block/lot/qualifier number', v1: h1.blockLot, v2: h2.blockLot },
+          { label: '3. Dates you lived in the property in 2025', v1: h1.dates, v2: h2.dates },
+          { label: '4. Did you share ownership?', v1: h1.shared ? 'Yes' : 'No', v2: h2.shared ? 'Yes' : 'No' },
+          { label: '5. Share percentage owned', v1: h1.shared ? (h1.sharePct + '%') : '', v2: h2.shared ? (h2.sharePct + '%') : '' },
+          { label: '6. Did the property consist of multiple units?', v1: h1.multiUnit ? 'Yes' : 'No', v2: h2.multiUnit ? 'Yes' : 'No' },
+          { label: '7. Share percentage used as main home', v1: h1.multiUnit ? (h1.multiUnitPct + '%') : '', v2: h2.multiUnit ? (h2.multiUnitPct + '%') : '' },
+          { label: '8. Total property taxes billed', v1: h1.taxes ? ('$' + parseFloat(h1.taxes).toLocaleString('en-US',{minimumFractionDigits:2})) : '', v2: h2.taxes ? ('$' + parseFloat(h2.taxes).toLocaleString('en-US',{minimumFractionDigits:2})) : '' },
+          { label: '9. P.I.L.O.T. due', v1: h1.pilot || '', v2: h2.pilot || '' },
+        ];
+        return (
+          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '10px', marginBottom: '10px' }}>
+            <thead>
+              <tr>
+                <th style={{ width: '40%' }}></th>
+                <th style={{ textAlign: 'center', padding: '3px', border: '1px solid #000', fontWeight: '700' }}>Main Home 1</th>
+                <th style={{ textAlign: 'center', padding: '3px', border: '1px solid #000', fontWeight: '700' }}>Main Home 2</th>
+              </tr>
+            </thead>
+            <tbody>
+              {rows.map((row, i) => (
+                <tr key={i}>
+                  <td style={{ padding: '4px', border: '1px solid #ccc', fontSize: '9px' }}>{row.label}</td>
+                  <td style={{ padding: '4px', border: '1px solid #ccc', fontSize: '10px', minHeight: '20px', height: '22px' }}>{row.v1}</td>
+                  <td style={{ padding: '4px', border: '1px solid #ccc', fontSize: '10px', minHeight: '20px', height: '22px' }}>{row.v2}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        );
+      })()}
 
       <div style={{ fontWeight: '700', fontSize: '11px', marginBottom: '12px' }}>Continue to PAS-1, line 10 on page 2.</div>
 
