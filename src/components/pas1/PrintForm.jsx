@@ -200,16 +200,34 @@ export default function PrintForm({ data }) {
           <CheckBox checked={data.homeType === 'rent'} /> Renter – SKIP TO Signature section
         </div>
         <div style={s.row}>
-          <span style={s.label}><span style={s.lineNum}>6a.</span> Did you own and live in the same main home in New Jersey from <strong>January 1, 2025, through December 31, 2025</strong>?</span>
+          <span style={s.label}>
+            <span style={s.lineNum}>6a.</span> Did you own and live in the same main home in New Jersey from <strong>January 1, 2025, through December 31, 2025</strong>? (See instructions)
+            <span style={{ fontSize: '8px', color: '#555', display: 'block', marginTop: '2px' }}>
+              If "Yes," go to line 7. &nbsp;|&nbsp; If "No" and you were a homeowner, go to line 6b. &nbsp;|&nbsp; If "No" and you were a mobile home owner, skip to the Signature section.
+            </span>
+          </span>
           <span><CheckBox checked={data.same2025} /> Yes &nbsp;<CheckBox checked={!data.same2025} /> No</span>
         </div>
-        <div style={s.row}>
-          <span style={s.label}><span style={s.lineNum}>6b.</span> Were you (or your spouse) born in 1960 or earlier?</span>
-          <span><CheckBox checked={parseInt(data.birthYear) <= 1960} /> Yes &nbsp;<CheckBox checked={parseInt(data.birthYear) > 1960} /> No</span>
+        {/* 6b and 6c are skipped when 6a = Yes */}
+        <div style={{ ...s.row, opacity: data.same2025 ? 0.35 : 1 }}>
+          <span style={s.label}>
+            <span style={s.lineNum}>6b.</span> Were you (or your spouse/CU partner) born in 1960 or earlier?
+            {data.same2025 && <span style={{ fontSize: '8px', color: '#b00', marginLeft: '6px' }}>(SKIP — 6a = Yes)</span>}
+          </span>
+          <span>
+            <CheckBox checked={!data.same2025 && parseInt(data.birthYear) <= 1960} /> Yes &nbsp;
+            <CheckBox checked={!data.same2025 && parseInt(data.birthYear) > 1960} /> No
+          </span>
         </div>
-        <div style={s.row}>
-          <span style={s.label}><span style={s.lineNum}>6c.</span> Did you move from one main home you <strong>owned</strong> in New Jersey to another main home you <strong>owned</strong> in New Jersey in 2025?</span>
-          <span><CheckBox checked={false} /> Yes &nbsp;<CheckBox checked={true} /> No</span>
+        <div style={{ ...s.row, opacity: data.same2025 ? 0.35 : 1 }}>
+          <span style={s.label}>
+            <span style={s.lineNum}>6c.</span> Did you move from one main home you <strong>owned</strong> in New Jersey to another main home you <strong>owned</strong> in New Jersey in 2025?
+            {data.same2025 && <span style={{ fontSize: '8px', color: '#b00', marginLeft: '6px' }}>(SKIP — 6a = Yes)</span>}
+          </span>
+          <span>
+            <CheckBox checked={!data.same2025 && data.movedWithin2025} /> Yes &nbsp;
+            <CheckBox checked={!data.same2025 && !data.movedWithin2025} /> No
+          </span>
         </div>
         <div style={s.row}>
           <span style={s.label}><span style={s.lineNum}>7.</span> Are you filing this application for the same home as last year's property tax relief benefits?</span>

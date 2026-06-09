@@ -10,13 +10,8 @@ import NavButtons from './NavButtons';
 export default function Step3Residency() {
   const { formData, updateField } = usePAS1();
 
-  const checkItems = [
+  const baseCheckItems = [
     { key: 'oct1Nj', label: 'Line 4 — 2025년 10월 1일 NJ 거주' },
-    { key: 'same2025', label: 'Line 6a — 2025년 내내 같은 집 거주' },
-    { key: 'since2022', label: 'Line 8 — 2022년 12월 31일 이전부터 거주 (Senior Freeze 핵심 조건)' },
-    { key: 'sameAsLast', label: 'Line 7 — 작년 재산세 감면과 같은 주택' },
-    { key: 'coOwn', label: 'Line 11a — 배우자 외 공동소유' },
-    { key: 'multiUnit', label: 'Line 12a — 다세대 주택 (multi-unit property)' },
   ];
 
   return (
@@ -45,15 +40,63 @@ export default function Step3Residency() {
       )}
 
       <div className="space-y-3 mb-4">
-        {checkItems.map(c => (
+        {/* Line 4 */}
+        {baseCheckItems.map(c => (
           <div key={c.key} className="flex items-center gap-2">
-            <Checkbox
-              checked={formData[c.key]}
-              onCheckedChange={v => updateField(c.key, v)}
-            />
+            <Checkbox checked={formData[c.key]} onCheckedChange={v => updateField(c.key, v)} />
             <Label className="text-sm cursor-pointer">{c.label}</Label>
           </div>
         ))}
+
+        {/* Line 6a — 핵심 분기 질문 */}
+        <div className="border border-blue-200 rounded-lg p-3 bg-blue-50 space-y-2">
+          <p className="text-xs font-bold text-blue-800">Line 6a — 2025년 1월 1일~12월 31일 동안 같은 NJ 주택에 거주하고 소유하셨나요?</p>
+          <p className="text-[11px] text-blue-700 leading-relaxed">
+            ✅ Yes → Line 7로 바로 이동 (6b, 6c 건너뜀)<br />
+            ❌ No (주택 소유자) → 6b, 6c 작성 필요<br />
+            ❌ No (모바일홈 소유자) → 서명 섹션으로 바로 이동
+          </p>
+          <div className="flex items-center gap-2">
+            <Checkbox
+              checked={formData.same2025 === true}
+              onCheckedChange={v => updateField('same2025', v ? true : false)}
+            />
+            <Label className="text-sm cursor-pointer font-medium">Yes — 2025년 내내 같은 집 거주 및 소유</Label>
+          </div>
+        </div>
+
+        {/* Line 6b, 6c — 6a가 No일 때만 표시 */}
+        {formData.same2025 !== true && formData.homeType === 'own' && (
+          <div className="border border-amber-200 rounded-lg p-3 bg-amber-50 space-y-2">
+            <p className="text-xs font-bold text-amber-800">6a = No 해당 — 아래 추가 질문에 답하세요</p>
+            <div className="flex items-center gap-2">
+              <Checkbox checked={formData.born1960} onCheckedChange={v => updateField('born1960', v)} />
+              <Label className="text-sm cursor-pointer">Line 6b — 본인 또는 배우자가 1960년생 이하</Label>
+            </div>
+            <div className="flex items-center gap-2">
+              <Checkbox checked={formData.movedWithin2025} onCheckedChange={v => updateField('movedWithin2025', v)} />
+              <Label className="text-sm cursor-pointer">Line 6c — 2025년에 NJ 내 소유 주택에서 다른 소유 주택으로 이사</Label>
+            </div>
+          </div>
+        )}
+
+        {/* Line 7, 8, 11a, 12a */}
+        <div className="flex items-center gap-2">
+          <Checkbox checked={formData.sameAsLast} onCheckedChange={v => updateField('sameAsLast', v)} />
+          <Label className="text-sm cursor-pointer">Line 7 — 작년 재산세 감면과 같은 주택</Label>
+        </div>
+        <div className="flex items-center gap-2">
+          <Checkbox checked={formData.since2022} onCheckedChange={v => updateField('since2022', v)} />
+          <Label className="text-sm cursor-pointer">Line 8 — 2022년 12월 31일 이전부터 거주 (Senior Freeze 핵심 조건)</Label>
+        </div>
+        <div className="flex items-center gap-2">
+          <Checkbox checked={formData.coOwn} onCheckedChange={v => updateField('coOwn', v)} />
+          <Label className="text-sm cursor-pointer">Line 11a — 배우자 외 공동소유</Label>
+        </div>
+        <div className="flex items-center gap-2">
+          <Checkbox checked={formData.multiUnit} onCheckedChange={v => updateField('multiUnit', v)} />
+          <Label className="text-sm cursor-pointer">Line 12a — 다세대 주택 (multi-unit property)</Label>
+        </div>
       </div>
 
       {formData.coOwn && (
