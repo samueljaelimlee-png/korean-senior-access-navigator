@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { FileText, Gift, ScrollText, ArrowRight, Calendar, Phone, BookOpen } from 'lucide-react';
+import { Gift, ScrollText, ArrowRight, Phone, BookOpen, FileText } from 'lucide-react';
 import PAS1KoreanPreview from '@/components/PAS1KoreanPreview';
+import PAS1PrepDocs from '@/components/PAS1PrepDocs';
 
 const SECTIONS = [
   {
@@ -47,9 +48,11 @@ const SECTIONS = [
 
 export default function Landing() {
   const [showPAS1Preview, setShowPAS1Preview] = useState(false);
+  const [showPAS1Prep, setShowPAS1Prep] = useState(false);
   return (
     <div className="min-h-screen bg-background pb-20">
       {showPAS1Preview && <PAS1KoreanPreview onClose={() => setShowPAS1Preview(false)} />}
+      {showPAS1Prep && <PAS1PrepDocs onClose={() => setShowPAS1Prep(false)} />}
       {/* Hero */}
       <div className="bg-gradient-to-br from-primary to-primary/80 text-primary-foreground px-4 py-10 text-center">
         <div className="max-w-2xl mx-auto">
@@ -109,12 +112,20 @@ export default function Landing() {
                   바로 가기 <ArrowRight className="w-4 h-4" />
                 </Link>
                 {sec.path === '/pas1' && (
-                  <button
-                    onClick={() => setShowPAS1Preview(true)}
-                    className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold border border-blue-300 text-blue-700 bg-blue-50 hover:bg-blue-100 transition-all"
-                  >
-                    <BookOpen className="w-4 h-4" /> 한글 번역 보기
-                  </button>
+                  <>
+                    <button
+                      onClick={() => setShowPAS1Prep(true)}
+                      className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold border border-amber-300 text-amber-700 bg-amber-50 hover:bg-amber-100 transition-all"
+                    >
+                      <FileText className="w-4 h-4" /> 준비 서류 확인
+                    </button>
+                    <button
+                      onClick={() => setShowPAS1Preview(true)}
+                      className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold border border-blue-300 text-blue-700 bg-blue-50 hover:bg-blue-100 transition-all"
+                    >
+                      <BookOpen className="w-4 h-4" /> PAS-1폼 한글번역보기
+                    </button>
+                  </>
                 )}
               </div>
             </div>
