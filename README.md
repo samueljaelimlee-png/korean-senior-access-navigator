@@ -152,7 +152,7 @@ Open `http://localhost:5173` in your browser.
 
 ## 👤 Developer
 
-**Samuel Jae-rim Lee**
+**Samuel Lee**
 - 11th Grade, Academies at Englewood / Dwight Morrow High School
 - Englewood, New Jersey
 - GitHub: [@samueljaelimlee-png](https://github.com/samueljaelimlee-png)
