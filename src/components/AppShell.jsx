@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { FileText, Gift, ScrollText, Home } from 'lucide-react';
+import { base44 } from '@/api/base44Client';
 
 const NAV = [
   { path: '/', label: '홈', icon: Home },
@@ -11,6 +12,18 @@ const NAV = [
 
 export default function AppShell({ children }) {
   const { pathname } = useLocation();
+
+  useEffect(() => {
+    let sessionId = localStorage.getItem('ksan_session_id');
+    if (!sessionId) {
+      sessionId = crypto.randomUUID();
+      localStorage.setItem('ksan_session_id', sessionId);
+    }
+    if (!sessionStorage.getItem('ksan_visit_tracked')) {
+      sessionStorage.setItem('ksan_visit_tracked', '1');
+      base44.functions.invoke('trackActivity', { type: 'visit', session_id: sessionId, page: pathname }).catch(() => {});
+    }
+  }, []);
 
   return (
     <div className="min-h-screen bg-background flex flex-col">

@@ -1,0 +1,15 @@
+{
+  "name": "Visit",
+  "type": "object",
+  "properties": {
+    "session_id": {
+      "type": "string"
+    },
+    "page": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "session_id"
+  ]
+}

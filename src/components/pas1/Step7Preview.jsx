@@ -1,5 +1,6 @@
 import React, { useRef } from 'react';
 import { usePAS1 } from '@/lib/pas1Context';
+import { base44 } from '@/api/base44Client';
 import { getEligiblePrograms, incomeTotal, formatMoney } from '@/lib/pas1Data';
 import { Button } from '@/components/ui/button';
 import { Eye, Printer, ArrowLeft, CheckCircle } from 'lucide-react';
@@ -35,7 +36,15 @@ export default function Step7Preview() {
     ['서명 날짜', formData.sigDate || '—'],
   ];
 
-  const handlePrint = () => {
+  const handlePrint = async () => {
+    try {
+      let sessionId = localStorage.getItem('ksan_session_id');
+      if (!sessionId) {
+        sessionId = crypto.randomUUID();
+        localStorage.setItem('ksan_session_id', sessionId);
+      }
+      await base44.functions.invoke('trackActivity', { type: 'completion', session_id: sessionId });
+    } catch (e) {}
     window.print();
   };
 
