@@ -66,7 +66,7 @@ const PageHeader = ({ page, name, ssn }) => (
   </div>
 );
 
-export default function PrintFormKorean({ data }) {
+export default function PrintFormKorean({ data, printOnly = true }) {
   const t24 = parseFloat(data.tax2024) || 0;
   const t25 = parseFloat(data.tax2025) || 0;
   const inc24 = data.inc?.[2024] || {};
@@ -79,7 +79,7 @@ export default function PrintFormKorean({ data }) {
   const fs = data.filingStatus;
 
   return (
-    <div className="print-only" style={s.page}>
+    <div className={printOnly ? 'print-only' : ''} style={s.page}>
 
       {/* ══════════════════════════════════════
           PAGE 1
