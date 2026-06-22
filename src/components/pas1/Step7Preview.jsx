@@ -1,14 +1,22 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { usePAS1 } from '@/lib/pas1Context';
 import { base44 } from '@/api/base44Client';
 import { getEligiblePrograms, incomeTotal, formatMoney } from '@/lib/pas1Data';
 import { Button } from '@/components/ui/button';
-import { Eye, Printer, ArrowLeft, CheckCircle } from 'lucide-react';
+import { Eye, Printer, ArrowLeft, CheckCircle, Languages } from 'lucide-react';
 import PrintForm from './PrintForm';
+import PrintFormKorean from './PrintFormKorean';
 
 export default function Step7Preview() {
   const { formData, prevStep } = usePAS1();
   const printRef = useRef();
+  const [printLang, setPrintLang] = useState(null);
+
+  useEffect(() => {
+    if (printLang) {
+      window.print();
+    }
+  }, [printLang]);
 
   const progs = getEligiblePrograms(formData);
   const t24 = parseFloat(formData.tax2024) || 0;
@@ -36,7 +44,7 @@ export default function Step7Preview() {
     ['서명 날짜', formData.sigDate || '—'],
   ];
 
-  const handlePrint = async () => {
+  const handlePrint = async (lang) => {
     try {
       let sessionId = localStorage.getItem('ksan_session_id');
       if (!sessionId) {
@@ -45,7 +53,7 @@ export default function Step7Preview() {
       }
       await base44.functions.invoke('trackActivity', { type: 'completion', session_id: sessionId });
     } catch (e) {}
-    window.print();
+    setPrintLang(lang);
   };
 
   return (
@@ -78,8 +86,11 @@ export default function Step7Preview() {
       </div>
 
       <div className="no-print flex flex-col gap-3">
-        <Button onClick={handlePrint} className="w-full py-6 text-lg font-bold gap-3 bg-accent hover:bg-accent/90">
-          <Printer className="w-5 h-5" /> PAS-1 양식 인쇄 / PDF 저장
+        <Button onClick={() => handlePrint('en')} className="w-full py-6 text-lg font-bold gap-3 bg-accent hover:bg-accent/90">
+          <Printer className="w-5 h-5" /> PAS-1 양식 인쇄 / PDF 저장 (영문)
+        </Button>
+        <Button onClick={() => handlePrint('ko')} variant="outline" className="w-full py-6 text-lg font-bold gap-3 border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground">
+          <Languages className="w-5 h-5" /> PAS-1 양식 인쇄 / PDF 저장 (한글 번역)
         </Button>
         <p className="text-xs text-center text-muted-foreground">
           브라우저 인쇄 메뉴에서 &quot;PDF로 저장&quot;을 선택하시면 PDF 파일로 저장됩니다.
@@ -100,7 +111,7 @@ export default function Step7Preview() {
 
       {/* Print-only form */}
       <div ref={printRef}>
-        <PrintForm data={formData} />
+        {printLang === 'ko' ? <PrintFormKorean data={formData} /> : <PrintForm data={formData} />}
       </div>
     </div>
   );
