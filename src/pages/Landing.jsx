@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Gift, ScrollText, ArrowRight, Phone, BookOpen, FileText } from 'lucide-react';
 import PAS1KoreanPreview from '@/components/PAS1KoreanPreview';
 import PAS1PrepDocs from '@/components/PAS1PrepDocs';
+import PAS1KoreanFormView from '@/components/pas1/PAS1KoreanFormView';
 
 const SECTIONS = [
   {
@@ -49,10 +50,12 @@ const SECTIONS = [
 export default function Landing() {
   const [showPAS1Preview, setShowPAS1Preview] = useState(false);
   const [showPAS1Prep, setShowPAS1Prep] = useState(false);
+  const [showPAS1FormView, setShowPAS1FormView] = useState(false);
   return (
     <div className="min-h-screen bg-background pb-20">
       {showPAS1Preview && <PAS1KoreanPreview onClose={() => setShowPAS1Preview(false)} />}
       {showPAS1Prep && <PAS1PrepDocs onClose={() => setShowPAS1Prep(false)} />}
+      {showPAS1FormView && <PAS1KoreanFormView onClose={() => setShowPAS1FormView(false)} />}
       {/* Hero */}
       <div className="bg-gradient-to-br from-primary to-primary/80 text-primary-foreground px-4 py-10 text-center">
         <div className="max-w-2xl mx-auto">
@@ -124,6 +127,12 @@ export default function Landing() {
                       className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold border border-blue-300 text-blue-700 bg-blue-50 hover:bg-blue-100 transition-all"
                     >
                       <BookOpen className="w-4 h-4" /> PAS-1폼 한글번역보기
+                    </button>
+                    <button
+                      onClick={() => setShowPAS1FormView(true)}
+                      className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold border border-green-300 text-green-700 bg-green-50 hover:bg-green-100 transition-all"
+                    >
+                      <FileText className="w-4 h-4" /> 한국어 양식 보기
                     </button>
                   </>
                 )}
