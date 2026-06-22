@@ -11,10 +11,7 @@ Deno.serve(async (req) => {
     }
 
     if (type === 'visit') {
-      const existing = await base44.asServiceRole.entities.Visit.filter({ session_id });
-      if (existing.length === 0) {
-        await base44.asServiceRole.entities.Visit.create({ session_id, page: page || '/' });
-      }
+      await base44.asServiceRole.entities.Visit.create({ session_id, page: page || '/' });
       return Response.json({ status: 'ok' });
     }
 
