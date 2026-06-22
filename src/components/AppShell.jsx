@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { FileText, Gift, ScrollText, Home } from 'lucide-react';
+import { FileText, Gift, ScrollText, Home, Lock } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 
 const NAV = [
@@ -53,6 +53,15 @@ export default function AppShell({ children }) {
               </Link>
             ))}
           </nav>
+          {/* Admin link */}
+          <Link
+            to="/admin"
+            className="flex items-center gap-1 text-[10px] text-primary-foreground/40 hover:text-primary-foreground/80 transition-colors ml-2 flex-shrink-0"
+            title="관리자"
+          >
+            <Lock className="w-3 h-3" />
+            <span className="hidden sm:inline">관리자</span>
+          </Link>
         </div>
       </header>
 
