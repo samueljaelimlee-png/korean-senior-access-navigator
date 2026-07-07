@@ -29,14 +29,14 @@ export default function ProgressBar() {
                 className="flex flex-col items-center min-w-0 flex-1 cursor-pointer"
                 onClick={() => { if (i <= current + 1) setStep(i); }}
               >
-                <div className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold transition-all
+                <div className={`w-6 h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center text-[10px] sm:text-xs font-bold transition-all
                   ${isDone ? 'bg-accent text-accent-foreground' : ''}
                   ${isActive ? 'bg-primary text-primary-foreground shadow-md ring-2 ring-primary/30' : ''}
                   ${!isDone && !isActive ? 'bg-card border-2 border-border text-muted-foreground' : ''}
                 `}>
-                  {isDone ? <Check className="w-3.5 h-3.5" /> : i}
+                  {isDone ? <Check className="w-3 sm:w-3.5 h-3 sm:h-3.5" /> : i}
                 </div>
-                <span className={`text-[10px] mt-1 text-center truncate max-w-[56px]
+                <span className={`text-[9px] sm:text-[10px] mt-1 text-center truncate max-w-[44px] sm:max-w-[56px]
                   ${isDone ? 'text-accent font-medium' : ''}
                   ${isActive ? 'text-primary font-semibold' : ''}
                   ${!isDone && !isActive ? 'text-muted-foreground' : ''}

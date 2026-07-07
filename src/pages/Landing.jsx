@@ -116,10 +116,10 @@ export default function Landing() {
                 ))}
               </div>
 
-              <div className="flex flex-wrap items-center gap-3">
+              <div className="flex flex-wrap items-center gap-2 sm:gap-3">
                 <Link
                   to={sec.path}
-                  className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold text-white transition-all ${sec.btnColor}`}
+                  className={`inline-flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-xl text-sm font-bold text-white transition-all ${sec.btnColor}`}
                 >
                   바로 가기 <ArrowRight className="w-4 h-4" />
                 </Link>

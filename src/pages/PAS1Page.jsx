@@ -29,12 +29,17 @@ export default function PAS1Page() {
         {showPreview && <PAS1KoreanPreview onClose={() => setShowPreview(false)} />}
         {showFormView && <PAS1KoreanFormView onClose={() => setShowFormView(false)} />}
         {/* Sub-header */}
-        <div className="no-print bg-blue-700 text-white px-4 py-2 flex items-center justify-between gap-2">
-          <div>
-            <div className="text-sm font-bold">🏠 PAS-1 재산세 감면 신청 도우미</div>
-            <div className="text-[10px] text-white/70">Senior Freeze · ANCHOR · Stay NJ</div>
+        <div className="no-print bg-blue-700 text-white px-4 py-2 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+          <div className="flex items-center justify-between gap-2">
+            <div>
+              <div className="text-sm font-bold">🏠 PAS-1 재산세 감면 신청 도우미</div>
+              <div className="text-[10px] text-white/70">Senior Freeze · ANCHOR · Stay NJ</div>
+            </div>
+            <div className="flex items-center gap-1 text-xs font-semibold bg-red-600 px-2.5 py-1 rounded-full flex-shrink-0">
+              <Calendar className="w-3 h-3" /> Nov 2
+            </div>
           </div>
-          <div className="flex items-center gap-2 flex-shrink-0">
+          <div className="flex flex-wrap items-center gap-2">
             <button
               onClick={() => setShowPreview(true)}
               className="flex items-center gap-1.5 text-xs font-bold bg-yellow-400 text-yellow-900 px-3 py-1.5 rounded-full hover:bg-yellow-300 transition-colors shadow"
@@ -47,23 +52,20 @@ export default function PAS1Page() {
             >
               <FileText className="w-3.5 h-3.5" /> 한국어 양식 보기
             </button>
-            <div className="flex items-center gap-1 text-xs font-semibold bg-red-600 px-2.5 py-1 rounded-full">
-              <Calendar className="w-3 h-3" /> 마감 Nov 2, 2026
-            </div>
           </div>
         </div>
         <ProgressBar />
         {/* Korean preview sticky banner */}
-        <div className="no-print bg-yellow-50 border-b border-yellow-200 px-4 py-2 flex items-center justify-between gap-3">
+        <div className="no-print bg-yellow-50 border-b border-yellow-200 px-4 py-2 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
           <p className="text-xs text-yellow-800 leading-relaxed">
             📖 영문 질문 내용이 어려우신가요? <strong>한글 번역</strong>을 옆에 띄워두고 함께 작성하세요.
           </p>
-          <div className="flex-shrink-0 flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-shrink-0">
             <button
               onClick={() => setShowPreview(true)}
               className="flex items-center gap-1.5 text-xs font-bold bg-yellow-400 text-yellow-900 px-3 py-1.5 rounded-full hover:bg-yellow-300 transition-colors"
             >
-              <BookOpen className="w-3.5 h-3.5" /> 한글번역보기
+              <BookOpen className="w-3.5 h-3.5" /> 한글번역
             </button>
             <button
               onClick={() => setShowFormView(true)}

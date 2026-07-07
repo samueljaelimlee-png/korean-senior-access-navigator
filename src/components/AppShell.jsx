@@ -30,11 +30,11 @@ export default function AppShell({ children }) {
       {/* Top Header */}
       <header className="no-print bg-primary text-primary-foreground px-4 py-2 sticky top-0 z-50 shadow-lg">
         <div className="max-w-4xl mx-auto flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-2">
-            <span className="text-xl">🌿</span>
-            <div>
-              <div className="text-sm font-bold leading-tight">Korean Senior Access Navigator</div>
-              <div className="text-[10px] text-primary-foreground/60 leading-tight">한인 시니어 복지 길라잡이</div>
+          <Link to="/" className="flex items-center gap-2 min-w-0">
+            <span className="text-xl flex-shrink-0">🌿</span>
+            <div className="min-w-0">
+              <div className="text-xs sm:text-sm font-bold leading-tight truncate">Korean Senior Access Navigator</div>
+              <div className="text-[9px] sm:text-[10px] text-primary-foreground/60 leading-tight">한인 시니어 복지 길라잡이</div>
             </div>
           </Link>
           {/* Desktop nav */}
