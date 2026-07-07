@@ -4,6 +4,7 @@ import { Gift, ScrollText, ArrowRight, Phone, BookOpen, FileText } from 'lucide-
 import PAS1KoreanPreview from '@/components/PAS1KoreanPreview';
 import PAS1PrepDocs from '@/components/PAS1PrepDocs';
 import PAS1KoreanFormView from '@/components/pas1/PAS1KoreanFormView';
+import FirstTimeGuide from '@/components/FirstTimeGuide';
 
 const SECTIONS = [
   {
@@ -51,8 +52,10 @@ export default function Landing() {
   const [showPAS1Preview, setShowPAS1Preview] = useState(false);
   const [showPAS1Prep, setShowPAS1Prep] = useState(false);
   const [showPAS1FormView, setShowPAS1FormView] = useState(false);
+  const [showGuide, setShowGuide] = useState(false);
   return (
     <div className="min-h-screen bg-background pb-20">
+      {showGuide && <FirstTimeGuide onClose={() => setShowGuide(false)} />}
       {showPAS1Preview && <PAS1KoreanPreview onClose={() => setShowPAS1Preview(false)} />}
       {showPAS1Prep && <PAS1PrepDocs onClose={() => setShowPAS1Prep(false)} />}
       {showPAS1FormView && <PAS1KoreanFormView onClose={() => setShowPAS1FormView(false)} />}
@@ -69,6 +72,12 @@ export default function Landing() {
           <p className="text-primary-foreground/60 text-xs sm:text-sm">
             뉴저지 거주 시니어 여러분께 꼭 필요한 정보를 한국어로 제공합니다
           </p>
+          <button
+            onClick={() => setShowGuide(true)}
+            className="mt-4 inline-flex items-center gap-2 px-5 py-3 bg-white text-primary rounded-full text-base font-bold hover:bg-primary-foreground/90 transition-colors shadow-lg"
+          >
+            <BookOpen className="w-5 h-5" /> 처음 오신 분 이용 가이드
+          </button>
         </div>
       </div>
 
