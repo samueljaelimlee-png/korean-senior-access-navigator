@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { base44 } from '@/api/base44Client';
-import { Users, CalendarDays, FileCheck2, CalendarCheck, RefreshCw, Lock, ArrowLeft, MessageSquare } from 'lucide-react';
+import { Users, CalendarDays, FileCheck2, CalendarCheck, RefreshCw, Lock, ArrowLeft, MessageSquare, Download } from 'lucide-react';
 import DownloadStructure from '@/components/DownloadStructure';
 
 export default function AdminPage() {
@@ -47,6 +47,31 @@ export default function AdminPage() {
     fetchStats();
     fetchInquiries();
   }, []);
+
+  const exportCSV = () => {
+    if (!inquiries.length) return;
+    const headers = ['접수일', '이름', '연락처', '문의유형', '내용'];
+    const escape = (v) => {
+      const s = String(v ?? '');
+      return s.includes(',') || s.includes('\n') || s.includes('"') ? `"${s.replace(/"/g, '""')}"` : s;
+    };
+    const toTypeStr = (t) => Array.isArray(t) ? t.join(' / ') : (t || '');
+    const rows = inquiries.map((inq) => [
+      new Date(inq.created_date).toLocaleString('ko-KR'),
+      escape(inq.name),
+      escape(inq.contact),
+      escape(toTypeStr(inq.inquiry_type)),
+      escape(inq.message),
+    ]);
+    const csv = '\uFEFF' + [headers.map(escape).join(','), ...rows.map(r => r.join(','))].join('\n');
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `문의내역_${new Date().toISOString().slice(0, 10)}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
 
   if (error) {
     return (
@@ -135,15 +160,24 @@ export default function AdminPage() {
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2">
               <MessageSquare className="w-4 h-4 text-primary" />
-              <h3 className="text-sm font-bold text-foreground">문의 내역</h3>
+              <h3 className="text-sm font-bold text-foreground">문의 내역 ({inquiries.length})</h3>
             </div>
-            <button
-              onClick={fetchInquiries}
-              disabled={inquiryLoading}
-              className="flex items-center gap-1 text-xs font-semibold text-primary hover:underline disabled:opacity-50"
-            >
-              <RefreshCw className={`w-3.5 h-3.5 ${inquiryLoading ? 'animate-spin' : ''}`} /> 새로고침
-            </button>
+            <div className="flex items-center gap-3">
+              <button
+                onClick={exportCSV}
+                disabled={!inquiries.length}
+                className="flex items-center gap-1 text-xs font-semibold text-green-700 hover:underline disabled:opacity-40"
+              >
+                <Download className="w-3.5 h-3.5" /> 엑셀 다운로드
+              </button>
+              <button
+                onClick={fetchInquiries}
+                disabled={inquiryLoading}
+                className="flex items-center gap-1 text-xs font-semibold text-primary hover:underline disabled:opacity-50"
+              >
+                <RefreshCw className={`w-3.5 h-3.5 ${inquiryLoading ? 'animate-spin' : ''}`} /> 새로고침
+              </button>
+            </div>
           </div>
           {inquiryLoading && inquiries.length === 0 ? (
             <div className="flex items-center justify-center py-8">
@@ -156,9 +190,11 @@ export default function AdminPage() {
               {inquiries.map((inq) => (
                 <div key={inq.id} className="border border-border rounded-lg p-3">
                   <div className="flex items-center justify-between gap-2 mb-1.5 flex-wrap">
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2 flex-wrap">
                       <span className="text-sm font-bold text-foreground">{inq.name || '이름 없음'}</span>
-                      <span className="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-primary/10 text-primary">{inq.inquiry_type}</span>
+                      {(Array.isArray(inq.inquiry_type) ? inq.inquiry_type : [inq.inquiry_type]).filter(Boolean).map((t) => (
+                        <span key={t} className="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-primary/10 text-primary">{t}</span>
+                      ))}
                     </div>
                     <span className="text-[11px] text-muted-foreground">{new Date(inq.created_date).toLocaleString('ko-KR')}</span>
                   </div>
