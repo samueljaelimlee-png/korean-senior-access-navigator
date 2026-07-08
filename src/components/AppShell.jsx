@@ -56,11 +56,11 @@ export default function AppShell({ children }) {
           {/* Admin link */}
           <Link
             to="/admin"
-            className="flex items-center gap-1 text-[10px] text-primary-foreground/40 hover:text-primary-foreground/80 transition-colors ml-2 flex-shrink-0"
+            className="flex items-center justify-center w-9 h-9 sm:w-auto sm:h-auto -mr-2 sm:ml-2 flex-shrink-0 rounded-full sm:rounded-none hover:bg-white/10 transition-colors text-primary-foreground/40 hover:text-primary-foreground/80"
             title="관리자"
           >
-            <Lock className="w-3 h-3" />
-            <span className="hidden sm:inline">관리자</span>
+            <Lock className="w-4 h-4 sm:w-3 sm:h-3" />
+            <span className="hidden sm:inline ml-1 text-[10px]">관리자</span>
           </Link>
         </div>
       </header>
