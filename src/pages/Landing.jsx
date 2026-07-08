@@ -154,7 +154,7 @@ export default function Landing() {
         ))}
       </div>
 
-      {/* Footer info */}
+      {/* Footer info — contact inquiry button */}
       <div className="max-w-4xl mx-auto px-4 pb-4">
         <button
           onClick={() => setShowContact(true)}
