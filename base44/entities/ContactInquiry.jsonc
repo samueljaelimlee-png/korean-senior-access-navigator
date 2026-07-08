@@ -1,0 +1,30 @@
+{
+  "name": "ContactInquiry",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "contact": {
+      "type": "string"
+    },
+    "inquiry_type": {
+      "type": "string",
+      "enum": [
+        "PAS-1",
+        "ANCHOR",
+        "ID.me",
+        "\uc571 \uc0ac\uc6a9\ubc95"
+      ]
+    },
+    "message": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "name",
+    "contact",
+    "inquiry_type",
+    "message"
+  ]
+}

@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Gift, ScrollText, ArrowRight, Phone, BookOpen, FileText } from 'lucide-react';
+import { Gift, ScrollText, ArrowRight, Phone, BookOpen, FileText, MessageCircle } from 'lucide-react';
 import PAS1KoreanPreview from '@/components/PAS1KoreanPreview';
 import PAS1PrepDocs from '@/components/PAS1PrepDocs';
 import PAS1KoreanFormView from '@/components/pas1/PAS1KoreanFormView';
 import FirstTimeGuide from '@/components/FirstTimeGuide';
+import ContactForm from '@/components/ContactForm';
 
 const SECTIONS = [
   {
@@ -53,9 +54,11 @@ export default function Landing() {
   const [showPAS1Prep, setShowPAS1Prep] = useState(false);
   const [showPAS1FormView, setShowPAS1FormView] = useState(false);
   const [showGuide, setShowGuide] = useState(false);
+  const [showContact, setShowContact] = useState(false);
   return (
     <div className="min-h-screen bg-background pb-20">
       {showGuide && <FirstTimeGuide onClose={() => setShowGuide(false)} />}
+      {showContact && <ContactForm onClose={() => setShowContact(false)} />}
       {showPAS1Preview && <PAS1KoreanPreview onClose={() => setShowPAS1Preview(false)} />}
       {showPAS1Prep && <PAS1PrepDocs onClose={() => setShowPAS1Prep(false)} />}
       {showPAS1FormView && <PAS1KoreanFormView onClose={() => setShowPAS1FormView(false)} />}
@@ -153,13 +156,12 @@ export default function Landing() {
 
       {/* Footer info */}
       <div className="max-w-4xl mx-auto px-4 pb-4">
-        <div className="bg-muted rounded-xl p-4 text-xs text-muted-foreground text-center leading-relaxed">
-          <div className="flex items-center justify-center gap-1 mb-1 font-semibold text-foreground">
-            <Phone className="w-3 h-3" /> 도움이 필요하시면
-          </div>
-          NJ Division of Taxation: <strong>1-800-323-4400</strong> &nbsp;|&nbsp;
-          NJ Senior Help Line: <strong>1-800-792-8820</strong>
-        </div>
+        <button
+          onClick={() => setShowContact(true)}
+          className="w-full bg-primary text-primary-foreground rounded-xl p-4 flex items-center justify-center gap-2 text-sm font-bold hover:bg-primary/90 transition-colors"
+        >
+          <MessageCircle className="w-5 h-5" /> 문의하기
+        </button>
       </div>
     </div>
   );
