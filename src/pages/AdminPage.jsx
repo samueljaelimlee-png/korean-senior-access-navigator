@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { base44 } from '@/api/base44Client';
 import { Users, CalendarDays, FileCheck2, CalendarCheck, RefreshCw, Lock, ArrowLeft } from 'lucide-react';
+import DownloadStructure from '@/components/DownloadStructure';
 
 export default function AdminPage() {
   const [stats, setStats] = useState(null);
@@ -110,6 +111,12 @@ export default function AdminPage() {
             <li>• <strong>PAS-1 PDF 완료자</strong>: PAS-1 양식 작성 후 "인쇄 / PDF 저장" 버튼을 누른 사용자 수</li>
             <li>• <strong>오늘</strong>: 현재 날짜 기준 자정부터 집계</li>
           </ul>
+        </div>
+
+        <div className="mt-6 bg-card rounded-2xl border border-border shadow-sm p-5">
+          <h3 className="text-sm font-bold text-foreground mb-1">📋 앱 구조도</h3>
+          <p className="text-xs text-muted-foreground mb-3">전체 페이지, 컴포넌트, 엔티티, 백엔드 함수 구조를 HTML 파일로 다운로드합니다.</p>
+          <DownloadStructure />
         </div>
 
         <div className="mt-4 text-center">
