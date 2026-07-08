@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { base44 } from '@/api/base44Client';
-import { Users, CalendarDays, FileCheck2, CalendarCheck, RefreshCw, Lock, ArrowLeft } from 'lucide-react';
+import { Users, CalendarDays, FileCheck2, CalendarCheck, RefreshCw, Lock, ArrowLeft, MessageSquare } from 'lucide-react';
 import DownloadStructure from '@/components/DownloadStructure';
 
 export default function AdminPage() {
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [inquiries, setInquiries] = useState([]);
+  const [inquiryLoading, setInquiryLoading] = useState(false);
 
   const fetchStats = async () => {
     setLoading(true);
@@ -29,7 +31,22 @@ export default function AdminPage() {
     }
   };
 
-  useEffect(() => { fetchStats(); }, []);
+  const fetchInquiries = async () => {
+    setInquiryLoading(true);
+    try {
+      const list = await base44.entities.ContactInquiry.list('-created_date', 100);
+      setInquiries(list);
+    } catch (e) {
+      // let error bubble up
+    } finally {
+      setInquiryLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchStats();
+    fetchInquiries();
+  }, []);
 
   if (error) {
     return (
@@ -111,6 +128,46 @@ export default function AdminPage() {
             <li>• <strong>PAS-1 PDF 완료자</strong>: PAS-1 양식 작성 후 "인쇄 / PDF 저장" 버튼을 누른 사용자 수</li>
             <li>• <strong>오늘</strong>: 현재 날짜 기준 자정부터 집계</li>
           </ul>
+        </div>
+
+        {/* Inquiries */}
+        <div className="mt-6 bg-card rounded-2xl border border-border shadow-sm p-5">
+          <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center gap-2">
+              <MessageSquare className="w-4 h-4 text-primary" />
+              <h3 className="text-sm font-bold text-foreground">문의 내역</h3>
+            </div>
+            <button
+              onClick={fetchInquiries}
+              disabled={inquiryLoading}
+              className="flex items-center gap-1 text-xs font-semibold text-primary hover:underline disabled:opacity-50"
+            >
+              <RefreshCw className={`w-3.5 h-3.5 ${inquiryLoading ? 'animate-spin' : ''}`} /> 새로고침
+            </button>
+          </div>
+          {inquiryLoading && inquiries.length === 0 ? (
+            <div className="flex items-center justify-center py-8">
+              <div className="w-6 h-6 border-4 border-slate-200 border-t-primary rounded-full animate-spin"></div>
+            </div>
+          ) : inquiries.length === 0 ? (
+            <p className="text-xs text-muted-foreground py-6 text-center">접수된 문의가 없습니다.</p>
+          ) : (
+            <div className="space-y-3">
+              {inquiries.map((inq) => (
+                <div key={inq.id} className="border border-border rounded-lg p-3">
+                  <div className="flex items-center justify-between gap-2 mb-1.5 flex-wrap">
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm font-bold text-foreground">{inq.name || '이름 없음'}</span>
+                      <span className="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-primary/10 text-primary">{inq.inquiry_type}</span>
+                    </div>
+                    <span className="text-[11px] text-muted-foreground">{new Date(inq.created_date).toLocaleString('ko-KR')}</span>
+                  </div>
+                  <p className="text-xs text-muted-foreground mb-1">📞 {inq.contact}</p>
+                  <p className="text-sm text-foreground leading-relaxed whitespace-pre-wrap">{inq.message}</p>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
 
         <div className="mt-6 bg-card rounded-2xl border border-border shadow-sm p-5">
