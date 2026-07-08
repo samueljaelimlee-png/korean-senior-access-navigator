@@ -148,6 +148,20 @@ export default function PAS1PrepDocs({ onClose }) {
           💡 모든 서류가 반드시 필요하지는 않습니다. 본인 상황에 해당하는 서류만 준비하시면 됩니다. 카드를 클릭하면 자세한 내용을 확인할 수 있습니다.
         </div>
 
+        {/* Must-have income docs for both years */}
+        <div className="mx-5 mt-3 flex-shrink-0 p-4 bg-blue-50 border-2 border-blue-400 rounded-lg">
+          <div className="flex items-center gap-2 mb-1.5">
+            <FileText className="w-5 h-5 text-blue-700 flex-shrink-0" />
+            <h3 className="text-sm font-bold text-blue-900">All 2024 &amp; 2025 Income Documentation</h3>
+          </div>
+          <p className="text-xs text-blue-800 leading-relaxed mb-1">
+            PAS-1 신청에는 <strong>2024년과 2025년 두 해의 소득 서류가 모두 필요</strong>합니다.
+          </p>
+          <p className="text-xs text-blue-700 leading-relaxed">
+            NJ-1040(s), 1099-R(s), and 1099-SSA(s)
+          </p>
+        </div>
+
         {/* List */}
         <div className="overflow-y-auto px-5 py-4 space-y-3 flex-1">
           {DOCS.map((doc) => (
