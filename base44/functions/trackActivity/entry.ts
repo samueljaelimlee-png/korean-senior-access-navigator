@@ -16,8 +16,11 @@ Deno.serve(async (req) => {
     }
 
     if (type === 'completion') {
+      // Only deduplicate within the same calendar day (UTC)
+      const todayStart = new Date(Date.UTC(new Date().getUTCFullYear(), new Date().getUTCMonth(), new Date().getUTCDate())).toISOString();
       const existing = await base44.asServiceRole.entities.FormCompletion.filter({ session_id });
-      if (existing.length === 0) {
+      const alreadyToday = existing.some(c => c.created_date >= todayStart);
+      if (!alreadyToday) {
         await base44.asServiceRole.entities.FormCompletion.create({ session_id });
       }
       return Response.json({ status: 'ok' });
