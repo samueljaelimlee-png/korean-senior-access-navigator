@@ -6,7 +6,6 @@ import PAS1PrepDocs from '@/components/PAS1PrepDocs';
 import PAS1KoreanFormView from '@/components/pas1/PAS1KoreanFormView';
 import FirstTimeGuide from '@/components/FirstTimeGuide';
 import ContactForm from '@/components/ContactForm';
-import FilingEventNotice from '@/components/FilingEventNotice';
 
 const SECTIONS = [
   {
@@ -83,11 +82,6 @@ export default function Landing() {
             <BookOpen className="w-5 h-5" /> 처음 오신 분 이용 가이드
           </button>
         </div>
-      </div>
-
-      {/* Filing Event Notice */}
-      <div className="max-w-4xl mx-auto px-4 pt-6">
-        <FilingEventNotice />
       </div>
 
       {/* 3 Section Cards */}
