@@ -66,7 +66,7 @@ const PageHeader = ({ page, name, ssn }) => (
   </div>
 );
 
-export default function PrintFormKorean({ data, printOnly = true }) {
+export default function PrintFormKorean({ data, printOnly = true, blank = false }) {
   const t24 = parseFloat(data.tax2024) || 0;
   const t25 = parseFloat(data.tax2025) || 0;
   const inc24 = data.inc?.[2024] || {};
@@ -77,6 +77,8 @@ export default function PrintFormKorean({ data, printOnly = true }) {
     : '';
 
   const fs = data.filingStatus;
+  // When blank, force all checkboxes unchecked
+  const cb = (v) => blank ? false : v;
 
   return (
     <div className={printOnly ? 'print-only' : ''} style={s.page}>
@@ -147,13 +149,13 @@ export default function PrintFormKorean({ data, printOnly = true }) {
       <div style={{ marginBottom: '6px', fontSize: '10px' }}>
         <div><span style={s.lineNum}>1.</span> 2025년 NJ-1040 신고서상 본인의 신고 신분을 선택하세요:</div>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4px', marginTop: '4px', paddingLeft: '16px' }}>
-          <div><CheckBox checked={fs === 'A'} /> A.&nbsp;&nbsp;미혼 (Single)</div>
-          <div><CheckBox checked={fs === 'E'} /> E.&nbsp;&nbsp;기혼/CU 각자 신고 — <strong>별도</strong> 거주지 유지</div>
-          <div><CheckBox checked={fs === 'B'} /> B.&nbsp;&nbsp;세대주 (Head of Household)</div>
-          <div><CheckBox checked={fs === 'F'} /> F.&nbsp;&nbsp;같은 거주지에서 <strong>함께</strong> 거주</div>
-          <div><CheckBox checked={fs === 'C'} /> C.&nbsp;&nbsp;자격 있는 생존 배우자 (Qualifying Widow(er))</div>
+          <div><CheckBox checked={cb(fs === 'A')} /> A.&nbsp;&nbsp;미혼 (Single)</div>
+          <div><CheckBox checked={cb(fs === 'E')} /> E.&nbsp;&nbsp;기혼/CU 각자 신고 — <strong>별도</strong> 거주지 유지</div>
+          <div><CheckBox checked={cb(fs === 'B')} /> B.&nbsp;&nbsp;세대주 (Head of Household)</div>
+          <div><CheckBox checked={cb(fs === 'F')} /> F.&nbsp;&nbsp;같은 거주지에서 <strong>함께</strong> 거주</div>
+          <div><CheckBox checked={cb(fs === 'C')} /> C.&nbsp;&nbsp;자격 있는 생존 배우자 (Qualifying Widow(er))</div>
           <div></div>
-          <div><CheckBox checked={fs === 'D'} /> D.&nbsp;&nbsp;기혼/CU 공동 신고 (joint return)</div>
+          <div><CheckBox checked={cb(fs === 'D')} /> D.&nbsp;&nbsp;기혼/CU 공동 신고 (joint return)</div>
         </div>
       </div>
 
@@ -166,11 +168,11 @@ export default function PrintFormKorean({ data, printOnly = true }) {
         </div>
         <div style={s.row}>
           <span style={s.label}><span style={s.lineNum}>3a.</span> 2025년 중 연방 사회보장 장애 급여(SSDI)를 <strong>수령</strong>하셨나요?</span>
-          <span>본인 &nbsp;<CheckBox checked={data.ssdi} /> 예 &nbsp;<CheckBox checked={!data.ssdi} /> 아니오 &nbsp;&nbsp;&nbsp; 배우자 &nbsp;<CheckBox checked={false} /> 예 &nbsp;<CheckBox checked={true} /> 아니오</span>
+          <span>본인 &nbsp;<CheckBox checked={cb(data.ssdi)} /> 예 &nbsp;<CheckBox checked={cb(!data.ssdi)} /> 아니오 &nbsp;&nbsp;&nbsp; 배우자 &nbsp;<CheckBox checked={cb(false)} /> 예 &nbsp;<CheckBox checked={cb(true)} /> 아니오</span>
         </div>
         <div style={s.row}>
           <span style={s.label}><span style={s.lineNum}>3b.</span> 2025년 중 철도 퇴직 장애 급여를 <strong>수령</strong>하셨나요?</span>
-          <span>본인 &nbsp;<CheckBox checked={data.rrd} /> 예 &nbsp;<CheckBox checked={!data.rrd} /> 아니오 &nbsp;&nbsp;&nbsp; 배우자 &nbsp;<CheckBox checked={false} /> 예 &nbsp;<CheckBox checked={true} /> 아니오</span>
+          <span>본인 &nbsp;<CheckBox checked={cb(data.rrd)} /> 예 &nbsp;<CheckBox checked={cb(!data.rrd)} /> 아니오 &nbsp;&nbsp;&nbsp; 배우자 &nbsp;<CheckBox checked={cb(false)} /> 예 &nbsp;<CheckBox checked={cb(true)} /> 아니오</span>
         </div>
       </div>
 
@@ -179,14 +181,14 @@ export default function PrintFormKorean({ data, printOnly = true }) {
       <div style={{ fontSize: '10px' }}>
         <div style={s.row}>
           <span style={s.label}><span style={s.lineNum}>4.</span> 2025년 <strong>10월 1일</strong> 기준으로 뉴저지에 주요 주택(본인 거주지)을 소유 또는 임차하고 계셨나요?</span>
-          <span><CheckBox checked={data.oct1Nj} /> 예 &nbsp;<CheckBox checked={!data.oct1Nj} /> 아니오</span>
+          <span><CheckBox checked={cb(data.oct1Nj)} /> 예 &nbsp;<CheckBox checked={cb(!data.oct1Nj)} /> 아니오</span>
         </div>
         <div style={{ padding: '4px 0', borderBottom: '1px dotted #ccc' }}>
           <span style={s.lineNum}>5.</span> 2025년 <strong>10월 1일</strong> 기준 거주 상태를 표시하세요:
           &nbsp;&nbsp;
-          <CheckBox checked={data.homeType === 'own'} /> 주택 소유자 &nbsp;&nbsp;
-          <CheckBox checked={data.homeType === 'mobile'} /> 모바일홈 소유자 &nbsp;&nbsp;
-          <CheckBox checked={data.homeType === 'rent'} /> 임차인 → 서명 섹션으로 이동
+          <CheckBox checked={cb(data.homeType === 'own')} /> 주택 소유자 &nbsp;&nbsp;
+          <CheckBox checked={cb(data.homeType === 'mobile')} /> 모바일홈 소유자 &nbsp;&nbsp;
+          <CheckBox checked={cb(data.homeType === 'rent')} /> 임차인 → 서명 섹션으로 이동
         </div>
         <div style={s.row}>
           <span style={s.label}>
@@ -195,7 +197,7 @@ export default function PrintFormKorean({ data, printOnly = true }) {
               "예" → 7번으로 이동 &nbsp;|&nbsp; "아니오"(주택 소유자) → 6b로 이동 &nbsp;|&nbsp; "아니오"(모바일홈 소유자) → 서명 섹션으로 이동
             </span>
           </span>
-          <span><CheckBox checked={data.same2025} /> 예 &nbsp;<CheckBox checked={!data.same2025} /> 아니오</span>
+          <span><CheckBox checked={cb(data.same2025)} /> 예 &nbsp;<CheckBox checked={cb(!data.same2025)} /> 아니오</span>
         </div>
         <div style={{ ...s.row, opacity: data.same2025 ? 0.35 : 1 }}>
           <span style={s.label}>
@@ -203,8 +205,8 @@ export default function PrintFormKorean({ data, printOnly = true }) {
             {data.same2025 && <span style={{ fontSize: '8px', color: '#b00', marginLeft: '6px' }}>(건너뜀 — 6a = 예)</span>}
           </span>
           <span>
-            <CheckBox checked={!data.same2025 && parseInt(data.birthYear) <= 1960} /> 예 &nbsp;
-            <CheckBox checked={!data.same2025 && parseInt(data.birthYear) > 1960} /> 아니오
+            <CheckBox checked={cb(!data.same2025 && parseInt(data.birthYear) <= 1960)} /> 예 &nbsp;
+            <CheckBox checked={cb(!data.same2025 && parseInt(data.birthYear) > 1960)} /> 아니오
           </span>
         </div>
         <div style={{ ...s.row, opacity: data.same2025 ? 0.35 : 1 }}>
@@ -213,21 +215,21 @@ export default function PrintFormKorean({ data, printOnly = true }) {
             {data.same2025 && <span style={{ fontSize: '8px', color: '#b00', marginLeft: '6px' }}>(건너뜀 — 6a = 예)</span>}
           </span>
           <span>
-            <CheckBox checked={!data.same2025 && data.movedWithin2025} /> 예 &nbsp;
-            <CheckBox checked={!data.same2025 && !data.movedWithin2025} /> 아니오
+            <CheckBox checked={cb(!data.same2025 && data.movedWithin2025)} /> 예 &nbsp;
+            <CheckBox checked={cb(!data.same2025 && !data.movedWithin2025)} /> 아니오
           </span>
         </div>
         <div style={s.row}>
           <span style={s.label}><span style={s.lineNum}>7.</span> 작년 재산세 감면 혜택과 동일한 주택에 대해 이 신청서를 제출하시나요?</span>
-          <span><CheckBox checked={data.sameAsLast} /> 예 &nbsp;<CheckBox checked={!data.sameAsLast} /> 아니오</span>
+          <span><CheckBox checked={cb(data.sameAsLast)} /> 예 &nbsp;<CheckBox checked={cb(!data.sameAsLast)} /> 아니오</span>
         </div>
         <div style={s.row}>
           <span style={s.label}><span style={s.lineNum}>8.</span> 2025년 12월 31일 기준, <strong>2022년 12월 31일 또는 그 이전부터</strong> 같은 뉴저지 주택을 소유하며 거주하고 계십니까? ⭐ Senior Freeze 핵심 조건</span>
-          <span><CheckBox checked={data.since2022} /> 예 &nbsp;<CheckBox checked={!data.since2022} /> 아니오</span>
+          <span><CheckBox checked={cb(data.since2022)} /> 예 &nbsp;<CheckBox checked={cb(!data.since2022)} /> 아니오</span>
         </div>
         <div style={s.row}>
           <span style={s.label}><span style={s.lineNum}>9.</span> <strong>2023년 1월 1일 ~ 2023년 12월 31일</strong> 사이에 현재 거주지로 이사하셨나요?</span>
-          <span><CheckBox checked={data.moved2023} /> 예 &nbsp;<CheckBox checked={!data.moved2023} /> 아니오</span>
+          <span><CheckBox checked={cb(data.moved2023)} /> 예 &nbsp;<CheckBox checked={cb(!data.moved2023)} /> 아니오</span>
         </div>
       </div>
 
@@ -242,7 +244,7 @@ export default function PrintFormKorean({ data, printOnly = true }) {
       <div style={{ fontSize: '10px' }}>
         <div style={{ padding: '4px 0', borderBottom: '1px dotted #ccc' }}>
           <span style={s.lineNum}>10.</span> 2025년 10월 1일 기준 주택이 협동조합(Co-op) 또는 지속 돌봄 은퇴 시설(CCRC)의 유닛이라면 유형을 표시하세요:
-          &nbsp;<CheckBox checked={false} /> 협동조합(Co-op) &nbsp; 또는 &nbsp;<CheckBox checked={false} /> 지속 돌봄 은퇴 시설
+          &nbsp;<CheckBox checked={cb(false)} /> 협동조합(Co-op) &nbsp; 또는 &nbsp;<CheckBox checked={cb(false)} /> 지속 돌봄 은퇴 시설
         </div>
 
         <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: '6px', fontSize: '10px' }}>
@@ -256,8 +258,8 @@ export default function PrintFormKorean({ data, printOnly = true }) {
           <tbody>
             <tr style={{ borderBottom: '1px dotted #ccc' }}>
               <td style={{ padding: '4px 0' }}><span style={s.lineNum}>11a.</span> 2025년 10월 1일 기준 주요 거주지를 배우자/CU 파트너 이외의 다른 사람과 공동 소유하셨나요?</td>
-              <td style={{ textAlign: 'center', padding: '4px' }}><CheckBox checked={data.coOwn} /> 예 &nbsp;<CheckBox checked={!data.coOwn} /> 아니오</td>
-              <td style={{ textAlign: 'center', padding: '4px' }}><CheckBox checked={data.coOwn} /> 예 &nbsp;<CheckBox checked={!data.coOwn} /> 아니오</td>
+              <td style={{ textAlign: 'center', padding: '4px' }}><CheckBox checked={cb(data.coOwn)} /> 예 &nbsp;<CheckBox checked={cb(!data.coOwn)} /> 아니오</td>
+              <td style={{ textAlign: 'center', padding: '4px' }}><CheckBox checked={cb(data.coOwn)} /> 예 &nbsp;<CheckBox checked={cb(!data.coOwn)} /> 아니오</td>
             </tr>
             <tr style={{ borderBottom: '1px dotted #ccc' }}>
               <td style={{ padding: '4px 0' }}><span style={s.lineNum}>11b.</span> "예"라고 답한 경우, 본인(및 배우자)이 소유한 비율(%)을 기입하세요.</td>
@@ -266,8 +268,8 @@ export default function PrintFormKorean({ data, printOnly = true }) {
             </tr>
             <tr style={{ borderBottom: '1px dotted #ccc' }}>
               <td style={{ padding: '4px 0' }}><span style={s.lineNum}>12a.</span> 2025년 10월 1일 기준 주요 거주지가 다세대 주택이었나요?</td>
-              <td style={{ textAlign: 'center', padding: '4px' }}><CheckBox checked={data.multiUnit} /> 예 &nbsp;<CheckBox checked={!data.multiUnit} /> 아니오</td>
-              <td style={{ textAlign: 'center', padding: '4px' }}><CheckBox checked={data.multiUnit} /> 예 &nbsp;<CheckBox checked={!data.multiUnit} /> 아니오</td>
+              <td style={{ textAlign: 'center', padding: '4px' }}><CheckBox checked={cb(data.multiUnit)} /> 예 &nbsp;<CheckBox checked={cb(!data.multiUnit)} /> 아니오</td>
+              <td style={{ textAlign: 'center', padding: '4px' }}><CheckBox checked={cb(data.multiUnit)} /> 예 &nbsp;<CheckBox checked={cb(!data.multiUnit)} /> 아니오</td>
             </tr>
             <tr>
               <td style={{ padding: '4px 0' }}><span style={s.lineNum}>12b.</span> "예"라고 답한 경우, 주요 거주지로 사용한 비율(%)을 기입하세요.</td>
@@ -295,7 +297,7 @@ export default function PrintFormKorean({ data, printOnly = true }) {
         </div>
         <div style={s.row}>
           <span style={s.label}><span style={s.lineNum}>13b.</span> 추가 Lot에 대한 재산세도 청구하시나요?</span>
-          <span><CheckBox checked={data.additionalLots} /> 예 &nbsp;<CheckBox checked={!data.additionalLots} /> 아니오</span>
+          <span><CheckBox checked={cb(data.additionalLots)} /> 예 &nbsp;<CheckBox checked={cb(!data.additionalLots)} /> 아니오</span>
         </div>
         <div style={s.row}>
           <span style={s.label}><span style={s.lineNum}>14.</span> 2024년 10월 1일 기준 주요 거주지에 청구된 <strong>2024년</strong> 재산세를 기입하세요.<br />
@@ -315,7 +317,7 @@ export default function PrintFormKorean({ data, printOnly = true }) {
       <div style={{ fontSize: '10px' }}>
         <div style={s.row}>
           <span style={s.label}><span style={s.lineNum}>16a.</span> 2025년 주요 거주지에 P.I.L.O.T.(세금 대납금) 계약이 있었나요?</span>
-          <span><CheckBox checked={data.pilot} /> 예 &nbsp;<CheckBox checked={!data.pilot} /> 아니오</span>
+          <span><CheckBox checked={cb(data.pilot)} /> 예 &nbsp;<CheckBox checked={cb(!data.pilot)} /> 아니오</span>
         </div>
         <div style={s.row}>
           <span style={s.label}><span style={s.lineNum}>16b.</span> "예"라고 답한 경우, 2025년 주요 거주지에 대한 P.I.L.O.T. 금액을 기입하세요.</span>
@@ -439,7 +441,7 @@ export default function PrintFormKorean({ data, printOnly = true }) {
         </div>
 
         <div style={{ fontSize: '9px', marginBottom: '8px' }}>
-          <CheckBox checked={false} /> 사망한 신청자의 사망증명서 사본을 동봉하는 경우 체크하세요. (안내서 참조)
+          <CheckBox checked={cb(false)} /> 사망한 신청자의 사망증명서 사본을 동봉하는 경우 체크하세요. (안내서 참조)
         </div>
 
         <div style={{ fontSize: '9px', marginBottom: '10px', lineHeight: 1.6, maxWidth: '75%' }}>

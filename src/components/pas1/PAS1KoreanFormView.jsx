@@ -45,7 +45,7 @@ export default function PAS1KoreanFormView({ onClose }) {
         {/* Scrollable form */}
         <div className="overflow-y-auto px-5 py-4 flex-1 print:overflow-visible print:px-0 print:py-0">
           <div className="print:shadow-none print:border-0" style={{ background: '#fff', borderRadius: '8px', border: '1px solid #ddd', overflow: 'hidden' }}>
-            <PrintFormKorean data={EMPTY_DATA} printOnly={printing} />
+            <PrintFormKorean data={EMPTY_DATA} printOnly={printing} blank={true} />
           </div>
           <div className="h-4 no-print" />
         </div>
