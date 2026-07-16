@@ -1,13 +1,12 @@
 import React, { useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { FileText, Gift, ScrollText, Home, Lock } from 'lucide-react';
+import { FileText, Gift, Home, Lock } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 
 const NAV = [
   { path: '/', label: '홈', icon: Home },
   { path: '/pas1', label: 'PAS-1 신청', icon: FileText },
   { path: '/benefits', label: '정부 혜택 안내', icon: Gift },
-  { path: '/will-guide', label: '유언장 가이드', icon: ScrollText },
 ];
 
 export default function AppShell({ children }) {

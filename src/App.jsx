@@ -15,7 +15,6 @@ import AppShell from '@/components/AppShell';
 import Landing from './pages/Landing';
 import PAS1Page from './pages/PAS1Page';
 import BenefitsPage from './pages/BenefitsPage';
-import WillGuidePage from './pages/WillGuidePage';
 import AdminPage from './pages/AdminPage';
 
 const AuthenticatedApp = () => {
@@ -47,7 +46,6 @@ const AuthenticatedApp = () => {
       <Route path="/" element={<AppShell><Landing /></AppShell>} />
       <Route path="/pas1" element={<AppShell><PAS1Page /></AppShell>} />
       <Route path="/benefits" element={<AppShell><BenefitsPage /></AppShell>} />
-      <Route path="/will-guide" element={<AppShell><WillGuidePage /></AppShell>} />
       <Route element={<ProtectedRoute unauthenticatedElement={<Navigate to="/login" replace />} />}>
         <Route path="/admin" element={<AdminPage />} />
       </Route>

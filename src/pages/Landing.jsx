@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Gift, ScrollText, ArrowRight, Phone, BookOpen, FileText, MessageCircle } from 'lucide-react';
+import { Gift, ArrowRight, BookOpen, FileText, MessageCircle } from 'lucide-react';
 import PAS1KoreanPreview from '@/components/PAS1KoreanPreview';
 import PAS1PrepDocs from '@/components/PAS1PrepDocs';
 import PAS1KoreanFormView from '@/components/pas1/PAS1KoreanFormView';
@@ -33,19 +33,6 @@ const SECTIONS = [
     highlights: ['Medicare / Medicaid', 'SNAP 식품 보조', '에너지 보조 (LIHEAP)', 'SSI / SSD'],
     color: 'from-green-600 to-green-800',
     btnColor: 'bg-green-700 hover:bg-green-800',
-  },
-  {
-    path: '/will-guide',
-    icon: '📜',
-    iconColor: 'bg-amber-50 border-amber-200',
-    badge: '필독 가이드',
-    badgeColor: 'bg-amber-100 text-amber-700',
-    title: '유언장 & 유산 계획 가이드',
-    subtitle: 'Will & Estate Planning Guide',
-    desc: '미국에서 유언장 작성이 왜 필요한지, 어떻게 준비하는지 한국어로 쉽게 설명합니다. 자녀에게 짐을 남기지 않기 위한 첫 걸음을 도와드립니다.',
-    highlights: ['유언장 (Will) 작성 안내', 'Living Trust 이해', '의료 위임장 (POA)', '상속 절차 안내'],
-    color: 'from-amber-600 to-amber-800',
-    btnColor: 'bg-amber-700 hover:bg-amber-800',
   },
 ];
 
