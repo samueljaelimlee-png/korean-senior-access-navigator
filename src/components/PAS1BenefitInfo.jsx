@@ -17,7 +17,7 @@ export default function PAS1BenefitInfo({ onClose }) {
         </div>
 
         {/* Content */}
-        <div className="overflow-y-auto px-5 py-5 flex-1">
+        <div className="overflow-y-auto px-5 py-5 flex-1 min-h-0">
           <div className="text-lg leading-relaxed text-foreground space-y-5">
             <p className="text-xl font-bold text-primary">🏠 PAS-1 통합 신청서란?</p>
 
