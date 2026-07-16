@@ -36,13 +36,18 @@ export default function PAS1BenefitInfo({ onClose }) {
 
             {/* 1. Stay NJ */}
             <div className="bg-green-50 border-2 border-green-200 rounded-xl p-4">
-              <p className="text-xl font-bold text-green-800 mb-2">1️⃣ Stay NJ (최대 $6,500 감면)</p>
-              <p className="mb-2">65세 이상 시니어를 위해 도입된 가장 강력한 재산세 감면 프로그램입니다.</p>
-              <p className="mb-1"><strong className="text-green-800">절약 금액:</strong> 연간 총 납부하는 재산세 고지서 금액의 <strong>50%를 직접 감면</strong>해 주며, 최대 한도는 <strong>$6,500</strong>입니다. (단, 이미 ANCHOR나 Senior Freeze로 받은 혜택이 있다면 그 금액만큼은 차감하고 지급됩니다.)</p>
+              <p className="text-xl font-bold text-green-800 mb-2">1️⃣ Stay NJ (연 소득에 따라 최대 $4,000 ~ $6,500 감면)</p>
+              <p className="mb-2">65세 이상 시니어를 위해 도입된 가장 강력한 재산세 감면 프로그램입니다. <span className="text-red-700 font-semibold">(※ 2026년 예산 조정으로 소득 제한 및 한도액이 변경되었습니다.)</span></p>
+              <p className="mb-1"><strong className="text-green-800">절약 금액:</strong> 연간 총 납부하는 재산세 고지서 금액의 <strong>최대 50%까지 지원</strong>합니다. 실제 지급 시에는 시니어 프리즈(Senior Freeze)와 앵커(ANCHOR) 혜택을 먼저 계산한 뒤, 부족한 차액을 Stay NJ를 통해 추가로 지원받게 됩니다. 연 소득 구간에 따른 최대 지원 한도액(타 프로그램 혜택 합산 기준)은 다음과 같습니다.</p>
+              <ul className="list-disc pl-6 space-y-1 mt-1">
+                <li>연 소득 <strong>10만 달러 이하</strong>: 최대 <strong>$6,500</strong> 지원</li>
+                <li>연 소득 <strong>10만 ~ 15만 달러</strong>: 최대 <strong>$5,000</strong> 지원</li>
+                <li>연 소득 <strong>15만 ~ 20만 달러</strong>: 최대 <strong>$4,000</strong> 지원</li>
+              </ul>
               <p className="font-bold text-green-800 mt-2">자격 요건:</p>
               <ul className="list-disc pl-6 space-y-1">
                 <li>65세 이상 뉴저지 거주자</li>
-                <li>연 소득 $500,000 미만</li>
+                <li>연 소득 $200,000 이하 (20만 달러 초과 시 Stay NJ 대상에서 제외)</li>
                 <li>뉴저지에 본인 소유의 주택을 가지고 주거주지로 사용한 경우</li>
               </ul>
             </div>
@@ -81,12 +86,13 @@ export default function PAS1BenefitInfo({ onClose }) {
                 PAS-1 신청서 한 장으로 세 가지 혜택(Stay NJ, Senior Freeze, ANCHOR)의 대상 여부가 모두 검토됩니다.
               </p>
               <p>
-                만약 65세 이상이고 연 소득이 $150,000 이하인 주택 소유자라면, 기본 ANCHOR 혜택 $1,750과 Senior Freeze
-                상승분 환급을 챙기면서, 새로 도입된 Stay NJ 프로그램을 통해 최종적으로 본인 재산세의{' '}
-                <strong>최대 50%(최대 $6,500 한도)</strong>까지 세이브할 수 있는 기회를 갖게 됩니다.
+                만약 65세 이상이고 연 소득이 $100,000 이하인 주택 소유자라면, 기본 ANCHOR 혜택 $1,750과 Senior Freeze
+                상승분 환급을 먼저 적용받고, 총 혜택이 해당 소득 구간 한도인 <strong>최대 $6,500(또는 재산세의 50%)</strong>에
+                미치지 못할 경우 부족한 차액을 Stay NJ를 통해 추가로 세이브할 수 있게 됩니다.
               </p>
               <p className="mt-2">
-                가족분들의 연령과 소득 수준을 고려하셔서 해당 요건에 맞다면 온라인이나 우편을 통해 PAS-1을{' '}
+                가족분들의 연령과 소득 수준을 고려하셔서 해당 요건에 맞다면{' '}
+                <strong>2026년 11월 2일(월요일) 마감일</strong> 전에 온라인이나 우편을 통해 PAS-1을{' '}
                 <strong>꼭 접수하시는 것을 권장</strong>합니다.
               </p>
             </div>
