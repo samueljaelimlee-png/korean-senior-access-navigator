@@ -96,24 +96,6 @@ export default function PAS1BenefitInfo({ onClose }) {
                 <strong>꼭 접수하시는 것을 권장</strong>합니다.
               </p>
             </div>
-
-            {/* Video */}
-            <div className="bg-muted rounded-xl p-4">
-              <p className="text-lg font-bold text-foreground mb-2">🎥 NJ PAS-1 작성 가이드 영상</p>
-              <p className="mb-3">
-                새롭게 변경된 통합 신청서 PAS-1의 구체적인 작성법과 각 혜택의 차이점을 더 자세히 알아보고 싶으시다면,
-                아래 영상을 참고해 보시는 것도 좋습니다. Stay NJ, Senior Freeze, ANCHOR의 차이점과 신청서 작성 요령을
-                단계별로 쉽게 설명해 줍니다.
-              </p>
-              <a
-                href="https://www.youtube.com/watch?v=pI6L_g3Kg5Y&t=929s"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-5 py-3 bg-red-600 text-white rounded-xl text-lg font-bold hover:bg-red-700 transition-colors"
-              >
-                ▶️ 영상 보기 (YouTube)
-              </a>
-            </div>
           </div>
         </div>
       </div>
