@@ -79,8 +79,8 @@ export default function AdminPage() {
         <div className="max-w-md w-full bg-card border border-border rounded-2xl shadow-sm p-8 text-center">
           <Lock className="w-10 h-10 text-muted-foreground mx-auto mb-3" />
           <p className="text-sm text-foreground font-medium mb-4">{error}</p>
-          <Link to="/" className="inline-flex items-center gap-2 text-sm text-primary hover:underline">
-            <ArrowLeft className="w-4 h-4" /> 홈으로 돌아가기
+          <Link to="/login" className="inline-flex items-center gap-2 text-sm text-primary hover:underline">
+            <ArrowLeft className="w-4 h-4" /> 로그인 페이지로 이동
           </Link>
         </div>
       </div>
