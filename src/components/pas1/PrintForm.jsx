@@ -376,7 +376,7 @@ export default function PrintForm({ data }) {
           { ln: '17b.', label: 'Tax-exempt interest income', key: 'b' },
           { ln: '17c.', label: 'Roth IRA rollovers (see instructions)', key: 'c' },
           { ln: '17d.', label: 'Disability pension received (see instructions)', key: 'd' },
-          { ln: '17e.', label: 'Social Security Benefits (including Medicare Part B premiums) received. Enter total amount from Box 5 of Form SSA-1099', key: 'e' },
+          { ln: '17e.', label: 'Social Security Benefits (including Medicare Part B premiums) received. Enter 1040 Line 6a or SSA-1099 Box 5', key: 'e' },
         ].map(({ ln, label, key }) => (
           <Row key={ln}>
             <span style={{ flex: 1 }}><Ln n={ln} /> {label}</span>
@@ -401,7 +401,7 @@ export default function PrintForm({ data }) {
           { ln: '18b.', label: 'Tax-exempt interest income', key: 'b' },
           { ln: '18c.', label: 'Roth IRA rollovers (see instructions)', key: 'c' },
           { ln: '18d.', label: 'Disability pension received (see instructions)', key: 'd' },
-          { ln: '18e.', label: 'Social Security Benefits (including Medicare Part B premiums) received. Enter total amount from Box 5 of Form SSA-1099', key: 'e' },
+          { ln: '18e.', label: 'Social Security Benefits (including Medicare Part B premiums) received. Enter 1040 Line 6a or SSA-1099 Box 5', key: 'e' },
         ].map(({ ln, label, key }) => (
           <Row key={ln}>
             <span style={{ flex: 1 }}><Ln n={ln} /> {label}</span>

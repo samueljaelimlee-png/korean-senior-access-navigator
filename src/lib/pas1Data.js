@@ -107,7 +107,7 @@ export const INCOME_ITEMS = [
   { ln: '17b', desc: 'Tax-exempt interest income', key: 'b', src1040: 'NJ-1040 Line 16b', srcNoFile: '해당 없으면 비워두세요' },
   { ln: '17c', desc: 'Roth IRA rollovers', key: 'c', src1040: '연방 규정 — 수익분만', srcNoFile: '해당 없으면 비워두세요' },
   { ln: '17d', desc: 'Disability pension received', key: 'd', src1040: '65세 이전 장애연금만', srcNoFile: '해당 없으면 비워두세요' },
-  { ln: '17e', desc: 'Social Security Benefits', key: 'e', src1040: 'SSA-1099 Box 5', srcNoFile: '⭐ SSA-1099 Box 5 — 여기 입력' },
+  { ln: '17e', desc: 'Social Security Benefits', key: 'e', src1040: '1040 Line 6a or SSA-1099 Box 5', srcNoFile: '⭐ 1040 Line 6a or SSA-1099 Box 5 — 여기 입력' },
 ];
 
 export const SAMPLE_DATA = {

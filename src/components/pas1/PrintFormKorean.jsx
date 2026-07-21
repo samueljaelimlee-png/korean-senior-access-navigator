@@ -369,7 +369,7 @@ export default function PrintFormKorean({ data, printOnly = true, blank = false 
           { ln: '17b.', label: '면세 이자 소득', key: 'b' },
           { ln: '17c.', label: 'Roth IRA 전환금 (안내서 참조)', key: 'c' },
           { ln: '17d.', label: '장애 연금 수령액 (안내서 참조)', key: 'd' },
-          { ln: '17e.', label: '사회보장 급여 (Medicare Part B 보험료 포함) — SSA-1099 Box 5 총액', key: 'e' },
+          { ln: '17e.', label: '사회보장 급여 (Medicare Part B 보험료 포함) — 1040 Line 6a 또는 SSA-1099 Box 5 총액', key: 'e' },
         ].map(({ ln, label, key }) => (
           <Row key={ln}>
             <span style={{ flex: 1 }}><Ln n={ln} /> {label}</span>
@@ -394,7 +394,7 @@ export default function PrintFormKorean({ data, printOnly = true, blank = false 
           { ln: '18b.', label: '면세 이자 소득', key: 'b' },
           { ln: '18c.', label: 'Roth IRA 전환금 (안내서 참조)', key: 'c' },
           { ln: '18d.', label: '장애 연금 수령액 (안내서 참조)', key: 'd' },
-          { ln: '18e.', label: '사회보장 급여 (Medicare Part B 보험료 포함) — SSA-1099 Box 5 총액', key: 'e' },
+          { ln: '18e.', label: '사회보장 급여 (Medicare Part B 보험료 포함) — 1040 Line 6a 또는 SSA-1099 Box 5 총액', key: 'e' },
         ].map(({ ln, label, key }) => (
           <Row key={ln}>
             <span style={{ flex: 1 }}><Ln n={ln} /> {label}</span>
