@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Gift, ArrowRight, BookOpen, FileText, MessageCircle, Info } from 'lucide-react';
 import PAS1KoreanPreview from '@/components/PAS1KoreanPreview';
 import PAS1PrepDocs from '@/components/PAS1PrepDocs';
-import PAS1KoreanFormView from '@/components/pas1/PAS1KoreanFormView';
+// PAS1KoreanFormView replaced by direct PDF link
 import FirstTimeGuide from '@/components/FirstTimeGuide';
 import ContactForm from '@/components/ContactForm';
 import PAS1BenefitInfo from '@/components/PAS1BenefitInfo';
@@ -44,7 +44,7 @@ const SECTIONS = [
 export default function Landing() {
   const [showPAS1Preview, setShowPAS1Preview] = useState(false);
   const [showPAS1Prep, setShowPAS1Prep] = useState(false);
-  const [showPAS1FormView, setShowPAS1FormView] = useState(false);
+  const PAS1_KOREAN_PDF_URL = 'https://media.base44.com/files/public/6a27775287dfd1eb2ad7dece/5fa8b2fdf_PAS1_2025_Korean_Same_Form_Clean.pdf';
   const [showGuide, setShowGuide] = useState(false);
   const [showContact, setShowContact] = useState(false);
   const [showBenefitInfo, setShowBenefitInfo] = useState(false);
@@ -54,7 +54,7 @@ export default function Landing() {
       {showContact && <ContactForm onClose={() => setShowContact(false)} />}
       {showPAS1Preview && <PAS1KoreanPreview onClose={() => setShowPAS1Preview(false)} />}
       {showPAS1Prep && <PAS1PrepDocs onClose={() => setShowPAS1Prep(false)} />}
-      {showPAS1FormView && <PAS1KoreanFormView onClose={() => setShowPAS1FormView(false)} />}
+
       {showBenefitInfo && <PAS1BenefitInfo onClose={() => setShowBenefitInfo(false)} />}
       {/* Hero */}
       <div className="bg-gradient-to-br from-primary to-primary/80 text-primary-foreground px-4 py-10 text-center">
@@ -157,13 +157,15 @@ export default function Landing() {
                       <span className="flex items-center gap-2"><BookOpen className="w-4 h-4" /> PAS-1폼 한글번역보기</span>
                       <span className="text-[10px] font-normal opacity-60">Korean Translation</span>
                     </button>
-                    <button
-                      onClick={() => setShowPAS1FormView(true)}
+                    <a
+                      href={PAS1_KOREAN_PDF_URL}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="inline-flex flex-col items-center gap-0 px-4 py-2.5 rounded-xl text-sm font-semibold border border-green-300 text-green-700 bg-green-50 hover:bg-green-100 transition-all"
                     >
                       <span className="flex items-center gap-2"><FileText className="w-4 h-4" /> 한국어 양식 보기</span>
-                      <span className="text-[10px] font-normal opacity-60">Korean Form View</span>
-                    </button>
+                      <span className="text-[10px] font-normal opacity-60">Korean Form (PDF)</span>
+                    </a>
                   </>
                 )}
               </div>
