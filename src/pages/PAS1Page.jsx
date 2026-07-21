@@ -10,8 +10,9 @@ import Step5Income from '@/components/pas1/Step5Income';
 import Step6Signature from '@/components/pas1/Step6Signature';
 import Step7Preview from '@/components/pas1/Step7Preview';
 import PAS1KoreanPreview from '@/components/PAS1KoreanPreview';
-import PAS1KoreanFormView from '@/components/pas1/PAS1KoreanFormView';
 import { Calendar, BookOpen, FileText } from 'lucide-react';
+
+const PAS1_KOREAN_PDF_URL = 'https://media.base44.com/files/public/6a27775287dfd1eb2ad7dece/5fa8b2fdf_PAS1_2025_Korean_Same_Form_Clean.pdf';
 
 function StepRouter() {
   const { formData } = usePAS1();
@@ -22,12 +23,10 @@ function StepRouter() {
 
 export default function PAS1Page() {
   const [showPreview, setShowPreview] = useState(false);
-  const [showFormView, setShowFormView] = useState(false);
   return (
     <PAS1Provider>
       <div className="min-h-screen bg-background">
         {showPreview && <PAS1KoreanPreview onClose={() => setShowPreview(false)} />}
-        {showFormView && <PAS1KoreanFormView onClose={() => setShowFormView(false)} />}
         {/* Sub-header */}
         <div className="no-print bg-blue-700 text-white px-4 py-2 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
           <div className="flex items-center justify-between gap-2">
@@ -48,13 +47,15 @@ export default function PAS1Page() {
               <span className="flex items-center gap-1.5"><BookOpen className="w-3.5 h-3.5" /> 한글 번역 보기</span>
               <span className="text-[9px] text-yellow-900/60">Korean Translation</span>
             </button>
-            <button
-              onClick={() => setShowFormView(true)}
+            <a
+              href={PAS1_KOREAN_PDF_URL}
+              target="_blank"
+              rel="noopener noreferrer"
               className="flex items-center gap-1.5 text-xs font-bold bg-white text-blue-700 px-3 py-1.5 rounded-full hover:bg-blue-50 transition-colors shadow border border-blue-300"
             >
               <span className="flex items-center gap-1.5"><FileText className="w-3.5 h-3.5" /> 한국어 양식 보기</span>
-              <span className="text-[9px] text-blue-700/60">Korean Form</span>
-            </button>
+              <span className="text-[9px] text-blue-700/60">Korean Form (PDF)</span>
+            </a>
           </div>
         </div>
         <ProgressBar />
@@ -74,13 +75,15 @@ export default function PAS1Page() {
               <span className="flex items-center gap-1.5"><BookOpen className="w-3.5 h-3.5" /> 한글번역</span>
               <span className="text-[9px] text-yellow-900/60">Korean</span>
             </button>
-            <button
-              onClick={() => setShowFormView(true)}
+            <a
+              href={PAS1_KOREAN_PDF_URL}
+              target="_blank"
+              rel="noopener noreferrer"
               className="flex flex-col items-center gap-0 text-xs font-bold bg-white text-blue-700 px-3 py-1.5 rounded-full hover:bg-blue-50 transition-colors border border-blue-300"
             >
               <span className="flex items-center gap-1.5"><FileText className="w-3.5 h-3.5" /> 한국어 양식</span>
-              <span className="text-[9px] text-blue-700/60">Korean Form</span>
-            </button>
+              <span className="text-[9px] text-blue-700/60">Korean Form (PDF)</span>
+            </a>
           </div>
         </div>
         <main className="max-w-3xl mx-auto px-4 py-6 pb-24">
