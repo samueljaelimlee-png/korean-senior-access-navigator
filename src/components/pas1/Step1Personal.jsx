@@ -4,7 +4,7 @@ import { lookupMuni, getMuniCounty } from '@/lib/pas1Data';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
-import { User, MapPin, ExternalLink } from 'lucide-react';
+import { User, MapPin } from 'lucide-react';
 import NavButtons from './NavButtons';
 
 export default function Step1Personal() {
@@ -85,21 +85,6 @@ export default function Step1Personal() {
             <button onClick={applyMuni} className="px-3 py-1 bg-green-800 text-white rounded text-xs font-semibold">적용 / Apply</button>
           </div>
         )}
-      </div>
-
-      <div className="bg-muted rounded-lg p-3 mb-3 border border-border">
-        <p className="text-xs font-semibold text-primary mb-1">{"Block & Lot 번호 조회"}</p>
-        <p className="text-[11px] text-muted-foreground/60 mb-1">Look up Block & Lot Number</p>
-        <p className="text-xs text-muted-foreground mb-1">NJParcels.com에서 주소로 검색하면 바로 확인됩니다.</p>
-        <p className="text-[11px] text-muted-foreground/60 mb-2">Search by address on NJParcels.com to find it instantly.</p>
-        <a
-          href={`https://njparcels.com/property/?q=${encodeURIComponent(formData.address)}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-1 px-3 py-1.5 bg-primary text-primary-foreground rounded-md text-xs font-medium"
-        >
-          <ExternalLink className="w-3 h-3" /> NJParcels.com — Block/Lot 조회
-        </a>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
