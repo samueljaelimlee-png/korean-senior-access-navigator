@@ -16,8 +16,10 @@ const SECTIONS = [
     badge: '마감 Nov 2, 2026',
     badgeColor: 'bg-red-100 text-red-700',
     title: 'PAS-1 재산세 감면 신청',
+    titleEn: 'Property Tax Relief Application',
     subtitle: 'Property Tax Relief Application',
     desc: 'Senior Freeze · ANCHOR · Stay NJ 세 가지 재산세 혜택을 한 번에 신청하세요. 단계별 안내로 쉽게 작성하고 프린트까지 도와드립니다.',
+    descEn: 'Apply for three property tax benefits at once: Senior Freeze, ANCHOR, and Stay NJ. Step-by-step guidance with print support.',
     highlights: ['Senior Freeze (재산세 동결)', 'ANCHOR 혜택', 'Stay NJ 프로그램'],
     color: 'from-blue-600 to-blue-800',
     btnColor: 'bg-blue-700 hover:bg-blue-800',
@@ -29,8 +31,10 @@ const SECTIONS = [
     badge: '최신 업데이트',
     badgeColor: 'bg-green-100 text-green-700',
     title: '정부 및 주정부 혜택 안내',
+    titleEn: 'Government & State Benefits Guide',
     subtitle: 'Federal & State Benefits Guide',
     desc: '연방 정부와 뉴저지 주정부가 제공하는 시니어 혜택을 한눈에 확인하세요. 의료, 식품, 주거, 에너지 보조 등 다양한 프로그램을 안내합니다.',
+    descEn: 'View senior benefits from the federal government and New Jersey state at a glance — medical, food, housing, and energy assistance programs.',
     highlights: ['Medicare / Medicaid', 'SNAP 식품 보조', '에너지 보조 (LIHEAP)', 'SSI / SSD'],
     color: 'from-green-600 to-green-800',
     btnColor: 'bg-green-700 hover:bg-green-800',
@@ -62,21 +66,29 @@ export default function Landing() {
           <p className="text-primary-foreground/80 text-sm sm:text-base mb-1">
             한인 시니어를 위한 복지 정보 길라잡이
           </p>
+          <p className="text-primary-foreground/50 text-[11px] sm:text-xs mb-1">
+            Korean Senior Welfare Information Guide
+          </p>
           <p className="text-primary-foreground/60 text-xs sm:text-sm">
             뉴저지 거주 시니어 여러분께 꼭 필요한 정보를 한국어로 제공합니다
+          </p>
+          <p className="text-primary-foreground/40 text-[10px] sm:text-[11px]">
+            Providing essential information in Korean for NJ senior residents
           </p>
           <div className="mt-4 flex flex-wrap items-center justify-center gap-3">
             <button
               onClick={() => setShowGuide(true)}
-              className="inline-flex items-center gap-2 px-5 py-3 bg-white text-primary rounded-full text-base font-bold hover:bg-primary-foreground/90 transition-colors shadow-lg"
+              className="inline-flex flex-col items-center gap-0 px-5 py-3 bg-white text-primary rounded-full text-base font-bold hover:bg-primary-foreground/90 transition-colors shadow-lg"
             >
-              <BookOpen className="w-5 h-5" /> 처음 오신 분 이용 가이드
+              <span className="flex items-center gap-2"><BookOpen className="w-5 h-5" /> 처음 오신 분 이용 가이드</span>
+              <span className="text-[10px] font-normal text-primary/60">First-Time User Guide</span>
             </button>
             <button
               onClick={() => setShowBenefitInfo(true)}
-              className="inline-flex items-center gap-2 px-5 py-3 bg-amber-400 text-amber-950 rounded-full text-base font-bold hover:bg-amber-300 transition-colors shadow-lg"
+              className="inline-flex flex-col items-center gap-0 px-5 py-3 bg-amber-400 text-amber-950 rounded-full text-base font-bold hover:bg-amber-300 transition-colors shadow-lg"
             >
-              <Info className="w-5 h-5" /> PAS-1 혜택 자세히 보기
+              <span className="flex items-center gap-2"><Info className="w-5 h-5" /> PAS-1 혜택 자세히 보기</span>
+              <span className="text-[10px] font-normal text-amber-950/60">PAS-1 Benefit Details</span>
             </button>
           </div>
         </div>
@@ -100,13 +112,17 @@ export default function Landing() {
                     <h2 className="text-base sm:text-lg font-bold text-foreground mt-1 leading-tight">
                       {sec.title}
                     </h2>
+                    <p className="text-[11px] text-muted-foreground/70">{sec.titleEn}</p>
                     <p className="text-xs text-muted-foreground">{sec.subtitle}</p>
                   </div>
                 </div>
               </div>
 
-              <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
+              <p className="text-sm text-muted-foreground mb-1 leading-relaxed">
                 {sec.desc}
+              </p>
+              <p className="text-xs text-muted-foreground/60 mb-4 leading-relaxed">
+                {sec.descEn}
               </p>
 
               <div className="flex flex-wrap gap-2 mb-4">
@@ -120,29 +136,33 @@ export default function Landing() {
               <div className="flex flex-wrap items-center gap-2 sm:gap-3">
                 <Link
                   to={sec.path}
-                  className={`inline-flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-xl text-sm font-bold text-white transition-all ${sec.btnColor}`}
+                  className={`inline-flex flex-col items-center gap-0 px-4 sm:px-5 py-2.5 rounded-xl text-sm font-bold text-white transition-all ${sec.btnColor}`}
                 >
-                  바로 가기 <ArrowRight className="w-4 h-4" />
+                  <span className="flex items-center gap-2">바로 가기 <ArrowRight className="w-4 h-4" /></span>
+                  <span className="text-[10px] font-normal opacity-70">Go to page</span>
                 </Link>
                 {sec.path === '/pas1' && (
                   <>
                     <button
                       onClick={() => setShowPAS1Prep(true)}
-                      className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold border border-amber-300 text-amber-700 bg-amber-50 hover:bg-amber-100 transition-all"
+                      className="inline-flex flex-col items-center gap-0 px-4 py-2.5 rounded-xl text-sm font-semibold border border-amber-300 text-amber-700 bg-amber-50 hover:bg-amber-100 transition-all"
                     >
-                      <FileText className="w-4 h-4" /> 준비 서류 확인
+                      <span className="flex items-center gap-2"><FileText className="w-4 h-4" /> 준비 서류 확인</span>
+                      <span className="text-[10px] font-normal opacity-60">Required Documents</span>
                     </button>
                     <button
                       onClick={() => setShowPAS1Preview(true)}
-                      className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold border border-blue-300 text-blue-700 bg-blue-50 hover:bg-blue-100 transition-all"
+                      className="inline-flex flex-col items-center gap-0 px-4 py-2.5 rounded-xl text-sm font-semibold border border-blue-300 text-blue-700 bg-blue-50 hover:bg-blue-100 transition-all"
                     >
-                      <BookOpen className="w-4 h-4" /> PAS-1폼 한글번역보기
+                      <span className="flex items-center gap-2"><BookOpen className="w-4 h-4" /> PAS-1폼 한글번역보기</span>
+                      <span className="text-[10px] font-normal opacity-60">Korean Translation</span>
                     </button>
                     <button
                       onClick={() => setShowPAS1FormView(true)}
-                      className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold border border-green-300 text-green-700 bg-green-50 hover:bg-green-100 transition-all"
+                      className="inline-flex flex-col items-center gap-0 px-4 py-2.5 rounded-xl text-sm font-semibold border border-green-300 text-green-700 bg-green-50 hover:bg-green-100 transition-all"
                     >
-                      <FileText className="w-4 h-4" /> 한국어 양식 보기
+                      <span className="flex items-center gap-2"><FileText className="w-4 h-4" /> 한국어 양식 보기</span>
+                      <span className="text-[10px] font-normal opacity-60">Korean Form View</span>
                     </button>
                   </>
                 )}
@@ -158,7 +178,8 @@ export default function Landing() {
           onClick={() => setShowContact(true)}
           className="w-full bg-primary text-primary-foreground rounded-xl p-4 flex items-center justify-center gap-2 text-sm font-bold hover:bg-primary/90 transition-colors"
         >
-          <MessageCircle className="w-5 h-5" /> 문의하기
+          <span className="flex items-center gap-2"><MessageCircle className="w-5 h-5" /> 문의하기</span>
+          <span className="text-[10px] font-normal opacity-70">Contact Us</span>
         </button>
       </div>
     </div>

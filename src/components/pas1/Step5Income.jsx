@@ -17,11 +17,14 @@ export default function Step5Income() {
     <div className="bg-card rounded-xl border border-border shadow-sm p-5">
       <div className="flex items-center gap-2 text-xs font-bold text-primary uppercase tracking-wider pb-3 mb-4 border-b border-secondary">
         <DollarSign className="w-4 h-4" /> STEP 5 — 소득 정보
+      <span className="block text-[10px] text-muted-foreground/60 normal-case tracking-normal ml-6">Income Information</span>
       </div>
 
       <div className="flex gap-2 items-start p-3 rounded-lg bg-blue-50 text-primary text-sm mb-4">
         <Info className="w-4 h-4 mt-0.5 flex-shrink-0" />
-        <span>소셜시큐리티만 받으시는 분: 17a에 0 입력, 17e에 SSA-1099 Box 5 금액을 입력하세요.</span>
+        <span>소셜시큐리티만 받으시는 분: 17a에 0 입력, 17e에 SSA-1099 Box 5 금액을 입력하세요.
+          <span className="block text-[11px] text-muted-foreground/60 mt-0.5">Social Security only? Enter 0 on 17a and your SSA-1099 Box 5 amount on 17e.</span>
+        </span>
       </div>
 
       {/* Year Tabs */}
@@ -34,12 +37,14 @@ export default function Step5Income() {
               ${yr === y ? 'border-primary bg-secondary text-primary' : 'border-border text-muted-foreground hover:bg-muted'}`}
           >
             {y}년 {(formData.inc[y]?.a > 0 || formData.inc[y]?.e > 0) ? '✓' : ''}
+            <span className="block text-[10px] font-normal opacity-60">{y}</span>
           </button>
         ))}
       </div>
 
       <div className="text-xs text-muted-foreground mb-3 p-2 bg-muted rounded">
         <strong>{yr}년</strong> 소득 입력 중 — NJ-1040, SSA-1099를 옆에 펼쳐두세요
+        <span className="block text-[10px] text-muted-foreground/60 mt-0.5">Entering {yr} income — keep your NJ-1040 and SSA-1099 handy</span>
       </div>
 
       {/* Income Table */}
@@ -97,6 +102,13 @@ export default function Step5Income() {
               : total < 500000 
                 ? 'Senior Freeze 기준 초과. ANCHOR/Stay NJ 가능 여부 확인' 
                 : '$500,000 이상 — 모든 프로그램 신청 불가'}
+            <span className="block text-[10px] mt-0.5">
+              {total <= limit 
+                ? `Meets Senior Freeze income limit ($${limit.toLocaleString()})` 
+                : total < 500000 
+                  ? 'Exceeds Senior Freeze limit. Check ANCHOR/Stay NJ eligibility' 
+                  : '$500,000+ — not eligible for any program'}
+            </span>
           </span>
         </div>
       )}

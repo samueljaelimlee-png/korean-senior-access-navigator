@@ -45,8 +45,10 @@ export default function ContactForm({ onClose }) {
         {/* Header */}
         <div className="flex items-center justify-between px-5 py-4 border-b border-border flex-shrink-0">
           <div className="flex items-center gap-2">
-            <Send className="w-5 h-5 text-primary" />
-            <h2 className="text-base font-bold text-foreground">문의하기</h2>
+            <div>
+              <h2 className="text-base font-bold text-foreground">문의하기</h2>
+              <p className="text-[11px] text-muted-foreground/70">Contact Us</p>
+            </div>
           </div>
           <button onClick={onClose} className="p-2 rounded-full hover:bg-muted transition-colors">
             <X className="w-5 h-5 text-muted-foreground" />
@@ -57,8 +59,9 @@ export default function ContactForm({ onClose }) {
           <div className="p-8 text-center">
             <div className="text-4xl mb-3">✅</div>
             <h3 className="text-lg font-bold text-foreground mb-2">문의가 접수되었습니다</h3>
+            <p className="text-[11px] text-muted-foreground/70 mb-2">Your inquiry has been received</p>
             <p className="text-sm text-muted-foreground mb-6">입력해주신 연락처로 답변드리겠습니다. 감사합니다.</p>
-            <Button onClick={onClose} className="px-8">확인</Button>
+            <Button onClick={onClose} className="px-8">확인 / OK</Button>
           </div>
         ) : (
           <>
@@ -66,14 +69,15 @@ export default function ContactForm({ onClose }) {
               {/* Privacy warning */}
               <div className="flex gap-2 p-3 bg-red-50 border border-red-200 rounded-lg">
                 <ShieldAlert className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
-                <p className="text-xs text-red-800 leading-relaxed">
-                  <strong>민감정보 안내:</strong> SSN(사회보장번호), 은행 계좌번호, 세금 보고서, 신분증 사진 등은 절대 보내지 마세요.
-                </p>
+                <div className="text-xs text-red-800 leading-relaxed">
+                  <p><strong>민감정보 안내:</strong> SSN(사회보장번호), 은행 계좌번호, 세금 보고서, 신분증 사진 등은 절대 보내지 마세요.</p>
+                  <p className="text-[10px] text-red-700/70 mt-1"><strong>Privacy Notice:</strong> Never send SSN, bank account numbers, tax returns, or ID photos.</p>
+                </div>
               </div>
 
               {/* Name */}
               <div>
-                <label className="text-sm font-semibold text-foreground mb-1.5 block">이름</label>
+                <label className="text-sm font-semibold text-foreground mb-1.5 block">이름 <span className="text-[11px] font-normal text-muted-foreground/70">Name</span></label>
                 <input
                   type="text"
                   value={name}
@@ -85,7 +89,7 @@ export default function ContactForm({ onClose }) {
 
               {/* Contact */}
               <div>
-                <label className="text-sm font-semibold text-foreground mb-1.5 block">연락 가능한 이메일 / 전화</label>
+                <label className="text-sm font-semibold text-foreground mb-1.5 block">연락 가능한 이메일 / 전화 <span className="text-[11px] font-normal text-muted-foreground/70">Email / Phone</span></label>
                 <input
                   type="text"
                   value={contact}
@@ -100,6 +104,7 @@ export default function ContactForm({ onClose }) {
                 <label className="text-sm font-semibold text-foreground mb-1.5 block">
                   문의 유형 <span className="text-xs font-normal text-muted-foreground">(여러 개 선택 가능)</span>
                 </label>
+                <p className="text-[11px] text-muted-foreground/60 mb-1.5">Inquiry Type (multiple selection allowed)</p>
                 <div className="flex flex-wrap gap-2">
                   {INQUIRY_TYPES.map((t) => (
                     <button
@@ -120,7 +125,7 @@ export default function ContactForm({ onClose }) {
 
               {/* Message */}
               <div>
-                <label className="text-sm font-semibold text-foreground mb-1.5 block">간단한 질문</label>
+                <label className="text-sm font-semibold text-foreground mb-1.5 block">간단한 질문 <span className="text-[11px] font-normal text-muted-foreground/70">Your Question</span></label>
                 <textarea
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
@@ -140,6 +145,9 @@ export default function ContactForm({ onClose }) {
                 />
                 <span className="text-xs text-foreground leading-relaxed">
                   저는 Social Security Number, 은행정보, 세금 보고서, 신분증 사진 등 민감정보를 보내지 않아야 함을 이해했습니다.
+                  <span className="block text-[10px] text-muted-foreground/70 mt-1">
+                    I understand I must not send sensitive information such as SSN, bank details, tax returns, or ID photos.
+                  </span>
                 </span>
               </label>
             </form>
@@ -155,11 +163,11 @@ export default function ContactForm({ onClose }) {
                 {submitting ? (
                   <>
                     <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                    전송 중...
+                    전송 중... <span className="text-[10px] font-normal opacity-70">Sending...</span>
                   </>
                 ) : (
                   <>
-                    <Send className="w-4 h-4" /> 문의 보내기
+                    <Send className="w-4 h-4" /> 문의 보내기 <span className="text-[10px] font-normal opacity-70">/ Submit</span>
                   </>
                 )}
               </Button>

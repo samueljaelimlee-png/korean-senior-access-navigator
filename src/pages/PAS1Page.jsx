@@ -34,9 +34,10 @@ export default function PAS1Page() {
             <div>
               <div className="text-sm font-bold">🏠 PAS-1 재산세 감면 신청 도우미</div>
               <div className="text-[10px] text-white/70">Senior Freeze · ANCHOR · Stay NJ</div>
+              <div className="text-[9px] text-white/50">PAS-1 Property Tax Relief Application Helper</div>
             </div>
-            <div className="flex items-center gap-1 text-xs font-semibold bg-red-600 px-2.5 py-1 rounded-full flex-shrink-0">
-              <Calendar className="w-3 h-3" /> Nov 2
+            <div className="flex flex-col items-center text-xs font-semibold bg-red-600 px-2.5 py-1 rounded-full flex-shrink-0">
+              <span className="flex items-center gap-1"><Calendar className="w-3 h-3" /> Nov 2</span>
             </div>
           </div>
           <div className="flex flex-wrap items-center gap-2">
@@ -44,13 +45,15 @@ export default function PAS1Page() {
               onClick={() => setShowPreview(true)}
               className="flex items-center gap-1.5 text-xs font-bold bg-yellow-400 text-yellow-900 px-3 py-1.5 rounded-full hover:bg-yellow-300 transition-colors shadow"
             >
-              <BookOpen className="w-3.5 h-3.5" /> 한글 번역 보기
+              <span className="flex items-center gap-1.5"><BookOpen className="w-3.5 h-3.5" /> 한글 번역 보기</span>
+              <span className="text-[9px] text-yellow-900/60">Korean Translation</span>
             </button>
             <button
               onClick={() => setShowFormView(true)}
               className="flex items-center gap-1.5 text-xs font-bold bg-white text-blue-700 px-3 py-1.5 rounded-full hover:bg-blue-50 transition-colors shadow border border-blue-300"
             >
-              <FileText className="w-3.5 h-3.5" /> 한국어 양식 보기
+              <span className="flex items-center gap-1.5"><FileText className="w-3.5 h-3.5" /> 한국어 양식 보기</span>
+              <span className="text-[9px] text-blue-700/60">Korean Form</span>
             </button>
           </div>
         </div>
@@ -60,18 +63,23 @@ export default function PAS1Page() {
           <p className="text-xs text-yellow-800 leading-relaxed">
             📖 영문 질문 내용이 어려우신가요? <strong>한글 번역</strong>을 옆에 띄워두고 함께 작성하세요.
           </p>
+          <p className="text-[11px] text-yellow-700/60 leading-relaxed">
+            Having trouble with English questions? Open the <strong>Korean translation</strong> side-by-side.
+          </p>
           <div className="flex items-center gap-2 flex-shrink-0">
             <button
               onClick={() => setShowPreview(true)}
-              className="flex items-center gap-1.5 text-xs font-bold bg-yellow-400 text-yellow-900 px-3 py-1.5 rounded-full hover:bg-yellow-300 transition-colors"
+              className="flex flex-col items-center gap-0 text-xs font-bold bg-yellow-400 text-yellow-900 px-3 py-1.5 rounded-full hover:bg-yellow-300 transition-colors"
             >
-              <BookOpen className="w-3.5 h-3.5" /> 한글번역
+              <span className="flex items-center gap-1.5"><BookOpen className="w-3.5 h-3.5" /> 한글번역</span>
+              <span className="text-[9px] text-yellow-900/60">Korean</span>
             </button>
             <button
               onClick={() => setShowFormView(true)}
-              className="flex items-center gap-1.5 text-xs font-bold bg-white text-blue-700 px-3 py-1.5 rounded-full hover:bg-blue-50 transition-colors border border-blue-300"
+              className="flex flex-col items-center gap-0 text-xs font-bold bg-white text-blue-700 px-3 py-1.5 rounded-full hover:bg-blue-50 transition-colors border border-blue-300"
             >
-              <FileText className="w-3.5 h-3.5" /> 한국어 양식
+              <span className="flex items-center gap-1.5"><FileText className="w-3.5 h-3.5" /> 한국어 양식</span>
+              <span className="text-[9px] text-blue-700/60">Korean Form</span>
             </button>
           </div>
         </div>

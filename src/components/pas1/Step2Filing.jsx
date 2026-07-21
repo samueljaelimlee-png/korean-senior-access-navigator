@@ -13,10 +13,11 @@ export default function Step2Filing() {
     <div className="bg-card rounded-xl border border-border shadow-sm p-5">
       <div className="flex items-center gap-2 text-xs font-bold text-primary uppercase tracking-wider pb-3 mb-4 border-b border-secondary">
         <FileText className="w-4 h-4" /> STEP 2 — 신고 상태
+      <span className="block text-[10px] text-muted-foreground/60 normal-case tracking-normal ml-6">Filing Status</span>
       </div>
 
       <div className="mb-4">
-        <Label className="text-sm font-medium mb-2 block">Filing Status (Line 1)</Label>
+        <Label className="text-sm font-medium mb-2 block">Filing Status (Line 1) <span className="text-[11px] font-normal text-muted-foreground/60">신고 상태</span></Label>
         <div className="space-y-2">
           {FILING_STATUS_OPTIONS.map(o => (
             <label
@@ -43,7 +44,7 @@ export default function Step2Filing() {
       </div>
 
       <div className="border-t border-secondary pt-3">
-        <Label className="text-sm font-medium mb-2 block">장애급여 수령 여부</Label>
+        <Label className="text-sm font-medium mb-2 block">장애급여 수령 여부 <span className="text-[11px] font-normal text-muted-foreground/60">Disability Benefit Status</span></Label>
         <div className="space-y-2">
           <div className="flex items-center gap-2">
             <Checkbox checked={formData.ssdi} onCheckedChange={v => updateField('ssdi', v)} />

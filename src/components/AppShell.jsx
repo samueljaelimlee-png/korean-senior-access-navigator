@@ -4,9 +4,9 @@ import { FileText, Gift, Home, Lock } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 
 const NAV = [
-  { path: '/', label: '홈', icon: Home },
-  { path: '/pas1', label: 'PAS-1 신청', icon: FileText },
-  { path: '/benefits', label: '정부 혜택 안내', icon: Gift },
+  { path: '/', label: '홈', en: 'Home', icon: Home },
+  { path: '/pas1', label: 'PAS-1 신청', en: 'PAS-1 Application', icon: FileText },
+  { path: '/benefits', label: '정부 혜택 안내', en: 'Benefits Guide', icon: Gift },
 ];
 
 export default function AppShell({ children }) {
@@ -38,7 +38,7 @@ export default function AppShell({ children }) {
           </Link>
           {/* Desktop nav */}
           <nav className="hidden sm:flex items-center gap-1">
-            {NAV.slice(1).map(({ path, label, icon: NavIcon }) => (
+            {NAV.slice(1).map(({ path, label, en, icon: NavIcon }) => (
               <Link
                 key={path}
                 to={path}
@@ -48,7 +48,10 @@ export default function AppShell({ children }) {
                     : 'text-primary-foreground/70 hover:bg-white/10 hover:text-white'}`}
               >
                 <NavIcon className="w-3.5 h-3.5" />
-                {label}
+                <span className="flex flex-col leading-tight">
+                  <span>{label}</span>
+                  <span className="text-[9px] text-primary-foreground/50">{en}</span>
+                </span>
               </Link>
             ))}
           </nav>
@@ -60,6 +63,7 @@ export default function AppShell({ children }) {
           >
             <Lock className="w-4 h-4 sm:w-3 sm:h-3" />
             <span className="hidden sm:inline ml-1 text-[10px]">관리자</span>
+            <span className="hidden sm:inline ml-1 text-[8px] text-primary-foreground/50">Admin</span>
           </Link>
         </div>
       </header>
@@ -71,7 +75,7 @@ export default function AppShell({ children }) {
 
       {/* Mobile Bottom Nav */}
       <nav className="no-print sm:hidden fixed bottom-0 left-0 right-0 bg-card border-t border-border z-50 flex">
-        {NAV.map(({ path, label, icon: NavIcon }) => (
+        {NAV.map(({ path, label, en, icon: NavIcon }) => (
           <Link
             key={path}
             to={path}
@@ -79,7 +83,8 @@ export default function AppShell({ children }) {
               ${pathname === path ? 'text-primary' : 'text-muted-foreground'}`}
           >
             <NavIcon className="w-5 h-5" />
-            {label}
+            <span>{label}</span>
+            <span className="text-[8px] text-muted-foreground/70">{en}</span>
           </Link>
         ))}
       </nav>

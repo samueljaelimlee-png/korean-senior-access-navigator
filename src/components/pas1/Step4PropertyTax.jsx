@@ -18,26 +18,29 @@ export default function Step4PropertyTax() {
     <div className="bg-card rounded-xl border border-border shadow-sm p-5">
       <div className="flex items-center gap-2 text-xs font-bold text-primary uppercase tracking-wider pb-3 mb-4 border-b border-secondary">
         <Receipt className="w-4 h-4" /> STEP 4 — 재산세 정보
+      <span className="block text-[10px] text-muted-foreground/60 normal-case tracking-normal ml-6">Property Tax Information</span>
       </div>
 
       <div className="flex gap-2 items-start p-3 rounded-lg bg-muted text-muted-foreground text-sm mb-4">
         <FileText className="w-4 h-4 mt-0.5 flex-shrink-0" />
-        <span>재산세 고지서(Property Tax Bill)를 준비해두시면 Block/Lot 번호와 납부액을 쉽게 입력할 수 있습니다.</span>
+        <span>재산세 고지서(Property Tax Bill)를 준비해두시면 Block/Lot 번호와 납부액을 쉽게 입력할 수 있습니다.
+          <span className="block text-[11px] text-muted-foreground/60 mt-0.5">Having your Property Tax Bill ready makes it easy to enter Block/Lot numbers and amounts.</span>
+        </span>
       </div>
 
       <div className="grid grid-cols-3 gap-3 mb-4">
         <div>
-          <Label className="text-sm">Block <span className="text-red-500 text-xs">필수</span></Label>
+          <Label className="text-sm">Block <span className="text-red-500 text-xs">필수</span> <span className="text-[11px] text-muted-foreground/60">Required</span></Label>
           <Input placeholder="2204" className="font-mono" value={formData.block}
             onChange={e => updateField('block', e.target.value)} />
         </div>
         <div>
-          <Label className="text-sm">Lot <span className="text-red-500 text-xs">필수</span></Label>
+          <Label className="text-sm">Lot <span className="text-red-500 text-xs">필수</span> <span className="text-[11px] text-muted-foreground/60">Required</span></Label>
           <Input placeholder="8" className="font-mono" value={formData.lot}
             onChange={e => updateField('lot', e.target.value)} />
         </div>
         <div>
-          <Label className="text-sm">Qualifier <span className="text-xs text-muted-foreground">(콘도)</span></Label>
+          <Label className="text-sm">Qualifier <span className="text-xs text-muted-foreground">(콘도)</span> <span className="text-[11px] text-muted-foreground/60">Condo</span></Label>
           <Input placeholder="C001" className="font-mono" value={formData.qualifier}
             onChange={e => updateField('qualifier', e.target.value)} />
         </div>
@@ -45,12 +48,12 @@ export default function Step4PropertyTax() {
 
       <div className="flex items-center gap-2 mb-4">
         <Checkbox checked={formData.additionalLots} onCheckedChange={v => updateField('additionalLots', v)} />
-        <Label className="text-sm cursor-pointer">Line 13b — 추가 Lot 재산세 포함</Label>
+        <Label className="text-sm cursor-pointer">Line 13b — 추가 Lot 재산세 포함 <span className="text-[11px] font-normal text-muted-foreground/60">Include additional lots</span></Label>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
         <div>
-          <Label className="text-sm">Line 14 — 2024년 재산세 <span className="text-red-500 text-xs">필수</span></Label>
+          <Label className="text-sm">Line 14 — 2024년 재산세 <span className="text-red-500 text-xs">필수</span> <span className="text-[11px] text-muted-foreground/60">2024 Property Tax — Required</span></Label>
           <div className="flex items-center gap-1 mt-1">
             <span className="text-muted-foreground text-sm">$</span>
             <Input type="number" placeholder="11250" step="0.01" className="font-mono text-right"
@@ -58,7 +61,7 @@ export default function Step4PropertyTax() {
           </div>
         </div>
         <div>
-          <Label className="text-sm">Line 15 — 2025년 재산세 <span className="text-red-500 text-xs">필수</span></Label>
+          <Label className="text-sm">Line 15 — 2025년 재산세 <span className="text-red-500 text-xs">필수</span> <span className="text-[11px] text-muted-foreground/60">2025 Property Tax — Required</span></Label>
           <div className="flex items-center gap-1 mt-1">
             <span className="text-muted-foreground text-sm">$</span>
             <Input type="number" placeholder="11840" step="0.01" className="font-mono text-right"
@@ -70,18 +73,20 @@ export default function Step4PropertyTax() {
       {diff > 0 && (
         <div className="flex gap-2 items-start p-3 rounded-lg bg-green-50 text-green-800 text-sm mb-4">
           <CheckCircle className="w-4 h-4 mt-0.5 flex-shrink-0" />
-          <span>Senior Freeze 환급 예상액: <strong>{formatMoney(diff)}</strong> (재산세 증가분)</span>
+          <span>Senior Freeze 환급 예상액: <strong>{formatMoney(diff)}</strong> (재산세 증가분)
+            <span className="block text-[11px] text-green-600/60">Estimated Senior Freeze refund: <strong>{formatMoney(diff)}</strong> (property tax increase)</span>
+          </span>
         </div>
       )}
 
       <div className="border-t border-secondary pt-3">
         <div className="flex items-center gap-2 mb-2">
           <Checkbox checked={formData.pilot} onCheckedChange={v => updateField('pilot', v)} />
-          <Label className="text-sm cursor-pointer">Line 16a — P.I.L.O.T. (Payment-in-Lieu-of-Taxes) 해당</Label>
+          <Label className="text-sm cursor-pointer">Line 16a — P.I.L.O.T. (Payment-in-Lieu-of-Taxes) 해당 <span className="text-[11px] font-normal text-muted-foreground/60">Applicable</span></Label>
         </div>
         {formData.pilot && (
           <div>
-            <Label className="text-sm">Line 16b — P.I.L.O.T. 금액</Label>
+            <Label className="text-sm">Line 16b — P.I.L.O.T. 금액 <span className="text-[11px] text-muted-foreground/60">P.I.L.O.T. Amount</span></Label>
             <div className="flex items-center gap-1 mt-1">
               <span className="text-muted-foreground text-sm">$</span>
               <Input type="number" placeholder="0" step="0.01" className="font-mono text-right w-40"
