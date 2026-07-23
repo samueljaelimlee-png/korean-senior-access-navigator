@@ -757,12 +757,6 @@ export const IDME_CONTENT_HTML = `
       <span class="en">You don't need to start over. Re-open ID.me and log in — it will continue where you left off. Or schedule a new appointment.</span>
     </div>
     <div style="margin-top:16px;">
-      <div style="font-size:17px; font-weight:700; margin-bottom:10px;" class="ko">도움 연락처</div>
-      <div style="font-size:17px; font-weight:700; margin-bottom:10px;" class="en">Help Contacts</div>
-      <a class="contact-btn" href="tel:5515748707">
-        📱 <span class="ko">Samuel에게 전화: 551-574-8707</span>
-        <span class="en">Call Samuel: 551-574-8707</span>
-      </a>
       <a class="contact-btn outline" href="mailto:samueljaelimlee@gmail.com">
         ✉️ samueljaelimlee@gmail.com
       </a>
@@ -782,7 +776,7 @@ export const IDME_CONTENT_HTML = `
     <div class="helper-item">신분증 촬영: 어르신이 직접 찍을 수 있도록 안내하세요. 헬퍼가 직접 찍으면 안 됩니다.</div>
     <div class="helper-item">SSN 입력: 어르신이 직접 입력하도록 하세요. 헬퍼는 화면을 보지 않도록 배려하세요.</div>
     <div class="helper-item">화상통화: 스캠이 아니라고 먼저 설명하세요. "제가 옆에 있으니 괜찮아요"라고 말씀드리세요.</div>
-    <div class="helper-item">막혔을 때: 당황하지 마세요. 이 가이드의 "막혔을 때" 섹션을 참고하세요. 모르면 Samuel에게 연락하세요.</div>
+    <div class="helper-item">막혔을 때: 당황하지 마세요. 이 가이드의 "막혔을 때" 섹션을 참고하세요.</div>
     <div class="helper-item">완료 후: 축하해드리고, 다음 단계(PAS-1 신청)로 안내해드리세요.</div>
   </div>
   <div class="en">
@@ -791,7 +785,7 @@ export const IDME_CONTENT_HTML = `
     <div class="helper-item">ID photo: Guide them to take it themselves. Helpers should not handle the senior's phone for this step.</div>
     <div class="helper-item">SSN entry: Let them type it themselves. Look away to give them privacy.</div>
     <div class="helper-item">Video call: Explain it's not a scam first. Say "I'm right here, it's going to be fine."</div>
-    <div class="helper-item">When stuck: Don't panic. Refer to the "When Stuck" section. If unsure, contact Samuel.</div>
+    <div class="helper-item">When stuck: Don't panic. Refer to the "When Stuck" section.</div>
     <div class="helper-item">After completion: Congratulate them and guide to next step (PAS-1 application).</div>
   </div>
 </div>
@@ -801,13 +795,13 @@ export const IDME_CONTENT_HTML = `
   <div class="ko">
     Korean Senior Access Navigator<br>
     이 가이드는 한인 시니어 디지털 접근성 연구의 일환으로 제작됐습니다.<br>
-    개발: Samuel Jae-rim Lee · 감독: John Yoon, CPA · Jenny H. Kim, EY Managing Director<br>
+    개발: Samuel Lee · 감독: John Yoon, CPA · Jenny H. Kim, EY Managing Director<br>
     <span style="opacity:0.5;">이 앱은 ID.me와 무관하며 정부 서비스가 아닙니다.</span>
   </div>
   <div class="en">
     Korean Senior Access Navigator<br>
     This guide was created as part of independent research on Korean senior digital accessibility.<br>
-    Developer: Samuel Jae-rim Lee · Supervisors: John Yoon, CPA · Jenny H. Kim, EY Managing Director<br>
+    Developer: Samuel Lee · Supervisors: John Yoon, CPA · Jenny H. Kim, EY Managing Director<br>
     <span style="opacity:0.5;">This app is not affiliated with ID.me or any government agency.</span>
   </div>
 </div>
