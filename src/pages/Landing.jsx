@@ -60,20 +60,17 @@ export default function Landing() {
       <div className="bg-gradient-to-br from-primary to-primary/80 text-primary-foreground px-4 py-10 text-center">
         <div className="max-w-2xl mx-auto">
           <div className="text-4xl mb-3">🌿</div>
-          <h1 className="text-2xl sm:text-3xl font-bold mb-2 leading-tight">
+          <h1 className="text-2xl sm:text-3xl font-bold mb-1 leading-tight">
             Korean Senior Access Navigator
           </h1>
-          <p className="text-primary-foreground/80 text-sm sm:text-base mb-1">
-            한인 시니어를 위한 복지 정보 길라잡이
+          <p className="text-primary-foreground/80 text-xs sm:text-sm mb-3">
+            NJ Public Benefits &amp; Digital Access Guide
           </p>
-          <p className="text-primary-foreground/50 text-[11px] sm:text-xs mb-1">
-            Korean Senior Welfare Information Guide
+          <p className="text-primary-foreground/80 text-base sm:text-lg font-semibold mb-1">
+            한인 시니어 공공서비스 길잡이
           </p>
           <p className="text-primary-foreground/60 text-xs sm:text-sm">
-            뉴저지 거주 시니어 여러분께 꼭 필요한 정보를 한국어로 제공합니다
-          </p>
-          <p className="text-primary-foreground/40 text-[10px] sm:text-[11px]">
-            Providing essential information in Korean for NJ senior residents
+            뉴저지 정부혜택·디지털 접근 안내
           </p>
           <div className="mt-4 flex flex-wrap items-center justify-center gap-3">
             <button
