@@ -15,6 +15,7 @@ import AppShell from '@/components/AppShell';
 import Landing from './pages/Landing';
 import PAS1Page from './pages/PAS1Page';
 import BenefitsPage from './pages/BenefitsPage';
+import IDmePage from './pages/IDmePage';
 import AdminPage from './pages/AdminPage';
 
 const AuthenticatedApp = () => {
@@ -45,6 +46,7 @@ const AuthenticatedApp = () => {
       <Route path="/reset-password" element={<ResetPassword />} />
       <Route path="/" element={<AppShell><Landing /></AppShell>} />
       <Route path="/pas1" element={<AppShell><PAS1Page /></AppShell>} />
+      <Route path="/idme" element={<AppShell><IDmePage /></AppShell>} />
       <Route path="/benefits" element={<AppShell><BenefitsPage /></AppShell>} />
       <Route element={<ProtectedRoute unauthenticatedElement={<Navigate to="/login" replace />} />}>
         <Route path="/admin" element={<AdminPage />} />

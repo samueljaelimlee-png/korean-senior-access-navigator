@@ -15,9 +15,9 @@ const SECTIONS = [
     iconColor: 'bg-blue-50 border-blue-200',
     badge: '마감 Nov 2, 2026',
     badgeColor: 'bg-red-100 text-red-700',
-    title: 'PAS-1 재산세 감면 신청',
-    titleEn: 'Property Tax Relief Application',
-    subtitle: 'Property Tax Relief Application',
+    title: 'NJ Property Tax Relief',
+    titleEn: '재산세 감면 신청',
+    subtitle: 'PAS-1 · Senior Freeze · ANCHOR · Stay NJ',
     desc: 'Senior Freeze · ANCHOR · Stay NJ 세 가지 재산세 혜택을 한 번에 신청하세요. 단계별 안내로 쉽게 작성하고 프린트까지 도와드립니다.',
     descEn: 'Apply for three property tax benefits at once: Senior Freeze, ANCHOR, and Stay NJ. Step-by-step guidance with print support.',
     highlights: ['Senior Freeze (재산세 동결)', 'ANCHOR 혜택', 'Stay NJ 프로그램'],
@@ -25,17 +25,32 @@ const SECTIONS = [
     btnColor: 'bg-blue-700 hover:bg-blue-800',
   },
   {
+    path: '/idme',
+    icon: '🔐',
+    iconColor: 'bg-amber-50 border-amber-200',
+    badge: '최초 1회 필요',
+    badgeColor: 'bg-amber-100 text-amber-700',
+    title: 'ID.me Account & Verification',
+    titleEn: 'ID.me 계정 및 본인인증',
+    subtitle: 'ID.me 계정 만들기 · 본인인증 · 영상통화',
+    desc: 'ID.me 계정을 만들면 시니어 프리즈·ANCHOR·Stay NJ·소셜시큐리티 등 정부 서비스를 혼자 신청할 수 있습니다. 단계별 한국어 안내로 계정을 만드세요.',
+    descEn: 'Create an ID.me account to independently apply for Senior Freeze, ANCHOR, Stay NJ, Social Security, and more. Step-by-step Korean guidance.',
+    highlights: ['ID.me 계정 만들기', '신분증·셀피 인증', '영상통화 (한국어 통역)'],
+    color: 'from-amber-500 to-amber-700',
+    btnColor: 'bg-amber-600 hover:bg-amber-700',
+  },
+  {
     path: '/benefits',
     icon: '🎁',
     iconColor: 'bg-green-50 border-green-200',
     badge: '최신 업데이트',
     badgeColor: 'bg-green-100 text-green-700',
-    title: '정부 및 주정부 혜택 안내',
-    titleEn: 'Government & State Benefits Guide',
-    subtitle: 'Federal & State Benefits Guide',
+    title: 'Government Benefit Resources',
+    titleEn: '정부 혜택 안내',
+    subtitle: 'Social Security · Medicare · Medicaid · IRS',
     desc: '연방 정부와 뉴저지 주정부가 제공하는 시니어 혜택을 한눈에 확인하세요. 의료, 식품, 주거, 에너지 보조 등 다양한 프로그램을 안내합니다.',
     descEn: 'View senior benefits from the federal government and New Jersey state at a glance — medical, food, housing, and energy assistance programs.',
-    highlights: ['Medicare / Medicaid', 'SNAP 식품 보조', '에너지 보조 (LIHEAP)', 'SSI / SSD'],
+    highlights: ['Social Security / SSI', 'Medicare / Medicaid', 'IRS 세금 환급', '에너지 보조 (LIHEAP)'],
     color: 'from-green-600 to-green-800',
     btnColor: 'bg-green-700 hover:bg-green-800',
   },
@@ -177,8 +192,8 @@ export default function Landing() {
           onClick={() => setShowContact(true)}
           className="w-full bg-primary text-primary-foreground rounded-xl p-4 flex items-center justify-center gap-2 text-sm font-bold hover:bg-primary/90 transition-colors"
         >
-          <span className="flex items-center gap-2"><MessageCircle className="w-5 h-5" /> 문의하기</span>
-          <span className="text-[10px] font-normal opacity-70">Contact Us</span>
+          <span className="flex items-center gap-2"><MessageCircle className="w-5 h-5" /> 문의하기 · 헬퍼 지원 · 공식기관 연결</span>
+          <span className="text-[10px] font-normal opacity-70">Get Help · Helper & Official Agency Support</span>
         </button>
       </div>
     </div>
