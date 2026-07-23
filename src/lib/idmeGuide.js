@@ -26,6 +26,12 @@ export const IDME_CSS = `
   color: #1C2B38;
   font-size: 18px;
   line-height: 1.75;
+  width: 100%;
+  max-width: 56rem; /* max-w-4xl */
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem; /* px-4 */
+  padding-right: 1rem;
 }
 
 /* LANG TOGGLE */
@@ -36,6 +42,8 @@ export const IDME_CSS = `
   align-items: center;
   gap: 10px;
   position: relative;
+  border-radius: 12px;
+  margin: 16px 0;
 }
 .idme-wrap .lbtn {
   padding: 6px 20px;
@@ -72,7 +80,7 @@ export const IDME_CSS = `
   border: 2px solid #C8922A;
   border-radius: 12px;
   padding: 16px 20px;
-  margin: 16px;
+  margin: 16px 0;
   font-size: 14px;
   color: #5D4E00;
   line-height: 1.7;
@@ -85,6 +93,8 @@ export const IDME_CSS = `
   color: #fff;
   padding: 28px 20px 24px;
   text-align: center;
+  border-radius: 16px;
+  margin: 16px 0;
 }
 .idme-wrap .app-header .title-ko { font-size: 26px; font-weight: 900; margin-bottom: 6px; }
 .idme-wrap .app-header .title-en { font-size: 20px; font-weight: 700; margin-bottom: 6px; }
@@ -108,7 +118,9 @@ export const IDME_CSS = `
   display: flex;
   gap: 6px;
   overflow-x: auto;
-  border-bottom: 2px solid #D0E2F0;
+  border: 2px solid #D0E2F0;
+  border-radius: 12px;
+  margin: 16px 0;
   position: relative;
 }
 .idme-wrap .step-nav a {
@@ -127,7 +139,7 @@ export const IDME_CSS = `
 /* PREP SECTION */
 .idme-wrap .prep-section {
   background: #fff;
-  margin: 16px;
+  margin: 16px 0;
   border-radius: 16px;
   overflow: hidden;
   box-shadow: 0 2px 12px rgba(0,0,0,0.07);
@@ -170,7 +182,7 @@ export const IDME_CSS = `
 /* STEP CARD */
 .idme-wrap .step-card {
   background: #fff;
-  margin: 16px;
+  margin: 16px 0;
   border-radius: 16px;
   overflow: hidden;
   box-shadow: 0 2px 12px rgba(0,0,0,0.07);
@@ -266,7 +278,7 @@ export const IDME_CSS = `
 /* COMPLETION */
 .idme-wrap .completion-card {
   background: linear-gradient(135deg, #1A7A43, #2ECC71);
-  color: #fff; border-radius: 16px; margin: 16px; padding: 28px 22px; text-align: center;
+  color: #fff; border-radius: 16px; margin: 16px 0; padding: 28px 22px; text-align: center;
 }
 .idme-wrap .completion-card .big-check { font-size: 56px; margin-bottom: 12px; }
 .idme-wrap .completion-card .comp-title { font-size: 24px; font-weight: 900; margin-bottom: 12px; }
@@ -275,7 +287,7 @@ export const IDME_CSS = `
 .idme-wrap .comp-service { background: rgba(255,255,255,0.15); border-radius: 8px; padding: 8px 12px; font-size: 14px; font-weight: 700; }
 
 /* STUCK SECTION */
-.idme-wrap .stuck-section { background: #fff; margin: 16px; border-radius: 16px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.07); }
+.idme-wrap .stuck-section { background: #fff; margin: 16px 0; border-radius: 16px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.07); }
 .idme-wrap .stuck-header { background: #C0392B; color: #fff; padding: 18px 22px; font-size: 20px; font-weight: 900; display: flex; align-items: center; gap: 12px; }
 .idme-wrap .stuck-body { padding: 20px 22px; }
 .idme-wrap .stuck-item { background: #FDECEA; border-radius: 10px; padding: 14px 18px; margin-bottom: 12px; font-size: 16px; line-height: 1.7; }
@@ -283,7 +295,7 @@ export const IDME_CSS = `
 .idme-wrap .stuck-item:last-child { margin-bottom: 0; }
 
 /* HELPER SECTION */
-.idme-wrap .helper-section { background: #1B3A5C; margin: 16px; border-radius: 16px; padding: 24px 22px; color: #fff; }
+.idme-wrap .helper-section { background: #1B3A5C; margin: 16px 0; border-radius: 16px; padding: 24px 22px; color: #fff; }
 .idme-wrap .helper-title { font-size: 18px; font-weight: 900; color: #F0D080; margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
 .idme-wrap .helper-item { font-size: 15px; margin-bottom: 10px; padding-left: 20px; position: relative; line-height: 1.7; opacity: 0.9; }
 .idme-wrap .helper-item::before { content: '▸'; position: absolute; left: 0; color: #C8922A; }
@@ -291,7 +303,8 @@ export const IDME_CSS = `
 /* FOOTER */
 .idme-wrap .footer {
   background: #1B3A5C; color: rgba(255,255,255,0.6);
-  padding: 24px 20px; text-align: center; font-size: 13px; line-height: 1.8; margin-top: 16px;
+  padding: 24px 20px; text-align: center; font-size: 13px; line-height: 1.8;
+  margin: 16px 0; border-radius: 16px;
 }
 .idme-wrap .footer a { color: #C8922A; }
 
