@@ -192,8 +192,8 @@ export default function Landing() {
           onClick={() => setShowContact(true)}
           className="w-full bg-primary text-primary-foreground rounded-xl p-4 flex items-center justify-center gap-2 text-sm font-bold hover:bg-primary/90 transition-colors"
         >
-          <span className="flex items-center gap-2"><MessageCircle className="w-5 h-5" /> 문의하기 · 헬퍼 지원 · 공식기관 연결</span>
-          <span className="text-[10px] font-normal opacity-70">Get Help · Helper & Official Agency Support</span>
+          <span className="flex items-center gap-2"><MessageCircle className="w-5 h-5" /> 문의하기 · 헬퍼 지원</span>
+          <span className="text-[10px] font-normal opacity-70">Get Help · Helper Support</span>
         </button>
       </div>
     </div>
