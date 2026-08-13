@@ -46,20 +46,43 @@ const DigitBoxes = ({ value = '', count = 4 }) => (
   </span>
 );
 
-/* ─── Money segmented boxes ─── */
-const MoneyBoxes = ({ value }) => {
+/* ─── Money segmented boxes (Small: 7 boxes — 5 integer + 2 cents, e.g. 10,000.00) ─── */
+/* Digits fill right-to-left; leading empty boxes stay blank. */
+const MoneyBoxesSmall = ({ value }) => {
   const formatted = money(value);
   const [intPart = '', decPart = '00'] = formatted.split('.');
-  const digits = intPart.replace(/,/g, '').padStart(7, '');
+  const digits = intPart.replace(/,/g, '').padStart(5, ' ');
   const dec = decPart.padEnd(2, '0').slice(0, 2);
-  const groups = [digits.slice(0, 2), digits.slice(2, 5), digits.slice(5, 7)];
+  const g1 = digits.slice(0, 2);
+  const g2 = digits.slice(2, 5);
   return (
     <span style={{ display: 'inline-flex', alignItems: 'center', gap: '1px' }}>
-      <DigitBoxes value={groups[0]} count={2} />
+      <DigitBoxes value={g1} count={2} />
       <span style={{ fontSize: '9px', padding: '0 1px' }}>,</span>
-      <DigitBoxes value={groups[1]} count={3} />
+      <DigitBoxes value={g2} count={3} />
+      <span style={{ fontSize: '9px', padding: '0 1px' }}>.</span>
+      <DigitBoxes value={dec} count={2} />
+    </span>
+  );
+};
+
+/* ─── Money segmented boxes (Large: 10 boxes — 8 integer + 2 cents, e.g. 10,000,000.00) ─── */
+/* Digits fill right-to-left; leading empty boxes stay blank. */
+const MoneyBoxesLarge = ({ value }) => {
+  const formatted = money(value);
+  const [intPart = '', decPart = '00'] = formatted.split('.');
+  const digits = intPart.replace(/,/g, '').padStart(8, ' ');
+  const dec = decPart.padEnd(2, '0').slice(0, 2);
+  const g1 = digits.slice(0, 2);
+  const g2 = digits.slice(2, 5);
+  const g3 = digits.slice(5, 8);
+  return (
+    <span style={{ display: 'inline-flex', alignItems: 'center', gap: '1px' }}>
+      <DigitBoxes value={g1} count={2} />
       <span style={{ fontSize: '9px', padding: '0 1px' }}>,</span>
-      <DigitBoxes value={groups[2]} count={2} />
+      <DigitBoxes value={g2} count={3} />
+      <span style={{ fontSize: '9px', padding: '0 1px' }}>,</span>
+      <DigitBoxes value={g3} count={3} />
       <span style={{ fontSize: '9px', padding: '0 1px' }}>.</span>
       <DigitBoxes value={dec} count={2} />
     </span>
@@ -201,11 +224,11 @@ export default function PrintForm({ data }) {
         <div style={{ marginBottom: '4px' }}>1. &nbsp;Your Filing Status from your 2025 NJ-1040:</div>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '3px', paddingLeft: '12px' }}>
           <div><CB checked={fs==='A'} /> &nbsp;A. &nbsp;Single</div>
-          <div><CB checked={fs==='E'} /> &nbsp;E. &nbsp;Each maintains <strong>separate</strong> residence</div>
+          <div style={{ fontSize: '8.5px' }}>Married, filing separately:</div>
           <div><CB checked={fs==='B'} /> &nbsp;B. &nbsp;Head of Household</div>
-          <div><CB checked={fs==='F'} /> &nbsp;F. &nbsp;Both maintain <strong>same</strong> residence</div>
+          <div><CB checked={fs==='E'} /> &nbsp;E. &nbsp;Each maintains <strong>separate</strong> residence</div>
           <div><CB checked={fs==='C'} /> &nbsp;C. &nbsp;Qualifying Widow(er)/Surviving CU Partner</div>
-          <div></div>
+          <div><CB checked={fs==='F'} /> &nbsp;F. &nbsp;Both maintain <strong>same</strong> residence</div>
           <div><CB checked={fs==='D'} /> &nbsp;D. &nbsp;Married/CU Couple, filing joint return</div>
         </div>
       </div>
@@ -219,11 +242,11 @@ export default function PrintForm({ data }) {
         </Row>
         <Row>
           <span style={{ flex: 1 }}><Ln n="3a." /> During 2025, were you <strong>receiving</strong> federal Social Security Disability benefit payments?</span>
-          <span style={{ whiteSpace: 'nowrap' }}>Yourself &nbsp;<CB checked={data.ssdi} /> Yes &nbsp;<CB checked={!data.ssdi} /> No &nbsp;&nbsp; Spouse/CU &nbsp;<CB checked={false} /> Yes &nbsp;<CB checked={true} /> No</span>
+          <span style={{ whiteSpace: 'nowrap' }}>Yourself &nbsp;<CB checked={data.ssdiSelf} /> Yes &nbsp;<CB checked={!data.ssdiSelf} /> No &nbsp;&nbsp; Spouse/CU &nbsp;<CB checked={data.ssdiSpouse} /> Yes &nbsp;<CB checked={!data.ssdiSpouse} /> No</span>
         </Row>
         <Row>
           <span style={{ flex: 1 }}><Ln n="3b." /> During 2025, were you <strong>receiving</strong> Railroad Retirement Disability benefit payments?</span>
-          <span style={{ whiteSpace: 'nowrap' }}>Yourself &nbsp;<CB checked={data.rrd} /> Yes &nbsp;<CB checked={!data.rrd} /> No &nbsp;&nbsp; Spouse/CU &nbsp;<CB checked={false} /> Yes &nbsp;<CB checked={true} /> No</span>
+          <span style={{ whiteSpace: 'nowrap' }}>Yourself &nbsp;<CB checked={data.rrdSelf} /> Yes &nbsp;<CB checked={!data.rrdSelf} /> No &nbsp;&nbsp; Spouse/CU &nbsp;<CB checked={data.rrdSpouse} /> Yes &nbsp;<CB checked={!data.rrdSpouse} /> No</span>
         </Row>
       </div>
 
@@ -321,10 +344,10 @@ export default function PrintForm({ data }) {
           <div style={{ marginBottom: '3px' }}><Ln n="13a." /> Enter the block and lot numbers of the address that was your main home on October 1, 2025.</div>
           <div style={{ display: 'flex', gap: '10px', paddingLeft: '28px', flexWrap: 'wrap', alignItems: 'center' }}>
             <span>Block <br /><InputBox value={data.block} width={55} /></span>
-            <span>Block Suffix <br /><InputBox value="" width={40} /></span>
+            <span>Block Suffix <br /><InputBox value={data.blockSuffix} width={40} /></span>
             <span style={{ padding: '0 2px', alignSelf: 'flex-end', marginBottom: '2px' }}>.</span>
             <span>Lot <br /><InputBox value={data.lot} width={55} /></span>
-            <span>Lot Suffix <br /><InputBox value="" width={40} /></span>
+            <span>Lot Suffix <br /><InputBox value={data.lotSuffix} width={40} /></span>
             <span style={{ padding: '0 2px', alignSelf: 'flex-end', marginBottom: '2px' }}>.</span>
             <span>Qualifier <br /><InputBox value={data.qualifier} width={55} /></span>
           </div>
@@ -338,14 +361,14 @@ export default function PrintForm({ data }) {
             <Ln n="14." /> Enter your <strong>2024</strong> property taxes billed for the home that was your main home on October 1, 2024.
             <span style={{ display: 'block', fontSize: '7.5px', color: '#555' }}>(Mobile home owners enter 18% of total site fees) &nbsp; <strong>Prior Senior Freeze recipients: Do not change.</strong></span>
           </span>
-          <MoneyBoxes value={t24} />
+          <MoneyBoxesSmall value={t24} />
         </Row>
         <Row>
           <span style={{ flex: 1 }}>
             <Ln n="15." /> Enter your <strong>2025</strong> property taxes billed for the home that was your main home on October 1, 2025.
             <span style={{ display: 'block', fontSize: '7.5px', color: '#555' }}>(Mobile home owners enter 18% of total site fees)</span>
           </span>
-          <MoneyBoxes value={t25} />
+          <MoneyBoxesSmall value={t25} />
         </Row>
       </div>
 
@@ -357,7 +380,7 @@ export default function PrintForm({ data }) {
         </Row>
         <Row>
           <span style={{ flex: 1 }}><Ln n="16b." /> If you answered "Yes," enter your Payment-in-Lieu-of-Taxes (P.I.L.O.T.) due for the home that was your main home in 2025.</span>
-          <MoneyBoxes value={data.pilot ? data.pilotAmount : ''} />
+          <MoneyBoxesSmall value={data.pilot ? data.pilotAmount : ''} />
         </Row>
       </div>
 
@@ -380,12 +403,12 @@ export default function PrintForm({ data }) {
         ].map(({ ln, label, key }) => (
           <Row key={ln}>
             <span style={{ flex: 1 }}><Ln n={ln} /> {label}</span>
-            <MoneyBoxes value={inc24[key]} />
+            <MoneyBoxesLarge value={inc24[key]} />
           </Row>
         ))}
         <div style={{ display: 'flex', justifyContent: 'space-between', padding: '5px 0', borderTop: '2px solid #000', marginTop: '4px' }}>
           <strong><Ln n="17f." /> Total 2024 income (Add lines 17a–17e)</strong>
-          <MoneyBoxes value={incomeTotal(inc24)} />
+          <MoneyBoxesLarge value={incomeTotal(inc24)} />
         </div>
       </div>
 
@@ -405,12 +428,12 @@ export default function PrintForm({ data }) {
         ].map(({ ln, label, key }) => (
           <Row key={ln}>
             <span style={{ flex: 1 }}><Ln n={ln} /> {label}</span>
-            <MoneyBoxes value={inc25[key]} />
+            <MoneyBoxesLarge value={inc25[key]} />
           </Row>
         ))}
         <div style={{ display: 'flex', justifyContent: 'space-between', padding: '5px 0', borderTop: '2px solid #000', marginTop: '4px' }}>
           <strong><Ln n="18f." /> Total 2025 income (Add lines 18a–18e)</strong>
-          <MoneyBoxes value={incomeTotal(inc25)} />
+          <MoneyBoxesLarge value={incomeTotal(inc25)} />
         </div>
       </div>
 

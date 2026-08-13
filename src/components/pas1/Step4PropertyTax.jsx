@@ -28,16 +28,26 @@ export default function Step4PropertyTax() {
         </span>
       </div>
 
-      <div className="grid grid-cols-3 gap-3 mb-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-4">
         <div>
           <Label className="text-sm">Block <span className="text-red-500 text-xs">필수</span> <span className="text-[11px] text-muted-foreground/60">Required</span></Label>
           <Input placeholder="2204" className="font-mono" value={formData.block}
             onChange={e => updateField('block', e.target.value)} />
         </div>
         <div>
+          <Label className="text-sm">Block Suffix <span className="text-[11px] text-muted-foreground/60">Block Suffix</span></Label>
+          <Input placeholder="A" className="font-mono" value={formData.blockSuffix}
+            onChange={e => updateField('blockSuffix', e.target.value)} />
+        </div>
+        <div>
           <Label className="text-sm">Lot <span className="text-red-500 text-xs">필수</span> <span className="text-[11px] text-muted-foreground/60">Required</span></Label>
           <Input placeholder="8" className="font-mono" value={formData.lot}
             onChange={e => updateField('lot', e.target.value)} />
+        </div>
+        <div>
+          <Label className="text-sm">Lot Suffix <span className="text-[11px] text-muted-foreground/60">Lot Suffix</span></Label>
+          <Input placeholder="A" className="font-mono" value={formData.lotSuffix}
+            onChange={e => updateField('lotSuffix', e.target.value)} />
         </div>
         <div>
           <Label className="text-sm">Qualifier <span className="text-xs text-muted-foreground">(콘도)</span> <span className="text-[11px] text-muted-foreground/60">Condo</span></Label>

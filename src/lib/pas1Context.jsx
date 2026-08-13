@@ -8,7 +8,7 @@ const defaultState = {
   lname: '', fname: '', birthYear: '', phone: '', address: '', muniCode: '', ssnLast4: '',
   hasSpouse: false, spName: '', spBirthYear: '',
   // Step 2 - Filing
-  filingStatus: 'D', ssdi: false, rrd: false,
+  filingStatus: 'D', ssdiSelf: false, ssdiSpouse: false, rrdSelf: false, rrdSpouse: false,
   // Step 3 - Residency
   homeType: 'own', oct1Nj: true, same2025: true, born1960: false, movedWithin2025: false,
   since2022: true, sameAsLast: true, moved2023: false, coOwn: false, coPct: '',
@@ -19,7 +19,7 @@ const defaultState = {
     home2: { address: '', blockLot: '', dates: '', shared: false, sharePct: '', multiUnit: false, multiUnitPct: '', taxes: '', pilot: '' },
   },
   // Step 4 - Property Tax
-  block: '', lot: '', qualifier: '', tax2024: '', tax2025: '',
+  block: '', blockSuffix: '', lot: '', lotSuffix: '', qualifier: '', tax2024: '', tax2025: '',
   additionalLots: false, pilot: false, pilotAmount: '',
   // Step 5 - Income
   inc: { 2024: { a: 0, b: 0, c: 0, d: 0, e: 0 }, 2025: { a: 0, b: 0, c: 0, d: 0, e: 0 } },

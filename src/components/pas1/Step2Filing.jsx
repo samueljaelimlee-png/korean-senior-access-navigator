@@ -45,14 +45,32 @@ export default function Step2Filing() {
 
       <div className="border-t border-secondary pt-3">
         <Label className="text-sm font-medium mb-2 block">장애급여 수령 여부 <span className="text-[11px] font-normal text-muted-foreground/60">Disability Benefit Status</span></Label>
-        <div className="space-y-2">
-          <div className="flex items-center gap-2">
-            <Checkbox checked={formData.ssdi} onCheckedChange={v => updateField('ssdi', v)} />
-            <Label className="text-sm cursor-pointer">Line 3a — SSDI (Social Security Disability) 수급 중</Label>
+        <div className="space-y-3">
+          <div className="border border-border rounded-lg p-3 bg-muted/30">
+            <p className="text-sm font-semibold mb-2">Line 3a — SSDI (Social Security Disability) 수급 여부 <span className="text-[11px] font-normal text-muted-foreground/60">Receiving SSDI</span></p>
+            <div className="grid grid-cols-2 gap-3">
+              <div className="flex items-center gap-2">
+                <Checkbox checked={formData.ssdiSelf} onCheckedChange={v => updateField('ssdiSelf', v)} id="ssdiSelf" />
+                <Label htmlFor="ssdiSelf" className="text-sm cursor-pointer">본인 (Yourself) <span className="text-[11px] text-muted-foreground/60">Yes</span></Label>
+              </div>
+              <div className="flex items-center gap-2">
+                <Checkbox checked={formData.ssdiSpouse} onCheckedChange={v => updateField('ssdiSpouse', v)} id="ssdiSpouse" />
+                <Label htmlFor="ssdiSpouse" className="text-sm cursor-pointer">배우자/CU (Spouse) <span className="text-[11px] text-muted-foreground/60">Yes</span></Label>
+              </div>
+            </div>
           </div>
-          <div className="flex items-center gap-2">
-            <Checkbox checked={formData.rrd} onCheckedChange={v => updateField('rrd', v)} />
-            <Label className="text-sm cursor-pointer">Line 3b — Railroad Retirement Disability 수급 중</Label>
+          <div className="border border-border rounded-lg p-3 bg-muted/30">
+            <p className="text-sm font-semibold mb-2">Line 3b — Railroad Retirement Disability 수급 여부 <span className="text-[11px] font-normal text-muted-foreground/60">Receiving Railroad Retirement Disability</span></p>
+            <div className="grid grid-cols-2 gap-3">
+              <div className="flex items-center gap-2">
+                <Checkbox checked={formData.rrdSelf} onCheckedChange={v => updateField('rrdSelf', v)} id="rrdSelf" />
+                <Label htmlFor="rrdSelf" className="text-sm cursor-pointer">본인 (Yourself) <span className="text-[11px] text-muted-foreground/60">Yes</span></Label>
+              </div>
+              <div className="flex items-center gap-2">
+                <Checkbox checked={formData.rrdSpouse} onCheckedChange={v => updateField('rrdSpouse', v)} id="rrdSpouse" />
+                <Label htmlFor="rrdSpouse" className="text-sm cursor-pointer">배우자/CU (Spouse) <span className="text-[11px] text-muted-foreground/60">Yes</span></Label>
+              </div>
+            </div>
           </div>
         </div>
       </div>

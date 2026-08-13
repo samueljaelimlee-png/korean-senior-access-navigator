@@ -114,9 +114,9 @@ export const SAMPLE_DATA = {
   lname: 'Kim', fname: 'Soo Young', birthYear: '1958', phone: '(201) 555-0192',
   address: '45 Broad Ave, Palisades Park, NJ 07650', muniCode: '0245', ssnLast4: '6789',
   hasSpouse: true, spName: 'Kim, Jae Won', spBirthYear: '1956',
-  filingStatus: 'D', ssdi: false, rrd: false,
+  filingStatus: 'D', ssdiSelf: false, ssdiSpouse: false, rrdSelf: false, rrdSpouse: false,
   homeType: 'own', oct1Nj: true, same2025: true, since2022: true, coOwn: false, coPct: '',
-  block: '2204', lot: '8', qualifier: '', tax2024: '11250', tax2025: '11840',
+  block: '2204', blockSuffix: '', lot: '8', lotSuffix: '', qualifier: '', tax2024: '11250', tax2025: '11840',
   pilot: false, pilotAmount: '',
   inc: { 2024: { a: 41737, b: 0, c: 0, d: 0, e: 2396 }, 2025: { a: 49509, b: 0, c: 0, d: 0, e: 2713 } },
   sigName: 'Soo Young Kim', sigDate: '2026-10-12',
@@ -135,7 +135,7 @@ export function getEligiblePrograms(data) {
   const inc24 = incomeTotal(data.inc?.[2024]);
   const inc25 = incomeTotal(data.inc?.[2025]);
   const progs = [];
-  if ((is65 || data.ssdi || data.rrd) && data.since2022 && inc24 <= 168268 && inc25 <= 172475) {
+  if ((is65 || data.ssdiSelf || data.ssdiSpouse || data.rrdSelf || data.rrdSpouse) && data.since2022 && inc24 <= 168268 && inc25 <= 172475) {
     progs.push('Senior Freeze');
   }
   if (inc25 <= 250000) progs.push('ANCHOR');
