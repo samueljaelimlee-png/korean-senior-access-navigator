@@ -11,8 +11,9 @@ const defaultState = {
   filingStatus: 'D', ssdiSelf: false, ssdiSpouse: false, rrdSelf: false, rrdSpouse: false,
   // Step 3 - Residency
   homeType: 'own', oct1Nj: true, same2025: true, born1960: false, movedWithin2025: false,
-  since2022: true, sameAsLast: true, moved2023: false, coOwn: false, coPct: '',
-  multiUnit: false, multiUnitPct: '',
+  since2022: true, sameAsLast: true, moved2023: false,
+  coOwn2024: false, coOwn2025: false, coPct2024: '', coPct2025: '',
+  multiUnit2024: false, multiUnit2025: false, multiUnitPct2024: '', multiUnitPct2025: '',
   // Schedule 1 (only when 6a=No, 6b=Yes, 6c=Yes)
   sched1: {
     home1: { address: '', blockLot: '', dates: '', shared: false, sharePct: '', multiUnit: false, multiUnitPct: '', taxes: '', pilot: '' },

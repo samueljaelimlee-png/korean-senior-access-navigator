@@ -314,22 +314,22 @@ export default function PrintForm({ data }) {
           </thead>
           <tbody>
             {[
-              { n: '11a.', text: 'Did you share ownership of the property that was your main home on October 1, 2025, with anyone other than your spouse/CU partner? (Mobile home owners see instructions.)', v: data.coOwn },
-              { n: '11b.', text: 'If you answered "Yes," indicate the share (percentage) of the property you (and your spouse/CU partner) owned.', pct: data.coOwn ? data.coPct : '' },
-              { n: '12a.', text: 'Did the property that was your main home on October 1, 2025, consist of multiple units?', v: data.multiUnit },
-              { n: '12b.', text: 'If you answered "Yes," indicate the share (percentage) of the property that you (and your spouse/CU partner) used as your main home.', pct: data.multiUnit ? data.multiUnitPct : '' },
+              { n: '11a.', text: 'Did you share ownership of the property that was your main home on October 1, 2025, with anyone other than your spouse/CU partner? (Mobile home owners see instructions.)', v24: data.coOwn2024, v25: data.coOwn2025 },
+              { n: '11b.', text: 'If you answered "Yes," indicate the share (percentage) of the property you (and your spouse/CU partner) owned.', pct24: data.coOwn2024 ? data.coPct2024 : '', pct25: data.coOwn2025 ? data.coPct2025 : '' },
+              { n: '12a.', text: 'Did the property that was your main home on October 1, 2025, consist of multiple units?', v24: data.multiUnit2024, v25: data.multiUnit2025 },
+              { n: '12b.', text: 'If you answered "Yes," indicate the share (percentage) of the property that you (and your spouse/CU partner) used as your main home.', pct24: data.multiUnit2024 ? data.multiUnitPct2024 : '', pct25: data.multiUnit2025 ? data.multiUnitPct2025 : '' },
             ].map((r, i) => (
               <tr key={i} style={{ borderBottom: '1px dotted #bbb' }}>
                 <td style={{ padding: '4px 0' }}><Ln n={r.n} /> {r.text}</td>
-                {r.pct !== undefined ? (
+                {r.pct24 !== undefined ? (
                   <>
-                    <td style={{ textAlign: 'center', padding: '4px' }}><InputBox value={r.pct} width={30} /> %</td>
-                    <td style={{ textAlign: 'center', padding: '4px' }}><InputBox value={r.pct} width={30} /> %</td>
+                    <td style={{ textAlign: 'center', padding: '4px' }}><InputBox value={r.pct24} width={30} /> %</td>
+                    <td style={{ textAlign: 'center', padding: '4px' }}><InputBox value={r.pct25} width={30} /> %</td>
                   </>
                 ) : (
                   <>
-                    <td style={{ textAlign: 'center', padding: '4px', whiteSpace: 'nowrap' }}><CB checked={r.v} /> Yes &nbsp;<CB checked={!r.v} /> No</td>
-                    <td style={{ textAlign: 'center', padding: '4px', whiteSpace: 'nowrap' }}><CB checked={r.v} /> Yes &nbsp;<CB checked={!r.v} /> No</td>
+                    <td style={{ textAlign: 'center', padding: '4px', whiteSpace: 'nowrap' }}><CB checked={r.v24} /> Yes &nbsp;<CB checked={!r.v24} /> No</td>
+                    <td style={{ textAlign: 'center', padding: '4px', whiteSpace: 'nowrap' }}><CB checked={r.v25} /> Yes &nbsp;<CB checked={!r.v25} /> No</td>
                   </>
                 )}
               </tr>
@@ -344,11 +344,11 @@ export default function PrintForm({ data }) {
           <div style={{ marginBottom: '3px' }}><Ln n="13a." /> Enter the block and lot numbers of the address that was your main home on October 1, 2025.</div>
           <div style={{ display: 'flex', gap: '10px', paddingLeft: '28px', flexWrap: 'wrap', alignItems: 'center' }}>
             <span>Block <br /><InputBox value={data.block} width={55} /></span>
+            <span style={{ padding: '0 2px', alignSelf: 'flex-end', marginBottom: '2px' }}>.</span>
             <span>Block Suffix <br /><InputBox value={data.blockSuffix} width={40} /></span>
-            <span style={{ padding: '0 2px', alignSelf: 'flex-end', marginBottom: '2px' }}>.</span>
             <span>Lot <br /><InputBox value={data.lot} width={55} /></span>
-            <span>Lot Suffix <br /><InputBox value={data.lotSuffix} width={40} /></span>
             <span style={{ padding: '0 2px', alignSelf: 'flex-end', marginBottom: '2px' }}>.</span>
+            <span>Lot Suffix <br /><InputBox value={data.lotSuffix} width={40} /></span>
             <span>Qualifier <br /><InputBox value={data.qualifier} width={55} /></span>
           </div>
         </div>

@@ -248,30 +248,60 @@ export default function Step3Residency() {
             <Checkbox checked={formData.since2022} onCheckedChange={v => updateField('since2022', v)} />
             <Label className="text-sm cursor-pointer">Line 8 — 2022년 12월 31일 이전부터 거주 <span className="text-green-700 font-semibold">(Senior Freeze 핵심 조건)</span></Label>
           </div>
-          <div className="flex items-center gap-2">
-            <Checkbox checked={formData.coOwn} onCheckedChange={v => updateField('coOwn', v)} />
-            <Label className="text-sm cursor-pointer">Line 11a — 배우자 외 공동소유</Label>
-          </div>
-          {formData.coOwn && (
-            <div className="flex items-center gap-2 pl-6">
-              <Label className="text-sm">Line 11b — 본인 소유 비율</Label>
-              <Input type="number" placeholder="50" className="w-20 text-center font-mono"
-                value={formData.coPct} onChange={e => updateField('coPct', e.target.value)} />
-              <span className="text-muted-foreground text-sm">%</span>
+          <div className="space-y-2">
+            <Label className="text-sm font-medium">Line 11a — 배우자 외 공동소유 <span className="text-[11px] font-normal text-muted-foreground/60">Shared ownership (other than spouse)</span></Label>
+            <div className="grid grid-cols-2 gap-3 pl-6">
+              <div className="flex items-center gap-2">
+                <Checkbox checked={formData.coOwn2024} onCheckedChange={v => updateField('coOwn2024', v)} />
+                <Label className="text-sm cursor-pointer">2024</Label>
+                {formData.coOwn2024 && (
+                  <div className="flex items-center gap-1 ml-auto">
+                    <Input type="number" placeholder="50" className="w-16 text-center font-mono text-sm"
+                      value={formData.coPct2024} onChange={e => updateField('coPct2024', e.target.value)} />
+                    <span className="text-muted-foreground text-sm">%</span>
+                  </div>
+                )}
+              </div>
+              <div className="flex items-center gap-2">
+                <Checkbox checked={formData.coOwn2025} onCheckedChange={v => updateField('coOwn2025', v)} />
+                <Label className="text-sm cursor-pointer">2025</Label>
+                {formData.coOwn2025 && (
+                  <div className="flex items-center gap-1 ml-auto">
+                    <Input type="number" placeholder="50" className="w-16 text-center font-mono text-sm"
+                      value={formData.coPct2025} onChange={e => updateField('coPct2025', e.target.value)} />
+                    <span className="text-muted-foreground text-sm">%</span>
+                  </div>
+                )}
+              </div>
             </div>
-          )}
-          <div className="flex items-center gap-2">
-            <Checkbox checked={formData.multiUnit} onCheckedChange={v => updateField('multiUnit', v)} />
-            <Label className="text-sm cursor-pointer">Line 12a — 다세대 주택 (multi-unit property)</Label>
           </div>
-          {formData.multiUnit && (
-            <div className="flex items-center gap-2 pl-6">
-              <Label className="text-sm">Line 12b — 주거 사용 비율</Label>
-              <Input type="number" placeholder="25" className="w-20 text-center font-mono"
-                value={formData.multiUnitPct} onChange={e => updateField('multiUnitPct', e.target.value)} />
-              <span className="text-muted-foreground text-sm">%</span>
+          <div className="space-y-2">
+            <Label className="text-sm font-medium">Line 12a — 다세대 주택 <span className="text-[11px] font-normal text-muted-foreground/60">Multi-unit property</span></Label>
+            <div className="grid grid-cols-2 gap-3 pl-6">
+              <div className="flex items-center gap-2">
+                <Checkbox checked={formData.multiUnit2024} onCheckedChange={v => updateField('multiUnit2024', v)} />
+                <Label className="text-sm cursor-pointer">2024</Label>
+                {formData.multiUnit2024 && (
+                  <div className="flex items-center gap-1 ml-auto">
+                    <Input type="number" placeholder="25" className="w-16 text-center font-mono text-sm"
+                      value={formData.multiUnitPct2024} onChange={e => updateField('multiUnitPct2024', e.target.value)} />
+                    <span className="text-muted-foreground text-sm">%</span>
+                  </div>
+                )}
+              </div>
+              <div className="flex items-center gap-2">
+                <Checkbox checked={formData.multiUnit2025} onCheckedChange={v => updateField('multiUnit2025', v)} />
+                <Label className="text-sm cursor-pointer">2025</Label>
+                {formData.multiUnit2025 && (
+                  <div className="flex items-center gap-1 ml-auto">
+                    <Input type="number" placeholder="25" className="w-16 text-center font-mono text-sm"
+                      value={formData.multiUnitPct2025} onChange={e => updateField('multiUnitPct2025', e.target.value)} />
+                    <span className="text-muted-foreground text-sm">%</span>
+                  </div>
+                )}
+              </div>
             </div>
-          )}
+          </div>
         </div>
       )}
 

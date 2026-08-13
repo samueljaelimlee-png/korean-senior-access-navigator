@@ -28,30 +28,30 @@ export default function Step4PropertyTax() {
         </span>
       </div>
 
-      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-4">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4">
         <div>
-          <Label className="text-sm">Block <span className="text-red-500 text-xs">필수</span> <span className="text-[11px] text-muted-foreground/60">Required</span></Label>
-          <Input placeholder="2204" className="font-mono" value={formData.block}
-            onChange={e => updateField('block', e.target.value)} />
+          <Label className="text-sm">Block · Block Suffix <span className="text-red-500 text-xs">필수</span> <span className="text-[11px] text-muted-foreground/60">e.g. 00600.07</span></Label>
+          <div className="flex items-center gap-1 mt-1">
+            <Input placeholder="00600" className="font-mono" value={formData.block}
+              onChange={e => updateField('block', e.target.value)} />
+            <span className="text-muted-foreground font-mono text-lg leading-none">.</span>
+            <Input placeholder="07" className="font-mono w-20" value={formData.blockSuffix}
+              onChange={e => updateField('blockSuffix', e.target.value)} />
+          </div>
         </div>
         <div>
-          <Label className="text-sm">Block Suffix <span className="text-[11px] text-muted-foreground/60">Block Suffix</span></Label>
-          <Input placeholder="A" className="font-mono" value={formData.blockSuffix}
-            onChange={e => updateField('blockSuffix', e.target.value)} />
-        </div>
-        <div>
-          <Label className="text-sm">Lot <span className="text-red-500 text-xs">필수</span> <span className="text-[11px] text-muted-foreground/60">Required</span></Label>
-          <Input placeholder="8" className="font-mono" value={formData.lot}
-            onChange={e => updateField('lot', e.target.value)} />
-        </div>
-        <div>
-          <Label className="text-sm">Lot Suffix <span className="text-[11px] text-muted-foreground/60">Lot Suffix</span></Label>
-          <Input placeholder="A" className="font-mono" value={formData.lotSuffix}
-            onChange={e => updateField('lotSuffix', e.target.value)} />
+          <Label className="text-sm">Lot · Lot Suffix <span className="text-red-500 text-xs">필수</span> <span className="text-[11px] text-muted-foreground/60">e.g. 0008.00</span></Label>
+          <div className="flex items-center gap-1 mt-1">
+            <Input placeholder="0008" className="font-mono" value={formData.lot}
+              onChange={e => updateField('lot', e.target.value)} />
+            <span className="text-muted-foreground font-mono text-lg leading-none">.</span>
+            <Input placeholder="00" className="font-mono w-20" value={formData.lotSuffix}
+              onChange={e => updateField('lotSuffix', e.target.value)} />
+          </div>
         </div>
         <div>
           <Label className="text-sm">Qualifier <span className="text-xs text-muted-foreground">(콘도)</span> <span className="text-[11px] text-muted-foreground/60">Condo</span></Label>
-          <Input placeholder="C001" className="font-mono" value={formData.qualifier}
+          <Input placeholder="C001" className="font-mono mt-1" value={formData.qualifier}
             onChange={e => updateField('qualifier', e.target.value)} />
         </div>
       </div>

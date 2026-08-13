@@ -305,22 +305,22 @@ export default function PrintFormKorean({ data, printOnly = true, blank = false 
           </thead>
           <tbody>
             {[
-              { n: '11a.', text: '2025년 10월 1일 기준 주요 주택을 배우자/CU 파트너 이외의 사람과 공동 소유하셨나요? (모바일홈 소유자는 안내서 참조)', v: data.coOwn },
-              { n: '11b.', text: '"예"이면 본인(및 배우자/CU)이 소유한 지분 비율(%)을 적으세요.', pct: data.coOwn ? data.coPct : '' },
-              { n: '12a.', text: '2025년 10월 1일 기준 주요 주택이 다세대 주택이었나요?', v: data.multiUnit },
-              { n: '12b.', text: '"예"이면 본인(및 배우자/CU)이 주요 거주지로 사용한 비율(%)을 적으세요.', pct: data.multiUnit ? data.multiUnitPct : '' },
+              { n: '11a.', text: '2025년 10월 1일 기준 주요 주택을 배우자/CU 파트너 이외의 사람과 공동 소유하셨나요? (모바일홈 소유자는 안내서 참조)', v24: data.coOwn2024, v25: data.coOwn2025 },
+              { n: '11b.', text: '"예"이면 본인(및 배우자/CU)이 소유한 지분 비율(%)을 적으세요.', pct24: data.coOwn2024 ? data.coPct2024 : '', pct25: data.coOwn2025 ? data.coPct2025 : '' },
+              { n: '12a.', text: '2025년 10월 1일 기준 주요 주택이 다세대 주택이었나요?', v24: data.multiUnit2024, v25: data.multiUnit2025 },
+              { n: '12b.', text: '"예"이면 본인(및 배우자/CU)이 주요 거주지로 사용한 비율(%)을 적으세요.', pct24: data.multiUnit2024 ? data.multiUnitPct2024 : '', pct25: data.multiUnit2025 ? data.multiUnitPct2025 : '' },
             ].map((r, i) => (
               <tr key={i} style={{ borderBottom: '1px dotted #bbb' }}>
                 <td style={{ padding: '4px 0' }}><Ln n={r.n} /> {r.text}</td>
-                {r.pct !== undefined ? (
+                {r.pct24 !== undefined ? (
                   <>
-                    <td style={{ textAlign: 'center', padding: '4px' }}><InputBox value={r.pct} width={30} /> %</td>
-                    <td style={{ textAlign: 'center', padding: '4px' }}><InputBox value={r.pct} width={30} /> %</td>
+                    <td style={{ textAlign: 'center', padding: '4px' }}><InputBox value={r.pct24} width={30} /> %</td>
+                    <td style={{ textAlign: 'center', padding: '4px' }}><InputBox value={r.pct25} width={30} /> %</td>
                   </>
                 ) : (
                   <>
-                    <td style={{ textAlign: 'center', padding: '4px', whiteSpace: 'nowrap' }}><CB checked={cb(r.v)} /> 예 &nbsp;<CB checked={cb(!r.v)} /> 아니오</td>
-                    <td style={{ textAlign: 'center', padding: '4px', whiteSpace: 'nowrap' }}><CB checked={cb(r.v)} /> 예 &nbsp;<CB checked={cb(!r.v)} /> 아니오</td>
+                    <td style={{ textAlign: 'center', padding: '4px', whiteSpace: 'nowrap' }}><CB checked={cb(r.v24)} /> 예 &nbsp;<CB checked={cb(!r.v24)} /> 아니오</td>
+                    <td style={{ textAlign: 'center', padding: '4px', whiteSpace: 'nowrap' }}><CB checked={cb(r.v25)} /> 예 &nbsp;<CB checked={cb(!r.v25)} /> 아니오</td>
                   </>
                 )}
               </tr>
@@ -335,11 +335,11 @@ export default function PrintFormKorean({ data, printOnly = true, blank = false 
           <div style={{ marginBottom: '3px' }}><Ln n="13a." /> 2025년 10월 1일 기준 주요 주택 주소의 Block 및 Lot 번호를 적으세요.</div>
           <div style={{ display: 'flex', gap: '10px', paddingLeft: '28px', flexWrap: 'wrap', alignItems: 'flex-end' }}>
             <span>Block<br /><InputBox value={data.block} width={55} /></span>
+            <span style={{ paddingBottom: '2px' }}>.</span>
             <span>Block Suffix<br /><InputBox value={data.blockSuffix} width={40} /></span>
-            <span style={{ paddingBottom: '2px' }}>.</span>
             <span>Lot<br /><InputBox value={data.lot} width={55} /></span>
-            <span>Lot Suffix<br /><InputBox value={data.lotSuffix} width={40} /></span>
             <span style={{ paddingBottom: '2px' }}>.</span>
+            <span>Lot Suffix<br /><InputBox value={data.lotSuffix} width={40} /></span>
             <span>Qualifier<br /><InputBox value={data.qualifier} width={55} /></span>
           </div>
         </div>

@@ -35,7 +35,7 @@ export default function Step7Preview() {
     ['Filing Status', formData.filingStatus || '—'],
     ['주거 유형', homeTypeMap[formData.homeType] || '—'],
     ['2022년 이전 거주', formData.since2022 ? 'Yes — Senior Freeze 조건 충족' : 'No'],
-    ['Block / Lot', formData.block && formData.lot ? `Block ${formData.block} / Lot ${formData.lot}` : '—'],
+    ['Block / Lot', formData.block && formData.lot ? `Block ${formData.block}${formData.blockSuffix ? '.' + formData.blockSuffix : ''} / Lot ${formData.lot}${formData.lotSuffix ? '.' + formData.lotSuffix : ''}` : '—'],
     ['2024년 재산세', formatMoney(t24)],
     ['2025년 재산세', formatMoney(t25)],
     ['재산세 증가분 (Senior Freeze)', diff > 0 ? formatMoney(diff) : '—'],
