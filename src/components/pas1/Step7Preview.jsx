@@ -51,7 +51,7 @@ export default function Step7Preview() {
         sessionId = crypto.randomUUID();
         localStorage.setItem('ksan_session_id', sessionId);
       }
-      await base44.functions.invoke('trackActivity', { type: 'completion', session_id: sessionId });
+      await base44.functions.invoke('trackActivity', { type: 'completion', session_id: sessionId, form_type: 'pas1' });
     } catch (e) {}
     setPrintLang(lang);
   };

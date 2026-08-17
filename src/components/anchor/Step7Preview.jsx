@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useAnchor } from '@/lib/anchorContext';
+import { base44 } from '@/api/base44Client';
 import { Button } from '@/components/ui/button';
 import { Eye, Printer, ArrowLeft, CheckCircle, Languages, ExternalLink } from 'lucide-react';
 import PrintFormAnchor from './PrintFormAnchor';
@@ -10,7 +11,21 @@ export default function Step7Preview() {
   const { formData, prevStep } = useAnchor();
   const [printLang, setPrintLang] = useState(null);
 
-  useEffect(() => { if (printLang) window.print(); }, [printLang]);
+  useEffect(() => {
+    if (printLang) {
+      (async () => {
+        try {
+          let sessionId = localStorage.getItem('ksan_session_id');
+          if (!sessionId) {
+            sessionId = crypto.randomUUID();
+            localStorage.setItem('ksan_session_id', sessionId);
+          }
+          await base44.functions.invoke('trackActivity', { type: 'completion', session_id: sessionId, form_type: 'anchor' });
+        } catch (e) {}
+      })();
+      window.print();
+    }
+  }, [printLang]);
 
   const eligible = getAnchorEligible(formData);
   const homeTypeMap = { homeowner: 'Homeowner', renter: 'Renter/Mobile' };

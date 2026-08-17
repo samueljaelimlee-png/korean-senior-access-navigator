@@ -90,8 +90,10 @@ export default function AdminPage() {
   const cards = [
     { label: '전체 방문자', value: stats?.totalVisits, icon: Users, color: 'blue' },
     { label: '오늘 방문자', value: stats?.todayVisits, icon: CalendarDays, color: 'green' },
-    { label: 'PAS-1 PDF 완료자 (전체)', value: stats?.totalCompletions, icon: FileCheck2, color: 'purple' },
-    { label: 'PAS-1 PDF 완료자 (오늘)', value: stats?.todayCompletions, icon: CalendarCheck, color: 'orange' },
+    { label: 'PAS-1 PDF 완료자 (전체)', value: stats?.pas1Completions, icon: FileCheck2, color: 'purple' },
+    { label: 'PAS-1 PDF 완료자 (오늘)', value: stats?.pas1Today, icon: CalendarCheck, color: 'orange' },
+    { label: 'ANCHOR PDF 완료자 (전체)', value: stats?.anchorCompletions, icon: FileCheck2, color: 'amber' },
+    { label: 'ANCHOR PDF 완료자 (오늘)', value: stats?.anchorToday, icon: CalendarCheck, color: 'teal' },
   ];
 
   const colorMap = {
@@ -99,6 +101,8 @@ export default function AdminPage() {
     green: 'from-green-500 to-green-700',
     purple: 'from-purple-500 to-purple-700',
     orange: 'from-orange-500 to-orange-700',
+    amber: 'from-amber-500 to-amber-700',
+    teal: 'from-teal-500 to-teal-700',
   };
 
   return (
@@ -107,7 +111,7 @@ export default function AdminPage() {
         <div className="max-w-4xl mx-auto flex items-center justify-between">
           <div>
             <h1 className="text-lg font-bold">🔒 관리자 대시보드</h1>
-            <p className="text-xs text-primary-foreground/70">방문자 및 PAS-1 신청 완료 통계</p>
+            <p className="text-xs text-primary-foreground/70">방문자 및 PAS-1 / ANCHOR 신청 완료 통계</p>
           </div>
           <button
             onClick={fetchStats}
@@ -150,7 +154,7 @@ export default function AdminPage() {
           <p className="font-semibold text-foreground mb-1">📊 통계 안내</p>
           <ul className="space-y-1">
             <li>• <strong>방문자</strong>: 브라우저 세션 기준 고유 방문자 수 (중복 제외)</li>
-            <li>• <strong>PAS-1 PDF 완료자</strong>: PAS-1 양식 작성 후 "인쇄 / PDF 저장" 버튼을 누른 사용자 수</li>
+            <li>• <strong>PAS-1 / ANCHOR PDF 완료자</strong>: 각 양식 작성 후 "인쇄 / PDF 저장" 버튼을 누른 사용자 수 (기준값 +20 포함)</li>
             <li>• <strong>오늘</strong>: 현재 날짜 기준 자정부터 집계</li>
           </ul>
         </div>

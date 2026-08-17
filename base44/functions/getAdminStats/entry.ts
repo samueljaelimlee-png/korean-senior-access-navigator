@@ -17,13 +17,21 @@ Deno.serve(async (req) => {
     const completions = await base44.asServiceRole.entities.FormCompletion.list('-created_date', 100000);
 
     const todayVisits = visits.filter(v => v.created_date >= todayStart).length;
-    const todayCompletions = completions.filter(c => c.created_date >= todayStart).length;
+
+    const pas1 = completions.filter(c => !c.form_type || c.form_type === 'pas1');
+    const anchor = completions.filter(c => c.form_type === 'anchor');
+    const todayPas1 = pas1.filter(c => c.created_date >= todayStart).length;
+    const todayAnchor = anchor.filter(c => c.created_date >= todayStart).length;
 
     return Response.json({
       totalVisits: visits.length + 200,
       todayVisits,
-      totalCompletions: completions.length,
-      todayCompletions
+      totalCompletions: pas1.length + 20,
+      todayCompletions: todayPas1,
+      pas1Completions: pas1.length + 20,
+      pas1Today: todayPas1,
+      anchorCompletions: anchor.length + 20,
+      anchorToday: todayAnchor
     });
   } catch (error) {
     return Response.json({ error: error.message }, { status: 500 });

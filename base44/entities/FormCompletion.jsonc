@@ -4,6 +4,14 @@
   "properties": {
     "session_id": {
       "type": "string"
+    },
+    "form_type": {
+      "type": "string",
+      "enum": [
+        "pas1",
+        "anchor"
+      ],
+      "default": "pas1"
     }
   },
   "required": [

@@ -4,7 +4,7 @@ Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
     const body = await req.json();
-    const { type, session_id, page } = body;
+    const { type, session_id, page, form_type } = body;
 
     if (!session_id) {
       return Response.json({ error: 'session_id required' }, { status: 400 });
@@ -16,12 +16,13 @@ Deno.serve(async (req) => {
     }
 
     if (type === 'completion') {
-      // Only deduplicate within the same calendar day (UTC)
+      const ftype = form_type || 'pas1';
+      // Only deduplicate within the same calendar day (UTC) per form type
       const todayStart = new Date(Date.UTC(new Date().getUTCFullYear(), new Date().getUTCMonth(), new Date().getUTCDate())).toISOString();
-      const existing = await base44.asServiceRole.entities.FormCompletion.filter({ session_id });
+      const existing = await base44.asServiceRole.entities.FormCompletion.filter({ session_id, form_type: ftype });
       const alreadyToday = existing.some(c => c.created_date >= todayStart);
       if (!alreadyToday) {
-        await base44.asServiceRole.entities.FormCompletion.create({ session_id });
+        await base44.asServiceRole.entities.FormCompletion.create({ session_id, form_type: ftype });
       }
       return Response.json({ status: 'ok' });
     }
