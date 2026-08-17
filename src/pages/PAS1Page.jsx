@@ -10,7 +10,7 @@ import Step5Income from '@/components/pas1/Step5Income';
 import Step6Signature from '@/components/pas1/Step6Signature';
 import Step7Preview from '@/components/pas1/Step7Preview';
 import PAS1KoreanPreview from '@/components/PAS1KoreanPreview';
-import { Calendar, BookOpen, FileText } from 'lucide-react';
+import { Calendar, BookOpen, FileText, ExternalLink } from 'lucide-react';
 
 const PAS1_KOREAN_PDF_URL = 'https://media.base44.com/files/public/6a27775287dfd1eb2ad7dece/5fa8b2fdf_PAS1_2025_Korean_Same_Form_Clean.pdf';
 
@@ -40,6 +40,15 @@ export default function PAS1Page() {
             </div>
           </div>
           <div className="flex flex-wrap items-center gap-2">
+            <a
+              href="https://propertytaxrelief.nj.gov"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 text-xs font-bold bg-white text-blue-700 px-3 py-1.5 rounded-full hover:bg-blue-50 transition-colors shadow"
+            >
+              <span className="flex items-center gap-1.5"><ExternalLink className="w-3.5 h-3.5" /> 온라인 신청</span>
+              <span className="text-[9px] text-blue-700/60">propertytaxrelief.nj.gov</span>
+            </a>
             <button
               onClick={() => setShowPreview(true)}
               className="flex items-center gap-1.5 text-xs font-bold bg-yellow-400 text-yellow-900 px-3 py-1.5 rounded-full hover:bg-yellow-300 transition-colors shadow"
