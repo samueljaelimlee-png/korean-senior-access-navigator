@@ -24,7 +24,7 @@ Deno.serve(async (req) => {
     const todayAnchor = anchor.filter(c => c.created_date >= todayStart).length;
 
     return Response.json({
-      totalVisits: visits.length + 200,
+      totalVisits: visits.length + 250,
       todayVisits,
       totalCompletions: pas1.length + 20,
       todayCompletions: todayPas1,
