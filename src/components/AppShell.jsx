@@ -6,7 +6,7 @@ import { base44 } from '@/api/base44Client';
 const NAV = [
   { path: '/', label: '홈', en: 'Home', icon: Home },
   { path: '/pas1', label: 'PAS-1 신청', en: 'Property Tax', icon: FileText },
-  { path: '/anchor', label: 'ANCHOR', en: 'ANCHOR', icon: Building2 },
+  { path: '/anchor', label: 'Anchor 신청 (65세 미만)', en: 'Under 65', icon: Building2 },
   { path: '/idme', label: 'ID.me', en: 'ID.me Verify', icon: ShieldCheck },
   { path: '/benefits', label: '정부 혜택', en: 'Benefits', icon: Gift },
 ];
