@@ -3,7 +3,7 @@ import { usePAS1 } from '@/lib/pas1Context';
 import { base44 } from '@/api/base44Client';
 import { getEligiblePrograms, incomeTotal, formatMoney } from '@/lib/pas1Data';
 import { Button } from '@/components/ui/button';
-import { Eye, Printer, ArrowLeft, CheckCircle, Languages } from 'lucide-react';
+import { Eye, Printer, ArrowLeft, CheckCircle, Languages, ExternalLink } from 'lucide-react';
 import PrintForm from './PrintForm';
 import PrintFormKorean from './PrintFormKorean';
 
@@ -95,13 +95,10 @@ export default function Step7Preview() {
         <p className="text-xs text-center text-muted-foreground">
           브라우저 인쇄 메뉴에서 &quot;PDF로 저장&quot;을 선택하시면 PDF 파일로 저장됩니다.
         </p>
-        <p className="text-xs text-center text-muted-foreground">
-          온라인 제출:{' '}
-          <a href="https://propertytaxrelief.nj.gov" target="_blank" rel="noopener noreferrer" className="text-primary underline">
-            propertytaxrelief.nj.gov
-          </a>
-          {' '}| 전화: 1-800-323-4400
-        </p>
+        <a href="https://propertytaxrelief.nj.gov" target="_blank" rel="noopener noreferrer" className="text-xs text-center text-primary underline inline-flex items-center justify-center gap-1">
+          <ExternalLink className="w-3 h-3" /> 온라인 제출: propertytaxrelief.nj.gov
+        </a>
+        <p className="text-xs text-center text-muted-foreground">전화: 1-800-323-4400</p>
         <div className="text-center">
           <Button variant="outline" onClick={prevStep} className="gap-2">
             <ArrowLeft className="w-4 h-4" /> 이전
