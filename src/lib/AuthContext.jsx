@@ -104,12 +104,14 @@ export const AuthProvider = ({ children }) => {
       setIsAuthenticated(false);
       setAuthChecked(true);
       
-      // If user auth fails, it might be an expired token
+      // A failed me() usually means an expired/invalid personal token. For a
+      // public app, silently clear it and render as guest — do NOT set
+      // auth_required, which forced an app-wide login redirect that appended
+      // the full href (with accumulating query params) as from_url on every
+      // cycle, growing the URL until HTTP 414. Protected routes redirect to
+      // /login on their own via ProtectedRoute when !isAuthenticated.
       if (error.status === 401 || error.status === 403) {
-        setAuthError({
-          type: 'auth_required',
-          message: 'Authentication required'
-        });
+        try { await base44.auth.logout(); } catch (e) {}
       }
     }
   };
@@ -119,8 +121,9 @@ export const AuthProvider = ({ children }) => {
     setIsAuthenticated(false);
     
     if (shouldRedirect) {
-      // Use the SDK's logout method which handles token cleanup and redirect
-      base44.auth.logout(window.location.href);
+      // Use the SDK's logout method which handles token cleanup and redirect.
+      // Pass only the clean pathname to avoid URL-accumulation loops.
+      base44.auth.logout(window.location.pathname);
     } else {
       // Just remove the token without redirect
       base44.auth.logout();
@@ -128,8 +131,9 @@ export const AuthProvider = ({ children }) => {
   };
 
   const navigateToLogin = () => {
-    // Use the SDK's redirectToLogin method
-    base44.auth.redirectToLogin(window.location.href);
+    // Pass only the clean pathname (not the full href, which carries
+    // accumulating query params) to avoid an HTTP 414 URL-growth loop.
+    base44.auth.redirectToLogin(window.location.pathname);
   };
 
   return (
