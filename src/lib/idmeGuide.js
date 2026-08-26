@@ -808,13 +808,13 @@ export const IDME_CONTENT_HTML = `
   <div class="ko">
     Korean Senior Access Navigator<br>
     이 가이드는 한인 시니어 디지털 접근성 연구의 일환으로 제작됐습니다.<br>
-    개발: Samuel Lee · 감독: Woori CPAs LLP · Jenny H. Kim, EY Managing Director<br>
+    개발: Samuel Lee · 감독: Jenny H. Kim, EY Managing Director<br>
     <span style="opacity:0.5;">이 앱은 ID.me와 무관하며 정부 서비스가 아닙니다.</span>
   </div>
   <div class="en">
     Korean Senior Access Navigator<br>
     This guide was created as part of independent research on Korean senior digital accessibility.<br>
-    Developer: Samuel Lee · Supervisors: Woori CPAs LLP · Jenny H. Kim, EY Managing Director<br>
+    Developer: Samuel Lee · Supervisors: Jenny H. Kim, EY Managing Director<br>
     <span style="opacity:0.5;">This app is not affiliated with ID.me or any government agency.</span>
   </div>
 </div>
