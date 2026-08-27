@@ -242,11 +242,11 @@ export default function PrintForm({ data }) {
         </Row>
         <Row>
           <span style={{ flex: 1 }}><Ln n="3a." /> During 2025, were you <strong>receiving</strong> federal Social Security Disability benefit payments?</span>
-          <span style={{ whiteSpace: 'nowrap' }}>Yourself &nbsp;<CB checked={data.ssdiSelf} /> Yes &nbsp;<CB checked={!data.ssdiSelf} /> No &nbsp;&nbsp; Spouse/CU &nbsp;<CB checked={data.ssdiSpouse} /> Yes &nbsp;<CB checked={!data.ssdiSpouse} /> No</span>
+          <span style={{ whiteSpace: 'nowrap' }}>Yourself &nbsp;<CB checked={data.ssdiSelf} /> Yes &nbsp;<CB checked={!data.ssdiSelf} /> No &nbsp;&nbsp; Spouse/CU &nbsp;<CB checked={data.hasSpouse && data.ssdiSpouse} /> Yes &nbsp;<CB checked={data.hasSpouse && !data.ssdiSpouse} /> No</span>
         </Row>
         <Row>
           <span style={{ flex: 1 }}><Ln n="3b." /> During 2025, were you <strong>receiving</strong> Railroad Retirement Disability benefit payments?</span>
-          <span style={{ whiteSpace: 'nowrap' }}>Yourself &nbsp;<CB checked={data.rrdSelf} /> Yes &nbsp;<CB checked={!data.rrdSelf} /> No &nbsp;&nbsp; Spouse/CU &nbsp;<CB checked={data.rrdSpouse} /> Yes &nbsp;<CB checked={!data.rrdSpouse} /> No</span>
+          <span style={{ whiteSpace: 'nowrap' }}>Yourself &nbsp;<CB checked={data.rrdSelf} /> Yes &nbsp;<CB checked={!data.rrdSelf} /> No &nbsp;&nbsp; Spouse/CU &nbsp;<CB checked={data.hasSpouse && data.rrdSpouse} /> Yes &nbsp;<CB checked={data.hasSpouse && !data.rrdSpouse} /> No</span>
         </Row>
       </div>
 

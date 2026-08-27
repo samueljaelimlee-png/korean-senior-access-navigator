@@ -232,11 +232,11 @@ export default function PrintFormKorean({ data, printOnly = true, blank = false 
         </Row>
         <Row>
           <span style={{ flex: 1 }}><Ln n="3a." /> 2025년에 연방 사회보장 장애급여(SSDI)를 <strong>수령</strong>하셨나요?</span>
-          <span style={{ whiteSpace: 'nowrap' }}>본인 &nbsp;<CB checked={cb(data.ssdiSelf)} /> 예 &nbsp;<CB checked={cb(!data.ssdiSelf)} /> 아니오 &nbsp;&nbsp; 배우자/CU &nbsp;<CB checked={cb(data.ssdiSpouse)} /> 예 &nbsp;<CB checked={cb(!data.ssdiSpouse)} /> 아니오</span>
+          <span style={{ whiteSpace: 'nowrap' }}>본인 &nbsp;<CB checked={cb(data.ssdiSelf)} /> 예 &nbsp;<CB checked={cb(!data.ssdiSelf)} /> 아니오 &nbsp;&nbsp; 배우자/CU &nbsp;<CB checked={cb(data.hasSpouse && data.ssdiSpouse)} /> 예 &nbsp;<CB checked={cb(data.hasSpouse && !data.ssdiSpouse)} /> 아니오</span>
         </Row>
         <Row>
           <span style={{ flex: 1 }}><Ln n="3b." /> 2025년에 철도 퇴직 장애급여를 <strong>수령</strong>하셨나요?</span>
-          <span style={{ whiteSpace: 'nowrap' }}>본인 &nbsp;<CB checked={cb(data.rrdSelf)} /> 예 &nbsp;<CB checked={cb(!data.rrdSelf)} /> 아니오 &nbsp;&nbsp; 배우자/CU &nbsp;<CB checked={cb(data.rrdSpouse)} /> 예 &nbsp;<CB checked={cb(!data.rrdSpouse)} /> 아니오</span>
+          <span style={{ whiteSpace: 'nowrap' }}>본인 &nbsp;<CB checked={cb(data.rrdSelf)} /> 예 &nbsp;<CB checked={cb(!data.rrdSelf)} /> 아니오 &nbsp;&nbsp; 배우자/CU &nbsp;<CB checked={cb(data.hasSpouse && data.rrdSpouse)} /> 예 &nbsp;<CB checked={cb(data.hasSpouse && !data.rrdSpouse)} /> 아니오</span>
         </Row>
       </div>
 
