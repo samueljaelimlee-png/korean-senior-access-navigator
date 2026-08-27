@@ -8,8 +8,15 @@ import { User, MapPin } from 'lucide-react';
 import NavButtons from './NavButtons';
 
 export default function Step1Personal() {
-  const { formData, updateField } = usePAS1();
+  const { formData, updateField, setFormData } = usePAS1();
   const [muniResult, setMuniResult] = useState(null);
+
+  const handleSpouseToggle = (v) => {
+    updateField('hasSpouse', v);
+    if (!v) {
+      setFormData(prev => ({ ...prev, spName: '', spBirthYear: '', ssdiSpouse: false, rrdSpouse: false }));
+    }
+  };
 
   const age = formData.birthYear ? 2025 - parseInt(formData.birthYear) : null;
 
@@ -105,7 +112,7 @@ export default function Step1Personal() {
 
       <div className="border-t border-secondary pt-3 mt-3">
         <div className="flex items-center gap-2 mb-3">
-          <Checkbox checked={formData.hasSpouse} onCheckedChange={v => updateField('hasSpouse', v)} />
+          <Checkbox checked={formData.hasSpouse} onCheckedChange={handleSpouseToggle} />
           <Label className="text-sm font-medium cursor-pointer">배우자 / Civil Union Partner 포함 <span className="text-[11px] font-normal text-muted-foreground/60">Include Spouse / Partner</span></Label>
         </div>
         {formData.hasSpouse && (

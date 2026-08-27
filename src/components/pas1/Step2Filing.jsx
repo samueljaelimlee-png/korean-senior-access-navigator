@@ -48,28 +48,32 @@ export default function Step2Filing() {
         <div className="space-y-3">
           <div className="border border-border rounded-lg p-3 bg-muted/30">
             <p className="text-sm font-semibold mb-2">Line 3a — SSDI (Social Security Disability) 수급 여부 <span className="text-[11px] font-normal text-muted-foreground/60">Receiving SSDI</span></p>
-            <div className="grid grid-cols-2 gap-3">
+            <div className={`grid gap-3 ${formData.hasSpouse ? 'grid-cols-2' : 'grid-cols-1'}`}>
               <div className="flex items-center gap-2">
                 <Checkbox checked={formData.ssdiSelf} onCheckedChange={v => updateField('ssdiSelf', v)} id="ssdiSelf" />
                 <Label htmlFor="ssdiSelf" className="text-sm cursor-pointer">본인 (Yourself) <span className="text-[11px] text-muted-foreground/60">Yes</span></Label>
               </div>
-              <div className="flex items-center gap-2">
-                <Checkbox checked={formData.ssdiSpouse} onCheckedChange={v => updateField('ssdiSpouse', v)} id="ssdiSpouse" />
-                <Label htmlFor="ssdiSpouse" className="text-sm cursor-pointer">배우자/CU (Spouse) <span className="text-[11px] text-muted-foreground/60">Yes</span></Label>
-              </div>
+              {formData.hasSpouse && (
+                <div className="flex items-center gap-2">
+                  <Checkbox checked={formData.ssdiSpouse} onCheckedChange={v => updateField('ssdiSpouse', v)} id="ssdiSpouse" />
+                  <Label htmlFor="ssdiSpouse" className="text-sm cursor-pointer">배우자/CU (Spouse) <span className="text-[11px] text-muted-foreground/60">Yes</span></Label>
+                </div>
+              )}
             </div>
           </div>
           <div className="border border-border rounded-lg p-3 bg-muted/30">
             <p className="text-sm font-semibold mb-2">Line 3b — Railroad Retirement Disability 수급 여부 <span className="text-[11px] font-normal text-muted-foreground/60">Receiving Railroad Retirement Disability</span></p>
-            <div className="grid grid-cols-2 gap-3">
+            <div className={`grid gap-3 ${formData.hasSpouse ? 'grid-cols-2' : 'grid-cols-1'}`}>
               <div className="flex items-center gap-2">
                 <Checkbox checked={formData.rrdSelf} onCheckedChange={v => updateField('rrdSelf', v)} id="rrdSelf" />
                 <Label htmlFor="rrdSelf" className="text-sm cursor-pointer">본인 (Yourself) <span className="text-[11px] text-muted-foreground/60">Yes</span></Label>
               </div>
-              <div className="flex items-center gap-2">
-                <Checkbox checked={formData.rrdSpouse} onCheckedChange={v => updateField('rrdSpouse', v)} id="rrdSpouse" />
-                <Label htmlFor="rrdSpouse" className="text-sm cursor-pointer">배우자/CU (Spouse) <span className="text-[11px] text-muted-foreground/60">Yes</span></Label>
-              </div>
+              {formData.hasSpouse && (
+                <div className="flex items-center gap-2">
+                  <Checkbox checked={formData.rrdSpouse} onCheckedChange={v => updateField('rrdSpouse', v)} id="rrdSpouse" />
+                  <Label htmlFor="rrdSpouse" className="text-sm cursor-pointer">배우자/CU (Spouse) <span className="text-[11px] text-muted-foreground/60">Yes</span></Label>
+                </div>
+              )}
             </div>
           </div>
         </div>
