@@ -20,7 +20,8 @@ export default function Step3Income() {
       <div className="bg-card rounded-xl border border-border p-5 space-y-4">
         <div>
           <Label className="text-sm font-semibold">4. 2025년 뉴저지 총소득 (NJ Gross Income) <span className="text-red-500 text-xs">필수</span></Label>
-          <p className="text-[11px] text-muted-foreground/70 mb-2">NJ-1040 Line 27 기준 — 2025년 1월~12월 전체 소득 (배우자 동거 시 합산)</p>
+          <p className="text-[11px] text-muted-foreground/70 mb-1">2025년 NJ-1040 <strong>Line 29</strong>의 뉴저지 총소득 금액을 적으세요. 별도 신고를 했더라도 같은 주요 주택을 유지한 배우자는 합산 소득을 입력해야 합니다. 2025년 연간 소득이 신고 기준액(filing threshold)을 넘지 않으면 0을 입력하세요.</p>
+          <p className="text-[10px] text-muted-foreground/60 mb-2">Enter the amount of your 2025 New Jersey gross income from Line 29 of your 2025 NJ-1040. Spouses who filed separately but maintained the same main home must enter combined income. If your income for the entire year for 2025 was not over the filing threshold, enter zero.</p>
           <div className="relative">
             <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground font-mono">$</span>
             <Input type="number" placeholder="65000" className="font-mono text-lg pl-7" value={formData.njGrossIncome} onChange={e => updateField('njGrossIncome', e.target.value)} />
