@@ -34,10 +34,15 @@ export default function Step2Filing() {
             <Label className="text-sm">2. 본인 출생연도 (Your Birth Year) <span className="text-red-500 text-xs">필수</span></Label>
             <Input maxLength={4} placeholder="1970" className="font-mono" value={formData.birthYear} onChange={e => updateField('birthYear', e.target.value)} />
           </div>
-          {formData.hasSpouse && (
+          {formData.hasSpouse ? (
             <div>
               <Label className="text-sm">배우자 출생연도 (Spouse Birth Year)</Label>
               <Input maxLength={4} placeholder="1972" className="font-mono" value={formData.spBirthYear} onChange={e => updateField('spBirthYear', e.target.value)} />
+            </div>
+          ) : (
+            <div className="text-xs text-amber-800 bg-amber-50 border border-amber-200 rounded-lg p-3">
+              배우자/CU 파트너 출생연도를 입력하려면 1단계의 <strong>「배우자/CU 파트너 정보 입력」</strong> 체크박스를 먼저 선택하세요.
+              <span className="block text-[10px] text-amber-700/70 mt-0.5">Check "Include spouse/CU partner" in Step 1 to enter the spouse's birth year.</span>
             </div>
           )}
         </div>

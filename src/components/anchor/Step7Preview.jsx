@@ -34,6 +34,7 @@ export default function Step7Preview() {
     ['SSN', formData.ssnLast4 ? `XXX-XX-${formData.ssnLast4}` : '—'],
     ['신고 신분', formData.filingStatus || '—'],
     ['출생연도', formData.birthYear || '—'],
+    ...(formData.hasSpouse ? [['배우자 출생연도', formData.spBirthYear || '— (미입력)']] : []),
     ['거주 형태', homeTypeMap[formData.homeType] || '—'],
     ['2025 NJ 총소득', formatMoney(formData.njGrossIncome)],
     ...(formData.homeType === 'homeowner' ? [
