@@ -218,7 +218,7 @@ export default function PrintFormAnchor({ data, printOnly = true }) {
       </div>
 
       <div style={{ marginTop: '8px', fontSize: '7.5px', color: '#666', textAlign: 'center', borderTop: '1px solid #ccc', paddingTop: '5px' }}>
-        This document organizes your entered information in the official ANC-1 form layout for reference. Submit online at anchor.nj.gov or mail the official form.
+        This document organizes your entered information in the official ANC-1 form layout for reference. Submit online at propertytaxreliefapp.nj.gov or mail the official form.
       </div>
     </div>
   );

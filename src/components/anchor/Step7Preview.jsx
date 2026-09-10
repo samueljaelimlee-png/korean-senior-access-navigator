@@ -79,8 +79,8 @@ export default function Step7Preview() {
           <Languages className="w-5 h-5" /> ANC-1 양식 인쇄 / PDF 저장 (한글 번역)
         </Button>
         <p className="text-xs text-center text-muted-foreground">브라우저 인쇄 메뉴에서 "PDF로 저장"을 선택하시면 PDF로 저장됩니다.</p>
-        <a href="https://anchor.nj.gov" target="_blank" rel="noopener noreferrer" className="text-xs text-center text-amber-600 underline inline-flex items-center justify-center gap-1">
-          <ExternalLink className="w-3 h-3" /> 온라인 제출: anchor.nj.gov
+        <a href="https://propertytaxreliefapp.nj.gov/File/Eligibility" target="_blank" rel="noopener noreferrer" className="text-xs text-center text-amber-600 underline inline-flex items-center justify-center gap-1">
+          <ExternalLink className="w-3 h-3" /> 온라인 제출: propertytaxreliefapp.nj.gov
         </a>
         <div className="text-center">
           <Button variant="outline" onClick={prevStep} className="gap-2"><ArrowLeft className="w-4 h-4" /> 이전</Button>

@@ -218,7 +218,7 @@ export default function PrintFormAnchorKorean({ data, printOnly = true }) {
       </div>
 
       <div style={{ marginTop: '8px', fontSize: '7.5px', color: '#666', textAlign: 'center', borderTop: '1px solid #ccc', paddingTop: '5px' }}>
-        ※ 이 문서는 입력하신 내용을 공식 ANC-1 양식 형식으로 한국어 번역하여 정리한 참고용입니다. 실제 제출은 anchor.nj.gov 에서 온라인으로 하거나 공식 양식을 우편 발송하세요.
+        ※ 이 문서는 입력하신 내용을 공식 ANC-1 양식 형식으로 한국어 번역하여 정리한 참고용입니다. 실제 제출은 propertytaxreliefapp.nj.gov 에서 온라인으로 하거나 공식 양식을 우편 발송하세요.
       </div>
     </div>
   );

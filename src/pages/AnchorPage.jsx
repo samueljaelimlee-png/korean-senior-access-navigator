@@ -34,9 +34,9 @@ export default function AnchorPage() {
               <span className="flex items-center gap-1"><Calendar className="w-3 h-3" /> Nov 2</span>
             </div>
           </div>
-          <a href="https://anchor.nj.gov" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-xs font-bold bg-white text-amber-700 px-3 py-1.5 rounded-full hover:bg-amber-50 transition-colors shadow">
+          <a href="https://propertytaxreliefapp.nj.gov/File/Eligibility" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-xs font-bold bg-white text-amber-700 px-3 py-1.5 rounded-full hover:bg-amber-50 transition-colors shadow">
             <span className="flex items-center gap-1.5"><ExternalLink className="w-3.5 h-3.5" /> 온라인 신청</span>
-            <span className="text-[9px] text-amber-700/60">anchor.nj.gov</span>
+            <span className="text-[9px] text-amber-700/60">propertytaxreliefapp.nj.gov</span>
           </a>
         </div>
         <ProgressBar />
