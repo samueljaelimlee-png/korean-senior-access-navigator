@@ -108,8 +108,8 @@ export default function Step3Residency() {
         {isRenter && (
           <div className="flex gap-2 items-start p-3 rounded-lg bg-amber-50 border border-amber-200 text-amber-800 text-sm mt-2">
             <SkipForward className="w-4 h-4 mt-0.5 flex-shrink-0" />
-            <span><strong>임차인 → 서명 섹션으로 바로 이동합니다.</strong><br />
-            ANCHOR만 신청 가능 (Senior Freeze · Stay NJ는 소유자만 해당)</span>
+            <span><strong>임차인은 '다음'을 누르면 소유자 전용 항목(재산세·소득)을 건너뛰고 서명 단계로 이동합니다.</strong><br />
+            지금 입력한 신청자·거주 정보는 그대로 PAS-1 양식에 반영됩니다. ANCHOR만 신청 가능 (Senior Freeze · Stay NJ는 소유자만 해당)</span>
           </div>
         )}
       </div>

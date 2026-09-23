@@ -137,11 +137,12 @@ export function getEligiblePrograms(data) {
   const inc24 = incomeTotal(data.inc?.[2024]);
   const inc25 = incomeTotal(data.inc?.[2025]);
   const progs = [];
-  if ((is65 || data.ssdiSelf || data.ssdiSpouse || data.rrdSelf || data.rrdSpouse) && data.since2022 && inc24 <= 168268 && inc25 <= 172475) {
+  const isRenter = data.homeType === 'rent';
+  if (!isRenter && (is65 || data.ssdiSelf || data.ssdiSpouse || data.rrdSelf || data.rrdSpouse) && data.since2022 && inc24 <= 168268 && inc25 <= 172475) {
     progs.push('Senior Freeze');
   }
-  if (inc25 <= 250000) progs.push('ANCHOR');
-  if (is65 && data.homeType !== 'rent' && data.homeType !== 'mobile' && inc25 <= 200000) progs.push('Stay NJ');
+  if (inc25 <= (isRenter ? 150000 : 250000)) progs.push('ANCHOR');
+  if (is65 && data.homeType === 'own' && inc25 <= 200000) progs.push('Stay NJ');
   return progs;
 }
 

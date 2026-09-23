@@ -1,5 +1,6 @@
 import React from 'react';
 import { usePAS1 } from '@/lib/pas1Context';
+import { Link } from 'react-router-dom';
 import { SAMPLE_DATA } from '@/lib/pas1Data';
 import YesNoButtons from './YesNoButtons';
 import { Button } from '@/components/ui/button';
@@ -10,8 +11,14 @@ const QUESTIONS = [
   { key: 'disability', text: '2025년에 SSDI 또는 Railroad Retirement Disability 급여를 수령하셨나요?', en: 'Did you receive SSDI or Railroad Retirement Disability benefits in 2025?', sub: '65세 미만인 경우 이 조건이 충족되어야 합니다.', subEn: 'Required if under 65.', showIf: (d) => d.age65 === false },
   { key: 'njResident', text: '뉴저지 주 거주자이신가요?', en: 'Are you a New Jersey resident?', sub: '주 거주지(main home)가 NJ에 있어야 합니다.', subEn: 'Your main home must be in NJ.' },
   { key: 'homeowner', text: '2025년 10월 1일 기준 NJ 주택을 소유 또는 임차하셨나요?', en: 'Did you own or rent a NJ home as of Oct 1, 2025?', sub: '해당하는 항목을 선택해 주세요.', subEn: 'Select the option that applies to you.', type: 'ownership' },
-  { key: 'incomeLow', text: '2025년 연간 총소득이 $250,000 이하이신가요?', en: 'Was your 2025 total annual income $250,000 or less?', sub: '부부 합산 기준 · ANCHOR 소득 한도. Stay NJ는 $200,000 이하부터 지급됩니다.', subEn: 'Combined income. ANCHOR limit: $250,000. Stay NJ requires income of $200,000 or less.', showIf: (d) => d.homeowner !== 'rent' },
-  { key: 'propTax', text: '해당 주택에 재산세(Property Tax)가 부과되고 있나요?', en: 'Are property taxes charged on this home?', sub: '100% 장애 재향군인 재산세 면제자는 해당 없음', subEn: '100% disabled veteran exemptions do not qualify.', showIf: (d) => d.homeowner !== 'rent' },
+  { key: 'incRent150', text: 'ANCHOR 확인 — 2025년 연간 총소득이 $150,000 이하이신가요?', en: 'ANCHOR check — Was your 2025 total annual income $150,000 or less?', sub: '세입자 ANCHOR 소득 한도입니다.', subEn: 'This is the ANCHOR income limit for renters.', showIf: (d) => d.homeowner === 'rent' },
+  { key: 'incomeLow', text: 'ANCHOR 확인 — 2025년 연간 총소득이 $250,000 이하이신가요?', en: 'ANCHOR check — Was your 2025 total annual income $250,000 or less?', sub: '주택 소유자 ANCHOR 소득 한도입니다.', subEn: 'This is the ANCHOR income limit for homeowners.', showIf: (d) => !!d.homeowner && d.homeowner !== 'rent' },
+  { key: 'stayInc200', text: 'Stay NJ 확인 — 2025년 연간 총소득이 $200,000 이하이신가요?', en: 'Stay NJ check — Was your 2025 total annual income $200,000 or less?', sub: 'Stay NJ 소득 한도입니다.', subEn: 'This is the Stay NJ income limit.', showIf: (d) => d.homeowner === 'own' },
+  { key: 'stayLive2025', text: 'Stay NJ 확인 — 2025년 1월 1일부터 12월 31일까지 내내 같은 주택을 소유·거주하셨나요?', en: 'Stay NJ check — Did you own and live in the same home for all of 2025 (Jan 1 – Dec 31)?', sub: 'Stay NJ 핵심 거주 조건입니다.', subEn: 'Core Stay NJ residency requirement.', showIf: (d) => d.homeowner === 'own' },
+  { key: 'sfLive2022', text: 'Senior Freeze 확인 — 2022년 12월 31일부터 지금까지 같은 주택을 소유·거주하셨나요?', en: 'Senior Freeze check — Have you owned and lived in the same home since Dec 31, 2022?', sub: 'Senior Freeze 핵심 거주 조건입니다.', subEn: 'Core Senior Freeze residency requirement.', showIf: (d) => !!d.homeowner && d.homeowner !== 'rent' },
+  { key: 'sfInc2024', text: 'Senior Freeze 확인 — 2024년 연간 총소득이 $168,268 이하이신가요?', en: 'Senior Freeze check — Was your 2024 total annual income $168,268 or less?', sub: '2024년 소득 기준입니다.', subEn: '2024 income limit.', showIf: (d) => !!d.homeowner && d.homeowner !== 'rent' },
+  { key: 'sfInc2025', text: 'Senior Freeze 확인 — 2025년 연간 총소득이 $172,475 이하이신가요?', en: 'Senior Freeze check — Was your 2025 total annual income $172,475 or less?', sub: '2025년 소득 기준입니다.', subEn: '2025 income limit.', showIf: (d) => !!d.homeowner && d.homeowner !== 'rent' },
+  { key: 'propTax', text: '해당 주택에 재산세(Property Tax)가 부과되고 있나요?', en: 'Are property taxes charged on this home?', sub: '100% 장애 재향군인 재산세 면제자는 해당 없음', subEn: '100% disabled veteran exemptions do not qualify.', showIf: (d) => !!d.homeowner && d.homeowner !== 'rent' },
 ];
 
 const OWNERSHIP_OPTIONS = [
@@ -44,15 +51,35 @@ function OwnershipButtons({ value, onChange }) {
   );
 }
 
+function ProgRow({ ok, name, okText, noText }) {
+  return (
+    <div className={`flex gap-2 items-start p-3 rounded-lg border-l-4 text-sm ${ok ? 'bg-green-50 border-green-500' : 'bg-slate-50 border-slate-400'}`}>
+      {ok
+        ? <CheckCircle className="w-4 h-4 mt-0.5 flex-shrink-0 text-green-600" />
+        : <AlertCircle className="w-4 h-4 mt-0.5 flex-shrink-0 text-slate-500" />}
+      <div>
+        <p className={`font-semibold ${ok ? 'text-green-800' : 'text-slate-600'}`}>{name} — {ok ? '신청 가능' : '해당 없음'}</p>
+        <p className={`text-xs mt-0.5 leading-relaxed ${ok ? 'text-green-700' : 'text-slate-500'}`}>{ok ? okText : noText}</p>
+      </div>
+    </div>
+  );
+}
+
 export default function Step0Eligibility() {
-  const { formData, updateField, nextStep, fillSample, setStep } = usePAS1();
+  const { formData, updateField, nextStep, fillSample } = usePAS1();
 
   const visible = QUESTIONS.filter(q => !q.showIf || q.showIf(formData));
   const allAnswered = visible.every(q => formData[q.key] !== null);
   const isRenter = formData.homeowner === 'rent';
+  const isOwner = formData.homeowner === 'own';
 
   const baseEligible = formData.age65 === true || formData.disability === true;
-  const eligible = allAnswered && baseEligible && formData.njResident && formData.homeowner && formData.incomeLow && formData.propTax;
+  const anchorOK = isRenter
+    ? formData.incRent150 === true
+    : formData.incomeLow === true && formData.propTax === true;
+  const anchorEligible = baseEligible && formData.njResident === true && !!formData.homeowner && anchorOK;
+  const sfEligible = anchorEligible && !isRenter && formData.sfLive2022 === true && formData.sfInc2024 === true && formData.sfInc2025 === true;
+  const stayEligible = anchorEligible && isOwner && formData.age65 === true && formData.stayInc200 === true && formData.stayLive2025 === true;
 
   return (
     <div className="space-y-4">
@@ -93,57 +120,97 @@ export default function Step0Eligibility() {
           ))}
         </div>
 
-        {isRenter && (
-          <div className="mt-4 flex flex-col gap-3 p-4 rounded-lg bg-blue-50 border-2 border-blue-300">
-            <p className="text-base font-bold text-blue-900">🙋‍♂️ 세입자(Renter)이신가요? 여기서 끝입니다!</p>
-            <p className="text-[11px] text-blue-700/60 font-medium">Are you a renter? You're done here!</p>
-            <p className="text-sm text-blue-800 leading-relaxed">
-              세입자는 주택 소유주용 스케줄(Schedule)을 작성할 필요가 없습니다. 바로 마지막 페이지로 가서 서명과 날짜만 적고 우편으로 발송하시면 신청이 완료됩니다.
-            </p>
-            <p className="text-sm text-blue-700/60 leading-relaxed">
-              Renters don't need to fill out the homeowner schedule. Go to the last page, sign and date, and mail it to complete your application.
-            </p>
-            <Button
-              onClick={() => { updateField('homeType', 'rent'); setStep(6); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-              className="gap-2 bg-blue-700 hover:bg-blue-800 self-start"
-            >
-              서명 페이지로 바로 이동 <ArrowRight className="w-4 h-4" />
-              <span className="block text-[10px] font-normal opacity-70">Go to Signature Page</span>
-            </Button>
+
+
+        {allAnswered && (
+          <div className="mt-4 space-y-2">
+            <ProgRow
+              ok={anchorEligible}
+              name="ANCHOR"
+              okText={isRenter
+                ? '세입자 소득 한도($150,000 이하) 충족 · Income limit for renters met (≤ $150,000)'
+                : '소유자 소득 한도($250,000 이하) 충족 · Income limit for homeowners met (≤ $250,000)'}
+              noText="소득 한도 초과 — 세입자 $150,000 이하 / 소유자 $250,000 이하만 해당 · Income limit exceeded (renters ≤ $150,000 / homeowners ≤ $250,000)"
+            />
+            <ProgRow
+              ok={sfEligible}
+              name="Senior Freeze"
+              okText="2022년 12월 31일부터 같은 주택 소유·거주 + 2024년 소득 $168,268 이하 + 2025년 소득 $172,475 이하 모두 충족"
+              noText={isRenter
+                ? '세입자는 신청 대상 아님 (소유자 전용) · Renters are not eligible'
+                : '조건 미충족: 2022년 12월 31일부터 같은 주택 소유·거주 · 2024년 소득 $168,268 이하 · 2025년 소득 $172,475 이하'}
+            />
+            <ProgRow
+              ok={stayEligible}
+              name="Stay NJ"
+              okText="65세 이상 + 2025년 한 해 내내 같은 주택 소유·거주 + 소득 $200,000 이하 모두 충족"
+              noText={formData.homeowner !== 'own'
+                ? '세입자·모바일홈 소유자는 신청 대상 아님 (주택 소유자 전용) · Renters and mobile home owners are not eligible'
+                : '조건 미충족: 65세 이상 · 2025년 한 해 내내 같은 주택 소유·거주 · 소득 $200,000 이하'}
+            />
           </div>
         )}
 
-        {allAnswered && !isRenter && (
-          <div className="mt-4">
-            {eligible ? (
-              <>
-                <div className="flex gap-2 items-start p-3 rounded-lg bg-green-50 border-l-4 border-green-500">
-                  <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
-                  <div>
-                    <p className="font-semibold text-green-800">PAS-1 신청 가능합니다</p>
-                    <p className="text-[11px] text-green-600">You are eligible to apply for PAS-1</p>
-                    <p className="text-sm text-green-700">아래 단계를 계속 진행하세요. 마감일: 2026년 11월 2일</p>
-                    <p className="text-[11px] text-green-600/70">Continue to the next step. Deadline: November 2, 2026</p>
-                  </div>
-                </div>
-                <div className="mt-4">
-                  <Button onClick={nextStep} className="gap-2 bg-primary hover:bg-primary/90">
-                    STEP 1 시작 <ArrowRight className="w-4 h-4" />
-                    <span className="block text-[10px] font-normal opacity-70">Start Step 1</span>
-                  </Button>
-                </div>
-              </>
+        {allAnswered && anchorEligible && (
+          <>
+            <div className="mt-4 flex gap-2 items-start p-3 rounded-lg bg-green-50 border-l-4 border-green-500">
+              <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+              <div>
+                <p className="font-semibold text-green-800">PAS-1 신청 가능합니다</p>
+                <p className="text-[11px] text-green-600">You are eligible to apply for PAS-1</p>
+                <p className="text-sm text-green-700">{isRenter ? '신청자 정보를 먼저 입력하세요.' : '아래 단계를 계속 진행하세요.'} 마감일: 2026년 11월 2일</p>
+                <p className="text-[11px] text-green-600/70">Deadline: November 2, 2026</p>
+              </div>
+            </div>
+            {isRenter ? (
+              <div className="mt-4 flex flex-col gap-3 p-4 rounded-lg bg-blue-50 border-2 border-blue-300">
+                <p className="text-base font-bold text-blue-900">🙋 세입자(Renter) 신청 안내</p>
+                <p className="text-[11px] text-blue-700/60 font-medium">Renter Application Guide</p>
+                <p className="text-sm text-blue-800 leading-relaxed">
+                  세입자는 <strong>1~3단계(신청자 정보 · 신고 신분 · 거주 정보)</strong>를 모두 입력한 뒤, <strong>주택 소유자 전용 항목(재산세 · 소득)만 건너뛰고</strong> 서명 단계로 이동합니다. 신청자 정보를 건너뛰지 마세요.
+                </p>
+                <p className="text-sm text-blue-700/60 leading-relaxed">
+                  Renters complete Steps 1–3 (personal info, filing status, residency), then skip only the homeowner sections (property tax & income) and sign.
+                </p>
+                <Button
+                  onClick={() => { updateField('homeType', 'rent'); nextStep(); }}
+                  className="gap-2 bg-blue-700 hover:bg-blue-800 self-start"
+                >
+                  1단계 시작 <ArrowRight className="w-4 h-4" />
+                  <span className="block text-[10px] font-normal opacity-70">Start Step 1</span>
+                </Button>
+              </div>
             ) : (
-              <div className="flex gap-2 items-start p-3 rounded-lg bg-red-50 border-l-4 border-red-500">
-                <AlertCircle className="w-5 h-5 text-red-600 mt-0.5 flex-shrink-0" />
-                <div>
-                  <p className="font-semibold text-red-800">PAS-1 신청 대상이 아닙니다</p>
-                  <p className="text-[11px] text-red-600">You are not eligible for PAS-1</p>
-                  <p className="text-sm text-red-700">65세 미만이며 장애급여 미수급자인 경우 ANCHOR 단독 신청은 2026년 여름에 별도 오픈됩니다.</p>
-                  <p className="text-[11px] text-red-600/70">If under 65 without disability benefits, ANCHOR-only applications open separately in summer 2026.</p>
-                </div>
+              <div className="mt-4">
+                <Button onClick={nextStep} className="gap-2 bg-primary hover:bg-primary/90">
+                  STEP 1 시작 <ArrowRight className="w-4 h-4" />
+                  <span className="block text-[10px] font-normal opacity-70">Start Step 1</span>
+                </Button>
               </div>
             )}
+          </>
+        )}
+
+        {allAnswered && !anchorEligible && (
+          <div className="mt-4 flex gap-2 items-start p-3 rounded-lg bg-red-50 border-l-4 border-red-500">
+            <AlertCircle className="w-5 h-5 text-red-600 mt-0.5 flex-shrink-0" />
+            <div>
+              <p className="font-semibold text-red-800">PAS-1 신청 대상이 아닙니다</p>
+              <p className="text-[11px] text-red-600">You are not eligible for PAS-1</p>
+              {!baseEligible ? (
+                <>
+                  <p className="text-sm text-red-700">65세 미만이며 장애급여 미수급자는 ANCHOR 단독 신청(ANC-1)으로 신청하세요.</p>
+                  <p className="text-[11px] text-red-600/70">If under 65 without disability benefits, apply with the ANCHOR (ANC-1) application.</p>
+                  <Link to="/anchor" className="inline-flex items-center gap-1 text-xs font-bold text-white bg-red-600 px-3 py-1.5 rounded-full mt-2">
+                    ANCHOR 신청 페이지로 이동 <ArrowRight className="w-3.5 h-3.5" />
+                  </Link>
+                </>
+              ) : !formData.homeowner ? (
+                <p className="text-sm text-red-700">2025년 10월 1일 기준 NJ 주택 소유 또는 임차에 해당하지 않습니다. 문의: 1-800-323-4400</p>
+              ) : (
+                <p className="text-sm text-red-700">소득 한도를 초과했습니다. 문의: 1-800-323-4400</p>
+              )}
+            </div>
           </div>
         )}
       </div>

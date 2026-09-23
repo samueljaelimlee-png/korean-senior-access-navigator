@@ -5,8 +5,7 @@ import { Label } from '@/components/ui/label';
 import { Pen, AlertTriangle, CheckCircle, Clock } from 'lucide-react';
 import NavButtons from './NavButtons';
 
-const CHECKLIST = [
-  { label: '모든 필수 항목(SSN, 주소, 재산세, 소득)이 입력되었습니다' },
+const CHECKLIST_BASE = [
   { label: '파란색 또는 검정색 볼펜으로 직접 서명할 준비가 되었습니다', sub: '복사 서명 불가 — 반드시 원본 서명' },
   { label: '재산세 고지서 원본은 동봉 불필요합니다' },
   { label: '배우자 사망 시 사망진단서 사본 첨부 (해당 없으면 체크)' },
@@ -25,6 +24,12 @@ const TIMELINE = [
 export default function Step6Signature() {
   const { formData, updateField, nextStep } = usePAS1();
   const allChecked = formData.checks.every(Boolean);
+  const CHECKLIST = [
+    { label: formData.homeType === 'rent'
+        ? '모든 필수 항목(SSN, 주소, 거주 정보)이 입력되었습니다'
+        : '모든 필수 항목(SSN, 주소, 재산세, 소득)이 입력되었습니다' },
+    ...CHECKLIST_BASE,
+  ];
 
   const toggleCheck = (i) => {
     const newChecks = [...formData.checks];

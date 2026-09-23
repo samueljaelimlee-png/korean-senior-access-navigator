@@ -4,6 +4,7 @@ const defaultState = {
   step: 0,
   // Step 0 - Eligibility
   age65: null, disability: null, njResident: null, homeowner: null, incomeLow: null, propTax: null,
+  incRent150: null, stayInc200: null, stayLive2025: null, sfLive2022: null, sfInc2024: null, sfInc2025: null,
   // Step 1 - Personal
   lname: '', fname: '', birthYear: '', phone: '', address: '', muniCode: '', ssnLast4: '',
   hasSpouse: false, spName: '', spBirthYear: '',
@@ -101,6 +102,7 @@ export function PAS1Provider({ children }) {
       step: prev.step,
       age65: true, disability: false, njResident: true,
       homeowner: true, incomeLow: true, propTax: true,
+      stayInc200: true, stayLive2025: true, sfLive2022: true, sfInc2024: true, sfInc2025: true,
       checks: [false, false, false, false, false, false],
     }));
   };
