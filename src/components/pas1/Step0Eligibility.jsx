@@ -75,12 +75,14 @@ export default function Step0Eligibility() {
   const isOwner = formData.homeowner === 'own';
 
   const baseEligible = formData.age65 === true || formData.disability === true;
+  // P.I.L.O.T. 납부금은 ANCHOR·Senior Freeze의 재산세로 인정되지 않음 — Stay NJ만 대상 가능
   const anchorOK = isRenter
     ? formData.incRent150 === true
-    : formData.incomeLow === true && (formData.propTax === true || formData.pilot === true);
+    : formData.incomeLow === true && formData.propTax === true;
   const anchorEligible = baseEligible && formData.njResident === true && !!formData.homeowner && anchorOK;
   const sfEligible = anchorEligible && !isRenter && formData.sfLive2022 === true && formData.sfInc2024 === true && formData.sfInc2025 === true;
-  const stayEligible = anchorEligible && isOwner && formData.age65 === true && formData.stayInc200 === true && formData.stayLive2025 === true;
+  const stayEligible = baseEligible && formData.njResident === true && isOwner && formData.age65 === true && formData.stayInc200 === true && formData.stayLive2025 === true;
+  const canProceed = anchorEligible || stayEligible;
 
   return (
     <div className="space-y-4">
@@ -131,7 +133,9 @@ export default function Step0Eligibility() {
               okText={isRenter
                 ? '세입자 소득 한도($150,000 이하) 충족 · Income limit for renters met (≤ $150,000)'
                 : '소유자 소득 한도($250,000 이하) 충족 · Income limit for homeowners met (≤ $250,000)'}
-              noText="소득 한도 초과 — 세입자 $150,000 이하 / 소유자 $250,000 이하만 해당 · Income limit exceeded (renters ≤ $150,000 / homeowners ≤ $250,000)"
+              noText={formData.pilot === true
+                ? 'P.I.L.O.T. 납부금은 ANCHOR에서 재산세로 인정되지 않아 신청 대상이 아닙니다 · PILOT payments are not recognized as property taxes for ANCHOR'
+                : '소득 한도 초과 — 세입자 $150,000 이하 / 소유자 $250,000 이하만 해당 · Income limit exceeded (renters ≤ $150,000 / homeowners ≤ $250,000)'}
             />
             <ProgRow
               ok={sfEligible}
@@ -139,12 +143,16 @@ export default function Step0Eligibility() {
               okText="2022년 12월 31일부터 같은 주택 소유·거주 + 2024년 소득 $168,268 이하 + 2025년 소득 $172,475 이하 모두 충족"
               noText={isRenter
                 ? '세입자는 신청 대상 아님 (소유자 전용) · Renters are not eligible'
-                : '조건 미충족: 2022년 12월 31일부터 같은 주택 소유·거주 · 2024년 소득 $168,268 이하 · 2025년 소득 $172,475 이하'}
+                : formData.pilot === true
+                  ? 'P.I.L.O.T. 납부 주택은 Senior Freeze 지원 대상이 아닙니다 · PILOT homes are not eligible for Senior Freeze'
+                  : '조건 미충족: 2022년 12월 31일부터 같은 주택 소유·거주 · 2024년 소득 $168,268 이하 · 2025년 소득 $172,475 이하'}
             />
             <ProgRow
               ok={stayEligible}
               name="Stay NJ"
-              okText="65세 이상 + 2025년 한 해 내내 같은 주택 소유·거주 + 소득 $200,000 이하 모두 충족"
+              okText={formData.pilot === true
+                ? 'Stay NJ는 P.I.L.O.T. 주택도 지원 대상입니다 (담당 직원 확인 필요) · Stay NJ accepts PILOT homes — staff verification required'
+                : '65세 이상 + 2025년 한 해 내내 같은 주택 소유·거주 + 소득 $200,000 이하 모두 충족'}
               noText={formData.homeowner !== 'own'
                 ? '세입자·모바일홈 소유자는 신청 대상 아님 (주택 소유자 전용) · Renters and mobile home owners are not eligible'
                 : '조건 미충족: 65세 이상 · 2025년 한 해 내내 같은 주택 소유·거주 · 소득 $200,000 이하'}
@@ -152,13 +160,13 @@ export default function Step0Eligibility() {
           </div>
         )}
 
-        {allAnswered && anchorEligible && (
+        {allAnswered && canProceed && (
           <>
             <div className="mt-4 flex gap-2 items-start p-3 rounded-lg bg-green-50 border-l-4 border-green-500">
               <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
               <div>
-                <p className="font-semibold text-green-800">PAS-1 신청 가능합니다</p>
-                <p className="text-[11px] text-green-600">You are eligible to apply for PAS-1</p>
+                <p className="font-semibold text-green-800">{formData.pilot === true ? 'Stay NJ 자격 검토 대상입니다' : 'PAS-1 신청 가능합니다'}</p>
+                <p className="text-[11px] text-green-600">{formData.pilot === true ? 'Stay NJ eligibility review — staff verification required' : 'You are eligible to apply for PAS-1'}</p>
                 <p className="text-sm text-green-700">{isRenter ? '신청자 정보를 먼저 입력하세요.' : '아래 단계를 계속 진행하세요.'} 마감일: 2026년 11월 2일</p>
                 <p className="text-[11px] text-green-600/70">Deadline: November 2, 2026</p>
               </div>
@@ -203,7 +211,7 @@ export default function Step0Eligibility() {
           </>
         )}
 
-        {allAnswered && !anchorEligible && (
+        {allAnswered && !canProceed && (
           <div className="mt-4 flex gap-2 items-start p-3 rounded-lg bg-red-50 border-l-4 border-red-500">
             <AlertCircle className="w-5 h-5 text-red-600 mt-0.5 flex-shrink-0" />
             <div>
@@ -219,6 +227,8 @@ export default function Step0Eligibility() {
                 </>
               ) : !formData.homeowner ? (
                 <p className="text-sm text-red-700">2025년 10월 1일 기준 NJ 주택 소유 또는 임차에 해당하지 않습니다. 문의: 1-800-323-4400</p>
+              ) : formData.pilot === true ? (
+                <p className="text-sm text-red-700">P.I.L.O.T. 납부 주택은 ANCHOR·Senior Freeze 지원 대상이 아니며, Stay NJ 조건(65세 이상 · 2025년 내내 소유·거주 · 소득 $200,000 이하)도 충족하지 않았습니다. 담당 직원 상담을 받으세요.</p>
               ) : (
                 <p className="text-sm text-red-700">소득 한도를 초과했습니다. 문의: 1-800-323-4400</p>
               )}
