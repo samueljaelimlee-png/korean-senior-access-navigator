@@ -88,9 +88,11 @@ export default function Step5Income() {
         <div className={`flex gap-2 items-start p-3 rounded-lg text-sm ${
           total <= limit 
             ? 'bg-green-50 text-green-800' 
-            : total < 500000 
+            : total <= 200000 
               ? 'bg-amber-50 text-amber-800' 
-              : 'bg-red-50 text-red-800'
+              : total <= 250000 
+                ? 'bg-orange-50 text-orange-800' 
+                : 'bg-red-50 text-red-800'
         }`}>
           {total <= limit 
             ? <CheckCircle className="w-4 h-4 mt-0.5 flex-shrink-0" />
@@ -99,15 +101,19 @@ export default function Step5Income() {
           <span>
             {total <= limit 
               ? `Senior Freeze 소득 기준 충족 (한도 $${limit.toLocaleString()})` 
-              : total < 500000 
-                ? 'Senior Freeze 기준 초과. ANCHOR/Stay NJ 가능 여부 확인' 
-                : '$500,000 이상 — 모든 프로그램 신청 불가'}
+              : total <= 200000 
+                ? 'Senior Freeze 기준 초과 — ANCHOR 가능 · Stay NJ 소득 기준 충족 ($200,000 이하)' 
+                : total <= 250000 
+                  ? 'Senior Freeze·Stay NJ 기준 초과 — ANCHOR만 가능 (소득 $250,000 이하)' 
+                  : '소득 $250,000 초과 — PAS-1 프로그램 신청 불가'}
             <span className="block text-[10px] mt-0.5">
               {total <= limit 
                 ? `Meets Senior Freeze income limit ($${limit.toLocaleString()})` 
-                : total < 500000 
-                  ? 'Exceeds Senior Freeze limit. Check ANCHOR/Stay NJ eligibility' 
-                  : '$500,000+ — not eligible for any program'}
+                : total <= 200000 
+                  ? 'Exceeds Senior Freeze limit. ANCHOR available; Stay NJ income limit met (≤ $200,000)' 
+                  : total <= 250000 
+                    ? 'Exceeds Senior Freeze/Stay NJ limits. ANCHOR only (income ≤ $250,000)' 
+                    : 'Over $250,000 — not eligible for PAS-1 programs'}
             </span>
           </span>
         </div>

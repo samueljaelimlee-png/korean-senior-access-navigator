@@ -10,7 +10,7 @@ const QUESTIONS = [
   { key: 'disability', text: '2025년에 SSDI 또는 Railroad Retirement Disability 급여를 수령하셨나요?', en: 'Did you receive SSDI or Railroad Retirement Disability benefits in 2025?', sub: '65세 미만인 경우 이 조건이 충족되어야 합니다.', subEn: 'Required if under 65.', showIf: (d) => d.age65 === false },
   { key: 'njResident', text: '뉴저지 주 거주자이신가요?', en: 'Are you a New Jersey resident?', sub: '주 거주지(main home)가 NJ에 있어야 합니다.', subEn: 'Your main home must be in NJ.' },
   { key: 'homeowner', text: '2025년 10월 1일 기준 NJ 주택을 소유 또는 임차하셨나요?', en: 'Did you own or rent a NJ home as of Oct 1, 2025?', sub: '해당하는 항목을 선택해 주세요.', subEn: 'Select the option that applies to you.', type: 'ownership' },
-  { key: 'incomeLow', text: '2025년 연간 총소득이 $500,000 미만이신가요?', en: 'Was your 2025 total annual income under $500,000?', sub: '부부 합산 기준', subEn: 'Combined household income.', showIf: (d) => d.homeowner !== 'rent' },
+  { key: 'incomeLow', text: '2025년 연간 총소득이 $250,000 이하이신가요?', en: 'Was your 2025 total annual income $250,000 or less?', sub: '부부 합산 기준 · ANCHOR 소득 한도. Stay NJ는 $200,000 이하부터 지급됩니다.', subEn: 'Combined income. ANCHOR limit: $250,000. Stay NJ requires income of $200,000 or less.', showIf: (d) => d.homeowner !== 'rent' },
   { key: 'propTax', text: '해당 주택에 재산세(Property Tax)가 부과되고 있나요?', en: 'Are property taxes charged on this home?', sub: '100% 장애 재향군인 재산세 면제자는 해당 없음', subEn: '100% disabled veteran exemptions do not qualify.', showIf: (d) => d.homeowner !== 'rent' },
 ];
 

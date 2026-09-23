@@ -141,7 +141,7 @@ export function getEligiblePrograms(data) {
     progs.push('Senior Freeze');
   }
   if (inc25 <= 250000) progs.push('ANCHOR');
-  if (is65 && inc25 < 500000) progs.push('Stay NJ');
+  if (is65 && data.homeType !== 'rent' && data.homeType !== 'mobile' && inc25 <= 200000) progs.push('Stay NJ');
   return progs;
 }
 
