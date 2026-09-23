@@ -146,6 +146,11 @@ export default function PrintFormKorean({ data, printOnly = true, blank = false 
     : '';
   const fs = data.filingStatus;
   const cb = (v) => blank ? false : v;
+  const isRenter = data.homeType === 'rent';
+  const skipped = isRenter || (data.same2025 === false && (
+    data.homeType === 'mobile' || (data.homeType === 'own' && (!data.born1960 || !data.movedWithin2025))
+  ));
+  const showSched1 = data.homeType === 'own' && data.same2025 === false && data.born1960 === true && data.movedWithin2025 === true;
 
   return (
     <div className={printOnly ? 'print-only' : ''} style={{ ...BASE, maxWidth: '740px', margin: '0 auto', padding: '20px 28px', background: '#fff' }}>
@@ -259,7 +264,7 @@ export default function PrintFormKorean({ data, printOnly = true, blank = false 
             <Ln n="6a." /> 2025년 <strong>1월 1일부터 12월 31일까지</strong> 같은 NJ 주요 주택을 소유하고 거주하셨나요?
             <span style={{ display: 'block', fontSize: '7.5px', color: '#555', marginTop: '1px' }}>"예"이면 7번. "아니오"이고 주택 소유자이면 6b. 모바일홈 소유자이면 서명란으로 이동.</span>
           </span>
-          <span style={{ whiteSpace: 'nowrap' }}><CB checked={cb(data.same2025)} /> 예 &nbsp;<CB checked={cb(!data.same2025)} /> 아니오</span>
+          <span style={{ whiteSpace: 'nowrap' }}><CB checked={cb(!isRenter && data.same2025)} /> 예 &nbsp;<CB checked={cb(!isRenter && !data.same2025)} /> 아니오</span>
         </Row>
         <Row style={{ opacity: data.same2025 ? 0.4 : 1 }}>
           <span style={{ flex: 1 }}><Ln n="6b." /> 본인 또는 배우자가 1960년 이전 출생입니까? "예"이면 6c. "아니오"이면 서명란으로 이동.</span>
@@ -271,15 +276,15 @@ export default function PrintFormKorean({ data, printOnly = true, blank = false 
         </Row>
         <Row>
           <span style={{ flex: 1 }}><Ln n="7." /> 작년 재산세 감면 혜택과 같은 주택으로 신청하십니까?</span>
-          <span><CB checked={cb(data.sameAsLast)} /> 예 &nbsp;<CB checked={cb(!data.sameAsLast)} /> 아니오</span>
+          <span><CB checked={cb(!skipped && data.sameAsLast)} /> 예 &nbsp;<CB checked={cb(!skipped && !data.sameAsLast)} /> 아니오</span>
         </Row>
         <Row>
           <span style={{ flex: 1 }}><Ln n="8." /> 2025년 12월 31일 기준, <strong>2022년 12월 31일 또는 그 이전부터</strong> 같은 NJ 주택을 소유하고 거주하고 계십니까?</span>
-          <span><CB checked={cb(data.since2022)} /> 예 &nbsp;<CB checked={cb(!data.since2022)} /> 아니오</span>
+          <span><CB checked={cb(!skipped && data.since2022)} /> 예 &nbsp;<CB checked={cb(!skipped && !data.since2022)} /> 아니오</span>
         </Row>
         <Row>
           <span style={{ flex: 1 }}><Ln n="9." /> <strong>2023년 중</strong> 현재 주택으로 이사하셨나요?</span>
-          <span><CB checked={cb(data.moved2023)} /> 예 &nbsp;<CB checked={cb(!data.moved2023)} /> 아니오</span>
+          <span><CB checked={cb(!skipped && data.moved2023)} /> 예 &nbsp;<CB checked={cb(!skipped && !data.moved2023)} /> 아니오</span>
         </Row>
       </div>
 
@@ -319,8 +324,8 @@ export default function PrintFormKorean({ data, printOnly = true, blank = false 
                   </>
                 ) : (
                   <>
-                    <td style={{ textAlign: 'center', padding: '4px', whiteSpace: 'nowrap' }}><CB checked={cb(r.v24)} /> 예 &nbsp;<CB checked={cb(!r.v24)} /> 아니오</td>
-                    <td style={{ textAlign: 'center', padding: '4px', whiteSpace: 'nowrap' }}><CB checked={cb(r.v25)} /> 예 &nbsp;<CB checked={cb(!r.v25)} /> 아니오</td>
+                    <td style={{ textAlign: 'center', padding: '4px', whiteSpace: 'nowrap' }}><CB checked={cb(!skipped && r.v24)} /> 예 &nbsp;<CB checked={cb(!skipped && !r.v24)} /> 아니오</td>
+                    <td style={{ textAlign: 'center', padding: '4px', whiteSpace: 'nowrap' }}><CB checked={cb(!skipped && r.v25)} /> 예 &nbsp;<CB checked={cb(!skipped && !r.v25)} /> 아니오</td>
                   </>
                 )}
               </tr>
@@ -345,7 +350,7 @@ export default function PrintFormKorean({ data, printOnly = true, blank = false 
         </div>
         <Row>
           <span style={{ flex: 1 }}><Ln n="13b." /> 추가 Lot에 대한 재산세도 청구하시나요? (안내서 참조)</span>
-          <span><CB checked={cb(data.additionalLots)} /> 예 &nbsp;<CB checked={cb(!data.additionalLots)} /> 아니오</span>
+          <span><CB checked={cb(!skipped && data.additionalLots)} /> 예 &nbsp;<CB checked={cb(!skipped && !data.additionalLots)} /> 아니오</span>
         </Row>
         <Row>
           <span style={{ flex: 1 }}>
@@ -367,7 +372,7 @@ export default function PrintFormKorean({ data, printOnly = true, blank = false 
       <div style={{ fontSize: '9px' }}>
         <Row>
           <span style={{ flex: 1 }}><Ln n="16a." /> 2025년 주요 주택에 Payment-in-Lieu-of-Taxes (P.I.L.O.T.) 계약이 있었나요?</span>
-          <span><CB checked={cb(data.pilot)} /> 예 &nbsp;<CB checked={cb(!data.pilot)} /> 아니오</span>
+          <span><CB checked={cb(!skipped && data.pilot)} /> 예 &nbsp;<CB checked={cb(!skipped && !data.pilot)} /> 아니오</span>
         </Row>
         <Row>
           <span style={{ flex: 1 }}><Ln n="16b." /> "예"이면 2025년 주요 주택에 대해 납부해야 하는 P.I.L.O.T. 금액을 적으세요.</span>
@@ -468,7 +473,7 @@ export default function PrintFormKorean({ data, printOnly = true, blank = false 
                   <td style={{ padding: '4px', border: '1px solid #ccc', fontSize: '8.5px' }}>{row.label}</td>
                   {['v1', 'v2'].map((k) => (
                     <td key={k} style={{ padding: '4px', border: '1px solid #ccc', textAlign: row.type === 'money' || row.type === 'pct' ? 'right' : 'left', minHeight: '22px', height: '22px' }}>
-                      {row.type === 'yesno' && <><CB checked={cb(row[k])} /> 예 &nbsp;<CB checked={cb(!row[k])} /> 아니오</>}
+                      {row.type === 'yesno' && <><CB checked={cb(showSched1 && row[k])} /> 예 &nbsp;<CB checked={cb(showSched1 && !row[k])} /> 아니오</>}
                       {row.type === 'pct' && (row[k] ? `${row[k]}%` : '')}
                       {row.type === 'money' && (row[k] ? `$${parseFloat(row[k]).toLocaleString('en-US', { minimumFractionDigits: 2 })}` : '')}
                       {row.type === 'text' && (row[k] || '')}

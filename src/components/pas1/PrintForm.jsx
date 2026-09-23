@@ -156,6 +156,11 @@ export default function PrintForm({ data }) {
     ? new Date(data.sigDate + 'T00:00:00').toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' })
     : '';
   const fs = data.filingStatus;
+  const isRenter = data.homeType === 'rent';
+  const skipped = isRenter || (data.same2025 === false && (
+    data.homeType === 'mobile' || (data.homeType === 'own' && (!data.born1960 || !data.movedWithin2025))
+  ));
+  const showSched1 = data.homeType === 'own' && data.same2025 === false && data.born1960 === true && data.movedWithin2025 === true;
 
   return (
     <div className="print-only" style={{ ...BASE, maxWidth: '740px', margin: '0 auto', padding: '20px 28px', background: '#fff' }}>
@@ -268,7 +273,7 @@ export default function PrintForm({ data }) {
             <Ln n="6a." /> Did you own and live in the same main home in New Jersey from <strong>January 1, 2025, through December 31, 2025</strong>?
             <span style={{ display: 'block', fontSize: '7.5px', color: '#555', marginTop: '1px' }}>If "Yes," go to line 7. | If "No" and homeowner, go to line 6b. | If "No" and mobile home owner, skip to Signature section.</span>
           </span>
-          <span style={{ whiteSpace: 'nowrap' }}><CB checked={data.same2025} /> Yes &nbsp;<CB checked={!data.same2025} /> No</span>
+          <span style={{ whiteSpace: 'nowrap' }}><CB checked={!isRenter && data.same2025} /> Yes &nbsp;<CB checked={!isRenter && !data.same2025} /> No</span>
         </Row>
         <Row style={{ opacity: data.same2025 ? 0.4 : 1 }}>
           <span style={{ flex: 1 }}><Ln n="6b." /> Were you (or your spouse/CU partner) born in 1960 or earlier? If "Yes," go to line 6c. If "No," skip to the Signature section.</span>
@@ -280,15 +285,15 @@ export default function PrintForm({ data }) {
         </Row>
         <Row>
           <span style={{ flex: 1 }}><Ln n="7." /> Are you filing this application for the same home as last year's property tax relief benefits?</span>
-          <span><CB checked={data.sameAsLast} /> Yes &nbsp;<CB checked={!data.sameAsLast} /> No</span>
+          <span><CB checked={!skipped && data.sameAsLast} /> Yes &nbsp;<CB checked={!skipped && !data.sameAsLast} /> No</span>
         </Row>
         <Row>
           <span style={{ flex: 1 }}><Ln n="8." /> On December 31, 2025, did you own and live in the same New Jersey home that you owned and occupied on <strong>December 31, 2022</strong>, or earlier?</span>
-          <span><CB checked={data.since2022} /> Yes &nbsp;<CB checked={!data.since2022} /> No</span>
+          <span><CB checked={!skipped && data.since2022} /> Yes &nbsp;<CB checked={!skipped && !data.since2022} /> No</span>
         </Row>
         <Row>
           <span style={{ flex: 1 }}><Ln n="9." /> Did you move to your current home between <strong>January 1, 2023, and December 31, 2023</strong>?</span>
-          <span><CB checked={data.moved2023} /> Yes &nbsp;<CB checked={!data.moved2023} /> No</span>
+          <span><CB checked={!skipped && data.moved2023} /> Yes &nbsp;<CB checked={!skipped && !data.moved2023} /> No</span>
         </Row>
       </div>
 
@@ -328,8 +333,8 @@ export default function PrintForm({ data }) {
                   </>
                 ) : (
                   <>
-                    <td style={{ textAlign: 'center', padding: '4px', whiteSpace: 'nowrap' }}><CB checked={r.v24} /> Yes &nbsp;<CB checked={!r.v24} /> No</td>
-                    <td style={{ textAlign: 'center', padding: '4px', whiteSpace: 'nowrap' }}><CB checked={r.v25} /> Yes &nbsp;<CB checked={!r.v25} /> No</td>
+                    <td style={{ textAlign: 'center', padding: '4px', whiteSpace: 'nowrap' }}><CB checked={!skipped && r.v24} /> Yes &nbsp;<CB checked={!skipped && !r.v24} /> No</td>
+                    <td style={{ textAlign: 'center', padding: '4px', whiteSpace: 'nowrap' }}><CB checked={!skipped && r.v25} /> Yes &nbsp;<CB checked={!skipped && !r.v25} /> No</td>
                   </>
                 )}
               </tr>
@@ -354,7 +359,7 @@ export default function PrintForm({ data }) {
         </div>
         <Row>
           <span style={{ flex: 1 }}><Ln n="13b." /> Are you claiming property taxes for additional lots? (see instructions)</span>
-          <span><CB checked={data.additionalLots} /> Yes &nbsp;<CB checked={!data.additionalLots} /> No</span>
+          <span><CB checked={!skipped && data.additionalLots} /> Yes &nbsp;<CB checked={!skipped && !data.additionalLots} /> No</span>
         </Row>
         <Row>
           <span style={{ flex: 1 }}>
@@ -376,7 +381,7 @@ export default function PrintForm({ data }) {
       <div style={{ fontSize: '9px' }}>
         <Row>
           <span style={{ flex: 1 }}><Ln n="16a." /> Is there a Payment-in-Lieu-of-Taxes (P.I.L.O.T.) agreement for the home that was your main home in 2025?</span>
-          <span><CB checked={data.pilot} /> Yes &nbsp;<CB checked={!data.pilot} /> No</span>
+          <span><CB checked={!skipped && data.pilot} /> Yes &nbsp;<CB checked={!skipped && !data.pilot} /> No</span>
         </Row>
         <Row>
           <span style={{ flex: 1 }}><Ln n="16b." /> If you answered "Yes," enter your Payment-in-Lieu-of-Taxes (P.I.L.O.T.) due for the home that was your main home in 2025.</span>
@@ -477,7 +482,7 @@ export default function PrintForm({ data }) {
                   <td style={{ padding: '4px', border: '1px solid #ccc', fontSize: '8.5px' }}>{row.label}</td>
                   {['v1', 'v2'].map((k) => (
                     <td key={k} style={{ padding: '4px', border: '1px solid #ccc', textAlign: row.type === 'money' || row.type === 'pct' ? 'right' : 'left', minHeight: '22px', height: '22px' }}>
-                      {row.type === 'yesno' && <><CB checked={row[k]} /> Yes &nbsp;<CB checked={!row[k]} /> No</>}
+                      {row.type === 'yesno' && <><CB checked={showSched1 && row[k]} /> Yes &nbsp;<CB checked={showSched1 && !row[k]} /> No</>}
                       {row.type === 'pct' && (row[k] ? `${row[k]}%` : '')}
                       {row.type === 'money' && (row[k] ? `$${parseFloat(row[k]).toLocaleString('en-US', { minimumFractionDigits: 2 })}` : '')}
                       {row.type === 'text' && (row[k] || '')}

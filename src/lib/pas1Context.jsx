@@ -22,7 +22,7 @@ const defaultState = {
   },
   // Step 4 - Property Tax
   block: '', blockSuffix: '', lot: '', lotSuffix: '', qualifier: '', tax2024: '', tax2025: '',
-  additionalLots: false, pilot: false, pilotAmount: '',
+  additionalLots: false, pilot: null, pilotAmount: '',
   // Step 5 - Income
   inc: { 2024: { a: 0, b: 0, c: 0, d: 0, e: 0 }, 2025: { a: 0, b: 0, c: 0, d: 0, e: 0 } },
   activeIncYear: 2024,

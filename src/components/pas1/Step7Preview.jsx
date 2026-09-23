@@ -24,6 +24,9 @@ export default function Step7Preview() {
   const diff = t25 - t24;
   const age = formData.birthYear ? 2025 - parseInt(formData.birthYear) : null;
   const homeTypeMap = { own: 'Homeowner', mobile: 'Mobile Home Owner', rent: 'Renter' };
+  const skipped = formData.homeType === 'rent' || (formData.same2025 === false && (
+    formData.homeType === 'mobile' || (formData.homeType === 'own' && (!formData.born1960 || !formData.movedWithin2025))
+  ));
 
   const rows = [
     ['성명', formData.lname && formData.fname ? `${formData.lname}, ${formData.fname}` : '—'],
@@ -34,7 +37,7 @@ export default function Step7Preview() {
     ['배우자', formData.hasSpouse ? formData.spName || '—' : '—'],
     ['Filing Status', formData.filingStatus || '—'],
     ['주거 유형', homeTypeMap[formData.homeType] || '—'],
-    ['2022년 이전 거주', formData.since2022 ? 'Yes — Senior Freeze 조건 충족' : 'No'],
+    ['2022년 이전 거주', skipped ? '—' : (formData.since2022 ? 'Yes — Senior Freeze 조건 충족' : 'No')],
     ['Block / Lot', formData.block && formData.lot ? `Block ${formData.block}${formData.blockSuffix ? '.' + formData.blockSuffix : ''} / Lot ${formData.lot}${formData.lotSuffix ? '.' + formData.lotSuffix : ''}` : '—'],
     ['2024년 재산세', formatMoney(t24)],
     ['2025년 재산세', formatMoney(t25)],

@@ -19,6 +19,7 @@ const QUESTIONS = [
   { key: 'sfInc2024', text: 'Senior Freeze 확인 — 2024년 연간 총소득이 $168,268 이하이신가요?', en: 'Senior Freeze check — Was your 2024 total annual income $168,268 or less?', sub: '2024년 소득 기준입니다.', subEn: '2024 income limit.', showIf: (d) => !!d.homeowner && d.homeowner !== 'rent' },
   { key: 'sfInc2025', text: 'Senior Freeze 확인 — 2025년 연간 총소득이 $172,475 이하이신가요?', en: 'Senior Freeze check — Was your 2025 total annual income $172,475 or less?', sub: '2025년 소득 기준입니다.', subEn: '2025 income limit.', showIf: (d) => !!d.homeowner && d.homeowner !== 'rent' },
   { key: 'propTax', text: '해당 주택에 재산세(Property Tax)가 부과되고 있나요?', en: 'Are property taxes charged on this home?', sub: '100% 장애 재향군인 재산세 면제자는 해당 없음', subEn: '100% disabled veteran exemptions do not qualify.', showIf: (d) => !!d.homeowner && d.homeowner !== 'rent' },
+  { key: 'pilot', text: 'P.I.L.O.T. 확인 — 재산세 대신 P.I.L.O.T.(세금 대체 납부금)를 납부하고 계신가요?', en: 'P.I.L.O.T. check — Do you pay a Payment-in-Lieu-of-Taxes (P.I.L.O.T.) instead of property taxes?', sub: 'P.I.L.O.T. 주택도 Stay NJ 지원 대상입니다.', subEn: 'Homes under a P.I.L.O.T. agreement can still qualify for Stay NJ.', showIf: (d) => !!d.homeowner && d.homeowner !== 'rent' && d.propTax === false },
 ];
 
 const OWNERSHIP_OPTIONS = [
@@ -76,7 +77,7 @@ export default function Step0Eligibility() {
   const baseEligible = formData.age65 === true || formData.disability === true;
   const anchorOK = isRenter
     ? formData.incRent150 === true
-    : formData.incomeLow === true && formData.propTax === true;
+    : formData.incomeLow === true && (formData.propTax === true || formData.pilot === true);
   const anchorEligible = baseEligible && formData.njResident === true && !!formData.homeowner && anchorOK;
   const sfEligible = anchorEligible && !isRenter && formData.sfLive2022 === true && formData.sfInc2024 === true && formData.sfInc2025 === true;
   const stayEligible = anchorEligible && isOwner && formData.age65 === true && formData.stayInc200 === true && formData.stayLive2025 === true;
@@ -162,6 +163,17 @@ export default function Step0Eligibility() {
                 <p className="text-[11px] text-green-600/70">Deadline: November 2, 2026</p>
               </div>
             </div>
+            {formData.pilot === true && (
+              <div className="mt-4 flex gap-2 items-start p-3 rounded-lg bg-amber-50 border-l-4 border-amber-500">
+                <AlertCircle className="w-5 h-5 text-amber-600 mt-0.5 flex-shrink-0" />
+                <div>
+                  <p className="font-semibold text-amber-800">P.I.L.O.T. 납부 주택 — 담당 직원 확인 필요</p>
+                  <p className="text-[11px] text-amber-600">P.I.L.O.T. home — staff verification needed</p>
+                  <p className="text-sm text-amber-700 leading-relaxed">P.I.L.O.T. 주택은 프로그램별로 적용 기준이 다를 수 있습니다 (Stay NJ는 P.I.L.O.T. 주택도 지원 대상). 정확한 지원 여부와 금액은 담당 직원 확인을 받으세요.</p>
+                  <p className="text-[11px] text-amber-600/70">PILOT homes may be treated differently by each program (Stay NJ accepts PILOT homes). Please have a staff member verify your eligibility and benefit amount.</p>
+                </div>
+              </div>
+            )}
             {isRenter ? (
               <div className="mt-4 flex flex-col gap-3 p-4 rounded-lg bg-blue-50 border-2 border-blue-300">
                 <p className="text-base font-bold text-blue-900">🙋 세입자(Renter) 신청 안내</p>
