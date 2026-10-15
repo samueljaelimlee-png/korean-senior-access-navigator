@@ -92,10 +92,24 @@
 
 @media print {
   * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
-  body { background: #fff !important; }
+  html, body { background: #fff !important; height: auto !important; overflow: visible !important; }
+
+  /* 인쇄 시 앱 화면 요소는 모두 숨기고 인쇄 양식만 노출 */
+  body * { visibility: hidden !important; }
+  .print-only, .print-only * { visibility: visible !important; }
+  .print-only {
+    display: block !important;
+    position: absolute !important;
+    left: 0 !important; top: 0 !important;
+    width: 100% !important; max-width: none !important;
+    margin: 0 !important;
+  }
+
   .no-print { display: none !important; }
-  .print-only { display: block !important; }
-  @page { margin: 1.5cm; size: A4; }
+  .min-h-screen { min-height: 0 !important; }
+
+  /* 브라우저 머리글/바닥글(날짜·URL·페이지 번호) 제거 — 페이지 여백 0 */
+  @page { margin: 0; size: A4; }
 }
 
 .print-only { display: none; }
